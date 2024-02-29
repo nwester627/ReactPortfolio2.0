@@ -1,9 +1,23 @@
 import Head from "next/head";
 import React from "react";
-import { FaLinkedin, FaGithubSquare } from "react-icons/fa";
+import {
+  FaLinkedin,
+  FaGithubSquare,
+  FaReact,
+  FaPhp,
+  FaLaravel,
+  FaHtml5,
+  FaCss3,
+  FaPython,
+  FaAngular,
+  FaHome,
+  FaCloudDownloadAlt,
+} from "react-icons/fa";
 import portrait from "../public/utilities/images/portrait.png";
 import Image from "next/image";
 import { Typewriter } from "react-simple-typewriter";
+import { SiTypescript, SiJavascript } from "react-icons/si";
+import { GrMysql } from "react-icons/gr";
 
 export default function Home() {
   return (
@@ -14,24 +28,10 @@ export default function Home() {
 
       <main className="bg-gradient-to-r from-dark-greenish to-greenish text-yellowish font-poppins">
         <section className="min-h-screen">
-          <nav className="py-10 mb-12 flex justify-between drop-shadow-xl">
-            <a href="https://nicolaswesterresume.tiiny.site/">
-              <button className="bg-yellowish text-dark-greenish font-bold px-4 rounded-full ml-8 h-8 hover:animate-wiggle hover:animate-infinite">
-                Resume
-              </button>
-            </a>
-            <ul className="flex items-center px-8">
-              <li className="px-4 hover:animate-wiggle hover:animate-infinite">
-                <a href="https://github.com/nwester627">
-                  <FaGithubSquare className="cursor-pointer size-16" />
-                </a>
-              </li>
-              <li className="hover:animate-wiggle hover:animate-infinite">
-                <a href="https://www.linkedin.com/in/nicolaswester">
-                  <FaLinkedin className="cursor-pointer size-16" />
-                </a>
-              </li>
-            </ul>
+          <nav className="py-8 mb-12 flex justify-between px-8">
+            <span className="">
+              <FaHome className=" cursor-pointer size-16" />
+            </span>
           </nav>
           <div className="text-center p-10 drop-shadow-2xl">
             <h2 className="text-5xl py-2 font-medium animate-fade-down animate-duration-1000 animate-ease-linear">
@@ -53,18 +53,83 @@ export default function Home() {
               />
             </h3>
 
-            <p className="text-md py-5">
+            <p className="text-md px-4">
               Experienced Software Engineer that specalizes in
               JavaScript/TypeScript, React, Angular, PHP, Laravel, and more!
             </p>
           </div>
-          <div className="relative mx-auto rounded-full w-96 h-96 overflow-hidden mt-20 md:h-96 md:w-96 bg-dark-greenish">
+          <div className="relative mx-auto w-96 h-96 overflow-hidden mt-4 md:h-96 md:w-1/2 bg-dark-greenish rounded">
             <Image
               src={portrait}
               layout="fill"
               objectFit="cover"
               alt="Portrait"
             />
+          </div>
+          <div className="flex justify-center rounded-md pt-8">
+            <button
+              type="button"
+              className="items-center px-6 py-4 text-sm font-medium !text-yellowish bg-dark-greenish border border-x-yellowish rounded-s-lg"
+            >
+              <a href="https://www.linkedin.com/in/nicolaswester/">
+                <FaLinkedin className="w-3 h-3 me-2 inline-flex" />
+                LinkedIn
+              </a>
+            </button>
+            <button
+              type="button"
+              className="items-center px-6 py-4 text-sm font-medium !text-yellowish bg-dark-greenish border-t border-b border-yellowish"
+            >
+              <a href="https://github.com/nwester627">
+                <FaGithubSquare className="w-3 h-3 me-2 inline-flex" />
+                GitHub
+              </a>
+            </button>
+            <button
+              type="button"
+              className="inline-flex items-center px-6 py-4 text-sm font-medium !text-yellowish bg-dark-greenish border border-yellowish rounded-e-lg"
+            >
+              <a href="https://nicolaswesterresume.tiiny.site/">
+                <FaCloudDownloadAlt className="w-3 h-3 me-2 inline-flex" />
+                Resume
+              </a>
+            </button>
+          </div>
+        </section>
+        <section className="rounded bg-dark-greenish w-1/2 m-auto mt-8 py-8">
+          <div>
+            <h3 className="text-5xl py-4 text-center">Technical Skills</h3>
+            <div className="flex flex-row justify-center">
+              <SiJavascript className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+              <SiTypescript className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+              <FaReact className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+              <FaPhp className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+              <FaLaravel className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+              <FaHtml5 className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+              <FaCss3 className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+              <FaPython className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+              <FaAngular className="size-16 px-2 transition ease=out hover:-translate-y-1 hover:scale-110 duration-100" />
+              <GrMysql className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+            </div>
+          </div>
+          <div className="text-center text-md leading-8 py-4">
+            <p>
+              I have acquired these skills through years of education and also
+              through practical work experience.{" "}
+            </p>
+            <p>
+              In my previous role at BoomTown, I worked on a
+              TypeScript/JavaScript FrontEnd
+            </p>{" "}
+            <p>
+              that utilized both React and Angular. The BackEnd was designed in
+              PHP and Laravel.
+            </p>{" "}
+            <p>I also took advantage of a MySQL database.</p>{" "}
+            <p>
+              Throughout my school I learned other practical skills such as
+              Python, HTML, and CSS.
+            </p>
           </div>
         </section>
       </main>
