@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { React } from "react";
+import { React, useState } from "react";
 import {
   FaLinkedin,
   FaGithubSquare,
@@ -19,6 +19,9 @@ import discordBot from "../public/utilities/images/discordBot.png";
 import inventoryManagementSystem from "../public/utilities/images/inventorymanagementproject.png";
 import videoGames from "../public/utilities/images/videogames.jpeg";
 import webDeveloper from "../public/utilities/images/webdeveloper.jpg";
+import recommendation1 from "../public/utilities/images/JaredSmithRecommendation.png";
+import recommendation2 from "../public/utilities/images/TylerSorensonRecommendation.png";
+import recommendation3 from "../public/utilities/images/KennyRichmondRecommendation.png";
 import Image from "next/image";
 import { Typewriter } from "react-simple-typewriter";
 import { SiTypescript, SiJavascript } from "react-icons/si";
@@ -145,8 +148,12 @@ export default function Home() {
               Projects I've Worked On
             </h3>
             <div className="grid grid-cols-2">
-              <div class="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8">
-                <Image class="rounded-t-lg max-h-48" src={discordBot} alt="" />
+              <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8">
+                <Image
+                  className="rounded-t-lg max-h-48"
+                  src={discordBot}
+                  alt=""
+                />
                 <div className="p-5">
                   <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
                     Discord Bot
@@ -159,16 +166,16 @@ export default function Home() {
                   </p>
                   <a
                     href="https://github.com/nwester627/discordBot"
-                    class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+                    className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
                   >
                     Source Code
                     <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
                   </a>
                 </div>
               </div>
-              <div class="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8">
+              <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8">
                 <Image
-                  class="rounded-t-lg max-h-[10.5rem]"
+                  className="rounded-t-lg max-h-[10.5rem]"
                   src={inventoryManagementSystem}
                   alt=""
                 />
@@ -184,15 +191,19 @@ export default function Home() {
                   </p>
                   <a
                     href="https://github.com/nwester627/schoolProject"
-                    class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+                    className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
                   >
                     Source Code
                     <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
                   </a>
                 </div>
               </div>
-              <div class="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-16">
-                <Image class="rounded-t-lg max-h-48" src={videoGames} alt="" />
+              <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-16">
+                <Image
+                  className="rounded-t-lg max-h-48"
+                  src={videoGames}
+                  alt=""
+                />
                 <div className="p-5">
                   <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
                     Video Game Royale
@@ -205,16 +216,16 @@ export default function Home() {
                   </p>
                   <a
                     href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                    class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+                    className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
                   >
                     Source Code
                     <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
                   </a>
                 </div>
               </div>
-              <div class="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-16">
+              <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-16">
                 <Image
-                  class="rounded-t-lg max-h-[11.5rem]"
+                  className="rounded-t-lg max-h-[11.5rem]"
                   src={webDeveloper}
                   alt=""
                 />
@@ -229,7 +240,7 @@ export default function Home() {
                   </p>
                   <a
                     href="https://github.com/nwester627/ReactPortfolio2.0"
-                    class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+                    className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
                   >
                     Source Code
                     <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
@@ -237,6 +248,30 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+        <section className="rounded bg-space w-1/2 m-auto mt-8 py-8">
+          <h3 className="text-5xl py-4 text-center text-rose">Testimonials</h3>
+          <div className="flex flex-col justify-center mt-16">
+            <Image
+              className="bg-space border-rose border-[6px] rounded-lg m-auto mb-8"
+              src={recommendation1}
+            />
+            <Image
+              className="bg-space border-rose border-[6px] rounded-lg m-auto mb-8"
+              src={recommendation2}
+            />
+            <Image
+              className="bg-space border-rose border-[6px] rounded-lg m-auto"
+              src={recommendation3}
+            />
+          </div>
+        </section>
+        <section className="w-1/2 mt-8 py-8 m-auto">
+          <div className="text-center">
+            <button className="bg-space border-rose rounded px-4 py-2 hover:bg-teal">
+              Contact Me!
+            </button>
           </div>
         </section>
       </main>
