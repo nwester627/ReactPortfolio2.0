@@ -15,8 +15,10 @@ import {
   FaArrowRight,
 } from "react-icons/fa";
 import portrait from "../public/utilities/images/portrait.png";
-import discordCode from "../public/utilities/images/discordCode.png";
-import spaceBackground from "../public/utilities/images/space.png";
+import discordBot from "../public/utilities/images/discordBot.png";
+import inventoryManagementSystem from "../public/utilities/images/inventorymanagementproject.png";
+import videoGames from "../public/utilities/images/videogames.jpeg";
+import webDeveloper from "../public/utilities/images/webdeveloper.jpg";
 import Image from "next/image";
 import { Typewriter } from "react-simple-typewriter";
 import { SiTypescript, SiJavascript } from "react-icons/si";
@@ -29,11 +31,11 @@ export default function Home() {
         <title>Nicolas Wester Portfolio</title>
       </Head>
 
-      <main className="bg-space text-rose font-poppins">
+      <main className="bg-gradient-to-b from-space to to-black text-rose font-poppins">
         <section className="min-h-screen">
           <nav className="py-8 mb-12 flex justify-between px-8">
             <span>
-              <FaHome className=" cursor-pointer size-16 text-teal" />
+              <FaHome className=" cursor-pointer size-16 text-teal hover:animate-wiggle hover:animate-infinite" />
             </span>
           </nav>
           <div className="text-center p-10 drop-shadow-2xl">
@@ -49,8 +51,8 @@ export default function Home() {
                 ]}
                 loop={false}
                 cursor={true}
-                deleteSpeed={50}
-                typeSpeed={50}
+                deleteSpeed={100}
+                typeSpeed={100}
                 delaySpeed={500}
                 cursorBlinking={false}
               />
@@ -72,7 +74,7 @@ export default function Home() {
           <div className="flex justify-center rounded-md pt-8">
             <button
               type="button"
-              className="items-center px-6 py-4 text-sm font-medium !text-space bg-teal border border-rose rounded-s-lg hover:cursor-pointer"
+              className="items-center px-6 py-4 text-xl font-medium !text-rose bg-black border border-teal rounded-s-lg hover:cursor-pointer hover:bg-teal"
             >
               <a href="https://www.linkedin.com/in/nicolaswester/">
                 <FaLinkedin className="w-3 h-3 me-2 inline-flex" />
@@ -81,7 +83,7 @@ export default function Home() {
             </button>
             <button
               type="button"
-              className="items-center px-6 py-4 text-sm font-medium !text-space bg-teal border-t border-b border-rose hover:cursor-pointer"
+              className="items-center px-6 py-4 text-xl font-medium !text-rose bg-black border-t border-b border-teal hover:cursor-pointer hover:bg-teal"
             >
               <a href="https://github.com/nwester627">
                 <FaGithubSquare className="w-3 h-3 me-2 inline-flex" />
@@ -90,7 +92,7 @@ export default function Home() {
             </button>
             <button
               type="button"
-              className="inline-flex items-center px-6 py-4 text-sm font-medium !text-space bg-teal border border-rose rounded-e-lg hover:cursor-pointer"
+              className="inline-flex items-center px-6 py-4 text-xl font-medium !text-rose bg-black border border-teal rounded-e-lg hover:cursor-pointer hover:bg-teal"
             >
               <a href="https://nicolaswesterresume.tiiny.site/">
                 <FaCloudDownloadAlt className="w-3 h-3 me-2 inline-flex" />
@@ -99,7 +101,7 @@ export default function Home() {
             </button>
           </div>
         </section>
-        <section className="rounded bg-dark-blueish w-1/2 m-auto mt-8 py-8">
+        <section className="rounded bg-space w-1/2 m-auto mt-8 py-8">
           <div>
             <h3 className="text-5xl py-4 text-center text-rose">
               Technical Skills
@@ -142,28 +144,97 @@ export default function Home() {
             <h3 className="text-5xl py-4 text-center">
               Projects I've Worked On
             </h3>
-            <div class="max-w-sm bg-space border border-rose rounded-lg shadow-md m-auto mt-8">
-              <a href="https://github.com/nwester627/discordBot">
-                <Image class="rounded-t-lg" src={discordCode} alt="" />
-              </a>
-              <div className="p-5">
-                <a href="https://github.com/nwester627/discordBot">
-                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-teal">
+            <div className="grid grid-cols-2">
+              <div class="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8">
+                <Image class="rounded-t-lg max-h-48" src={discordBot} alt="" />
+                <div className="p-5">
+                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
                     Discord Bot
                   </h5>
-                </a>
-                <p className="mb-3 font-normal text-teal">
-                  This bot was built using Python. The bot allows for moderation
-                  of users, media playback, making server announcements, and fun
-                  easter eggs for my friends!
-                </p>
-                <a
-                  href="https://github.com/nwester627/discordBot"
-                  class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-space rounded-lg"
-                >
-                  Source Code
-                  <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
-                </a>
+                  <p className="mb-3 font-normal text-rose">
+                    This bot was built using Python. The bot allows for
+                    moderation of users, media playback, making server
+                    announcements, and fun easter eggs for my friends! This was
+                    my first project in Python.
+                  </p>
+                  <a
+                    href="https://github.com/nwester627/discordBot"
+                    class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+                  >
+                    Source Code
+                    <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
+                  </a>
+                </div>
+              </div>
+              <div class="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8">
+                <Image
+                  class="rounded-t-lg max-h-[10.5rem]"
+                  src={inventoryManagementSystem}
+                  alt=""
+                />
+                <div className="p-5">
+                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
+                    Inventory Tracker
+                  </h5>
+                  <p className="mb-3 font-normal text-rose">
+                    This project was written mainly in Java, but I used JavaFX
+                    to design and implement the GUI. The user is able to add
+                    parts, create products, search, delete, save and edit items
+                    from the management system.
+                  </p>
+                  <a
+                    href="https://github.com/nwester627/schoolProject"
+                    class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+                  >
+                    Source Code
+                    <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
+                  </a>
+                </div>
+              </div>
+              <div class="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-16">
+                <Image class="rounded-t-lg max-h-48" src={videoGames} alt="" />
+                <div className="p-5">
+                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
+                    Video Game Royale
+                  </h5>
+                  <p className="mb-3 font-normal text-rose">
+                    I haven't actually made this. Everything you see here is
+                    placeholder text. This is my next project. It will probably
+                    be in JS. Blah blah blah placeholder text. This is a place
+                    holder.
+                  </p>
+                  <a
+                    href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+                  >
+                    Source Code
+                    <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
+                  </a>
+                </div>
+              </div>
+              <div class="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-16">
+                <Image
+                  class="rounded-t-lg max-h-[11.5rem]"
+                  src={webDeveloper}
+                  alt=""
+                />
+                <div className="p-5">
+                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
+                    Portfolio Website
+                  </h5>
+                  <p className="mb-3 font-normal text-rose">
+                    Literally the website you are looking at. This is it. You
+                    are looking at it. I used React, CSS, HTML, JavaScript, and
+                    Tailwind. I am a big fan of Tailwind. It works great.
+                  </p>
+                  <a
+                    href="https://github.com/nwester627/ReactPortfolio2.0"
+                    class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+                  >
+                    Source Code
+                    <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
