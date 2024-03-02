@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { React, useState } from "react";
+import { React } from "react";
 import {
   FaLinkedin,
   FaGithubSquare,
@@ -26,6 +26,7 @@ import Image from "next/image";
 import { Typewriter } from "react-simple-typewriter";
 import { SiTypescript, SiJavascript } from "react-icons/si";
 import { GrMysql } from "react-icons/gr";
+import ContactForm from "@/components/Contact";
 
 export default function Home() {
   return (
@@ -267,12 +268,8 @@ export default function Home() {
             />
           </div>
         </section>
-        <section className="w-1/2 mt-8 py-8 m-auto">
-          <div className="text-center">
-            <button className="bg-space border-rose rounded px-4 py-2 hover:bg-teal">
-              Contact Me!
-            </button>
-          </div>
+        <section className="rounded bg-space w-1/2 m-auto mt-8 py-8">
+          <ContactForm />
         </section>
       </main>
     </div>
