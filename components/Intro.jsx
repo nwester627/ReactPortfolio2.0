@@ -12,7 +12,7 @@ export default function Intro() {
         </h2>
         <h3 className="text-2xl py-2 font-medium text-teal">
           <Typewriter
-            words={["Software Engineer", "React Enthusiast", "WGU Graduate"]}
+            words={["Software Engineer", "React Enthusiast", "WGU Student"]}
             loop={false}
             cursor={true}
             deleteSpeed={100}
@@ -21,13 +21,8 @@ export default function Intro() {
             cursorBlinking={false}
           />
         </h3>
-
-        <p className="text-md px-4">
-          Experienced Software Engineer that specalizes in
-          JavaScript/TypeScript, React, Angular, PHP, Laravel, and more!
-        </p>
       </div>
-      <div className="relative mx-auto w-96 h-96 overflow-hidden mt-4 md:h-96 md:w-1/2 rounded">
+      <div className="relative mx-auto w-96 h-96 overflow-hidden md:h-96 md:w-1/2 rounded">
         <Image src={portrait} layout="fill" objectFit="cover" alt="Portrait" />
       </div>
       <div className="flex justify-center rounded-md pt-8">
@@ -59,6 +54,16 @@ export default function Intro() {
           </a>
         </button>
       </div>
+      <h4 className="text-xl pt-8 pb-4 font-medium text-center">
+        A Little Bit About Me
+      </h4>
+      <p className="text-md px-4 text-center text-balance">
+        Hi there! My name is Nicolas Wester. I have been developing software for
+        a little over 4 years in my personal life, and two years professionally.
+        I love programming and solving the puzzles that come along with it.
+        Outside of programming, I'm a huge nerd. I enjoy video games, anime, and
+        hanging out with my two cats.
+      </p>
     </div>
   );
 }

@@ -86,6 +86,10 @@ export default function ContactForm() {
             {loading ? "Sending..." : message ? "Success!" : "Submit!"}
           </button>
         </div>
+        <span className="text-center pb-2">
+          If you would like to save my email for future reference, I can be
+          reached at <a className="text-teal">nwester627@yahoo.com</a>
+        </span>
       </form>
     </div>
   );

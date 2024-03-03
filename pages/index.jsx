@@ -11,10 +11,10 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Nicolas Wester Portfolio</title>
+        <title>Nicolas Wester's Portfolio</title>
       </Head>
 
-      <main className="bg-gradient-to-b from-space to to-black text-rose font-poppins">
+      <main className="bg-gradient-to-br from-space to to-black text-rose font-poppins">
         <section className="min-h-screen">
           <Nav />
           <Intro />

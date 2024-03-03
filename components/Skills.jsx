@@ -7,7 +7,7 @@ import {
   FaPython,
   FaAngular,
 } from "react-icons/fa";
-import { SiTypescript, SiJavascript } from "react-icons/si";
+import { SiTypescript, SiJavascript, SiTailwindcss } from "react-icons/si";
 import { GrMysql } from "react-icons/gr";
 
 export default function Skills() {
@@ -28,25 +28,28 @@ export default function Skills() {
           <FaPython className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
           <FaAngular className="size-20 px-2 transition ease=out hover:-translate-y-1 hover:scale-110 duration-100" />
           <GrMysql className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <SiTailwindcss className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
         </div>
       </div>
-      <div className="text-center text-xl leading-8 py-4 text-rose">
+      <div className="text-center text-xl leading-8 py-4 text-rose text-balance">
         <p>
-          I have acquired these skills through years of education and also
-          through practical work experience.{" "}
-        </p>
-        <p>
-          In my previous role at BoomTown, I worked on a TypeScript/JavaScript
-          FrontEnd
-        </p>{" "}
-        <p>
-          that utilized both React and Angular. The BackEnd was designed in PHP
-          and Laravel.
-        </p>{" "}
-        <p>I also took advantage of a MySQL database.</p>{" "}
-        <p>
-          Throughout my school I learned other practical skills such as Python,
-          HTML, and CSS.
+          I have dabbled in <a className="text-teal"> HTML </a> and{" "}
+          <a className="text-teal">CSS</a> for about 4 years now between
+          professional and personal projects. In my 2 year tenure at
+          BoomTown/Inside Real Estate, I was the sole developer for our
+          RealContact product, a real time communication application that
+          facilitated dialoug and transactions between leads and Real Estate
+          agents. The Front End was developed in{" "}
+          <a className="text-teal">JavaScript/TypeScript</a>,{" "}
+          <a className="text-teal">Angular</a>, and
+          <a className="text-teal"> React</a>. The Back End was developed in{" "}
+          <a className="text-teal">PHP </a>
+          and <a className="text-teal">Laravel</a>. We also utilized a{" "}
+          <a className="text-teal">MySQL </a>
+          database to track leads, customer data, housing information, etc.
+          Beyond my programming experience, I also created and led the
+          development team within BoomTown to help onboard and train new
+          developers.
         </p>
       </div>
     </div>
