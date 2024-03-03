@@ -8,8 +8,8 @@ import { FaArrowRight } from "react-icons/fa";
 export default function Projects() {
   return (
     <div>
-      <h3 className="text-5xl py-4 text-center">Projects I've Worked On</h3>
-      <div className="grid grid-cols-2">
+      <h3 className="text-6xl py-4 text-center">Projects I've Worked On</h3>
+      <div className="grid grid-cols-4">
         <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8">
           <Image className="rounded-t-lg max-h-48" src={discordBot} alt="" />
           <div className="p-5">
@@ -23,7 +23,7 @@ export default function Projects() {
             </p>
             <a
               href="https://github.com/nwester627/discordBot"
-              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg hover:bg-teal"
             >
               Source Code
               <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
@@ -48,14 +48,14 @@ export default function Projects() {
             </p>
             <a
               href="https://github.com/nwester627/schoolProject"
-              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg hover:bg-teal"
             >
               Source Code
               <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
             </a>
           </div>
         </div>
-        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-16">
+        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8">
           <Image className="rounded-t-lg max-h-48" src={videoGames} alt="" />
           <div className="p-5">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
@@ -68,14 +68,14 @@ export default function Projects() {
             </p>
             <a
               href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg hover:bg-teal"
             >
               Source Code
               <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
             </a>
           </div>
         </div>
-        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-16">
+        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8">
           <Image
             className="rounded-t-lg max-h-[11.5rem]"
             src={webDeveloper}
@@ -92,7 +92,7 @@ export default function Projects() {
             </p>
             <a
               href="https://github.com/nwester627/ReactPortfolio2.0"
-              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg"
+              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg hover:bg-teal"
             >
               Source Code
               <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />

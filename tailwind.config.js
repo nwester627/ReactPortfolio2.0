@@ -12,6 +12,7 @@ module.exports = {
       rose: "#deb992",
       white: "#FFFFFF",
       black: "#000000",
+      "blackish-blue": "#191e28",
     },
     fontFamily: {
       poppins: ["Poppins", "sans-serif"],

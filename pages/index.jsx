@@ -19,16 +19,16 @@ export default function Home() {
           <Nav />
           <Intro />
         </section>
-        <section className="rounded bg-space w-1/2 m-auto mt-8 py-8">
+        <section className="rounded bg-space w-9/12 m-auto mt-8 py-8">
           <Skills />
         </section>
-        <section className="rounded bg-space w-1/2 m-auto mt-8 py-8">
+        <section className="rounded bg-space w-9/12 m-auto mt-8 py-8">
           <Projects />
         </section>
-        <section className="rounded bg-space w-1/2 m-auto mt-8 py-8">
+        <section className="rounded bg-space w-9/12 m-auto mt-8 py-8">
           <Testimonials />
         </section>
-        <section className="rounded bg-space w-1/2 m-auto mt-8 py-8">
+        <section className="rounded bg-space w-9/12 m-auto mt-8 py-8">
           <ContactForm />
         </section>
       </main>

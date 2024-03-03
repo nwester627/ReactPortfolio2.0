@@ -14,23 +14,23 @@ export default function Skills() {
   return (
     <div>
       <div>
-        <h3 className="text-5xl py-4 text-center text-rose">
+        <h3 className="text-6xl py-4 text-center text-rose">
           Technical Skills
         </h3>
         <div className="flex flex-row justify-center text-teal">
-          <SiJavascript className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <SiTypescript className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaReact className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaPhp className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaLaravel className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaHtml5 className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaCss3 className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaPython className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaAngular className="size-16 px-2 transition ease=out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <GrMysql className="size-16 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <SiJavascript className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <SiTypescript className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <FaReact className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <FaPhp className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <FaLaravel className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <FaHtml5 className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <FaCss3 className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <FaPython className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <FaAngular className="size-20 px-2 transition ease=out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <GrMysql className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
         </div>
       </div>
-      <div className="text-center text-md leading-8 py-4 text-rose">
+      <div className="text-center text-xl leading-8 py-4 text-rose">
         <p>
           I have acquired these skills through years of education and also
           through practical work experience.{" "}

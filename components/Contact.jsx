@@ -36,18 +36,18 @@ export default function ContactForm() {
 
   return (
     <div className="rounded bg-space w-1/2 m-auto py-4">
-      <h3 className="text-5xl text-center text-rose">Contact Me!</h3>
+      <h3 className="text-6xl text-center text-rose">Contact Me!</h3>
       <form
-        className="w-9/12 h-9/12 flex flex-col justify-center"
+        className="w-9/12 h-9/12 flex flex-col m-auto mt-8 bg-blackish-blue rounded border border-rose"
         ref={form}
         onSubmit={sendEmail}
       >
-        <div className="rounded w-1/2 m-auto py-4 flex flex-col text-rose">
+        <div className="rounded w-1/2 pl-16 py-4 flex flex-col text-rose">
           <div className="py-8">
-            <label className="text-rose text-2xl font-bold">Email</label>
+            <label className="text-rose text-3xl font-bold">Email</label>
             <input
               name="email"
-              className="w-[300px] h-[40px] text-lg rounded py-4 mt-2 pl-2 text-black"
+              className="w-[410px] h-[40px] text-lg rounded py-4 mt-2 pl-2 text-black"
               placeholder="name@company.com"
               required
             />
@@ -56,13 +56,13 @@ export default function ContactForm() {
             <label className="text-rose text-2xl font-bold">Message</label>
             <textarea
               name="message"
-              className="w-[300px] h-[200px] text-lg rounded pt-2 mt-2 pl-2 resize-none text-black"
+              className="w-[410px] h-[200px] text-lg rounded pt-2 mt-2 pl-2 resize-none text-black"
               placeholder="Type your message here..."
               required
             />
           </div>
           <button
-            className={`flex items-center justify-center w-[150px] h-[30px] border border-rose rounded mt-8 ml-20 hover:bg-teal ${
+            className={`flex items-center justify-center w-[150px] h-[30px] border border-rose rounded mt-8 mb-4 ml-32 hover:bg-teal ${
               message ? "bg-teal" : "bg-black"
             } ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
             disabled={loading}
