@@ -33,13 +33,14 @@ export default function Skills() {
       </div>
       <div className="text-center text-xl leading-8 py-4 text-rose text-balance">
         <p>
-          I have dabbled in <a className="text-teal"> HTML </a> and{" "}
+          I have been programming in <a className="text-teal"> HTML </a> and{" "}
           <a className="text-teal">CSS</a> for about 4 years now between
           professional and personal projects. In my 2 year tenure at
           BoomTown/Inside Real Estate, I was the sole developer for our
           RealContact product, a real time communication application that
-          facilitated dialoug and transactions between leads and Real Estate
-          agents. The Front End was developed in{" "}
+          facilitated dialogue and transactions between leads and Real Estate
+          agents utilizing the Twilio <a className="text-teal">API</a>. The
+          Front End was developed in{" "}
           <a className="text-teal">JavaScript/TypeScript</a>,{" "}
           <a className="text-teal">Angular</a>, and
           <a className="text-teal"> React</a>. The Back End was developed in{" "}
@@ -47,8 +48,8 @@ export default function Skills() {
           and <a className="text-teal">Laravel</a>. We also utilized a{" "}
           <a className="text-teal">MySQL </a>
           database to track leads, customer data, housing information, etc.
-          Beyond my programming experience, I also created and led the
-          development team within BoomTown to help onboard and train new
+          Beyond my programming experience, I also created and led the Training
+          Development Team within BoomTown to help onboard and train new
           developers.
         </p>
       </div>
