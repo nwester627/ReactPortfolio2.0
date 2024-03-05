@@ -1,4 +1,5 @@
 module.exports = {
-  basePath: "/React-Portfolio2.0",
+  basePath: "/ReactPortfolio2.0",
   assetPrefix: "/ReactPortfolio2.0/",
+  output: "export",
 };
