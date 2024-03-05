@@ -35,13 +35,14 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="rounded bg-space w-full md:w-1/2 m-auto py-4">
+    <div className="rounded bg-space w-full md:w-2/3 m-auto py-4">
+      {" "}
+      {/* Adjusted width for desktop */}
       <h3 className="text-5xl sm:text-6xl text-center text-rose flex justify-center">
         <span className="whitespace-nowrap">Contact Me!</span>
       </h3>
-
       <form
-        className="w-full sm:w-96 h-auto m-auto mt-8 bg-blackish-blue rounded border border-rose p-4" // Added padding here
+        className="w-84 md:w-1/2 h-auto m-auto mt-8 bg-blackish-blue rounded border border-rose p-4" // Added padding here
         ref={form}
         onSubmit={sendEmail}
       >
@@ -70,9 +71,9 @@ export default function ContactForm() {
           </div>
           <div className="w-full flex justify-center">
             {" "}
-            {/* Added flex justify-center for button alignment */}
+            {/* Adjusted button width for mobile */}
             <button
-              className={`items-center w-48 sm:w-[150px] h-[30px] border border-rose rounded hover:bg-teal ${
+              className={`items-center w-[150px] md:min-w-1/3 h-[30px] border border-rose rounded hover:bg-teal ${
                 message ? "bg-teal" : "bg-black"
               } ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
               disabled={loading}
