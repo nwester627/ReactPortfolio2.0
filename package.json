@@ -1,7 +1,7 @@
 {
-  "homepage": "http://nwester627.github.io/ReactPortfolio2.0",
+  "homepage": "https://nwester627.github.io/ReactPortfolio2.0",
   "name": "react-portfolio2.0",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
