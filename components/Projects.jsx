@@ -66,15 +66,16 @@ export default function Projects() {
               Video Game Royale
             </h5>
             <p className="mb-3 font-normal text-rose">
-              I haven't actually made this. Everything you see here is
-              placeholder text. This is my next project. It will probably be in
-              JS. Blah blah blah placeholder text. This is a place holder.
+              This project is currently in production! This will be developed in
+              <a className="text-teal"> JavaScript</a> and{" "}
+              <a className="text-teal">React</a>. I am hoping to have this out
+              by Mid-March of 2024. Check back soon for more updates!
             </p>
             <a
-              href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg hover:bg-teal"
+              aria-disabled="true"
+              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg hover:bg-teal hover:cursor-not-allowed"
             >
-              Source Code
+              Coming Soon!
               <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
             </a>
           </div>
@@ -86,16 +87,16 @@ export default function Projects() {
               Portfolio Website
             </h5>
             <p className="mb-3 font-normal text-rose">
-              Literally the website you are looking at. This is it. You are
-              looking at it. I used <a className="text-teal">React</a>,{" "}
+              This was a complete revamp of my old portfolio. I wanted to
+              demonstrate my growth as a developer from 2 years ago. I used{" "}
+              <a className="text-teal">React</a>,{" "}
               <a className="text-teal">Tailwind CSS</a>,{" "}
               <a className="text-teal">HTML</a>, and{" "}
-              <a className="text-teal">JavaScript</a>. I am a big fan of
-              Tailwind. It works great.
+              <a className="text-teal">JavaScript</a>.
             </p>
             <a
               href="https://github.com/nwester627/ReactPortfolio2.0"
-              className="inline-flex items-center px-5 py-2.5 mt-6 text-sm font-medium text-center text-rose bg-black rounded-lg hover:bg-teal"
+              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-rose bg-black rounded-lg hover:bg-teal"
             >
               Source Code
               <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />

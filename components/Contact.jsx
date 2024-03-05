@@ -52,7 +52,7 @@ export default function ContactForm() {
             <label className="text-rose text-3xl font-bold">Email</label>
             <input
               name="email"
-              className="w-full sm:w-auto h-auto text-lg rounded py-2 px-4 mt-2 text-black"
+              className="w-full sm:w-auto h-auto text-lg rounded py-2 px-4 mt-2 text-white bg-gray"
               placeholder="name@company.com"
               required
             />
@@ -62,7 +62,7 @@ export default function ContactForm() {
             <label className="text-rose text-2xl font-bold">Message</label>
             <textarea
               name="message"
-              className="w-full sm:w-auto h-36 sm:h-72 text-lg rounded pt-2 px-4 mt-2 resize-none text-black"
+              className="w-full sm:w-auto h-36 sm:h-72 text-lg rounded pt-2 px-4 mt-2 resize-none text-white bg-gray"
               placeholder="Type your message here..."
               required
             />

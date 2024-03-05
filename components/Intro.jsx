@@ -22,8 +22,18 @@ export default function Intro() {
           />
         </h3>
       </div>
-      <div className="relative mx-auto w-96 h-96 overflow-hidden md:h-96 md:w-1/2 rounded">
-        <Image src={portrait} layout="fill" objectFit="cover" alt="Portrait" />
+      <div className="relative mx-auto w-full max-w-4xl">
+        <div className="md:flex md:flex-col md:items-center md:justify-center">
+          <div className="relative mx-auto w-96 h-96 overflow-hidden md:h-96 md:w-1/2 rounded-full">
+            <Image
+              src={portrait}
+              layout="fill"
+              objectFit="cover"
+              alt="Portrait"
+              className="rounded-full"
+            />
+          </div>
+        </div>
       </div>
       <div className="flex justify-center rounded-md pt-8">
         <button
