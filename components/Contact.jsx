@@ -3,12 +3,12 @@ import emailjs from "@emailjs/browser";
 
 export default function ContactForm() {
   const [message, setMessage] = useState(false);
-  const [loading, setLoading] = useState(false); // State to manage loading animation
+  const [loading, setLoading] = useState(false);
   const form = useRef();
 
   function sendEmail(e) {
     e.preventDefault();
-    setLoading(true); // Set loading to true when sending email
+    setLoading(true);
 
     emailjs
       .sendForm(
@@ -20,15 +20,14 @@ export default function ContactForm() {
       .then(
         (result) => {
           console.log(result.text);
-          setMessage(true); // Set message to true only on successful submission
+          setMessage(true);
         },
         (error) => {
           console.log(error.text);
-          // Handle error, if any
         }
       )
       .finally(() => {
-        setLoading(false); // Reset loading after email sent (success or failure)
+        setLoading(false);
       });
 
     e.target.reset();
@@ -42,7 +41,7 @@ export default function ContactForm() {
         <span className="whitespace-nowrap">Contact Me!</span>
       </h3>
       <form
-        className="w-84 md:w-1/2 h-auto m-auto mt-8 bg-blackish-blue rounded border border-rose p-4" // Added padding here
+        className="w-84 md:w-1/2 h-auto m-auto mt-8 bg-blackish-blue rounded border border-rose p-4"
         ref={form}
         onSubmit={sendEmail}
       >
@@ -53,25 +52,23 @@ export default function ContactForm() {
             <label className="text-rose text-3xl font-bold">Email</label>
             <input
               name="email"
-              className="w-full sm:w-auto h-auto text-lg rounded py-2 px-4 mt-2 text-black" // Adjusted padding here
+              className="w-full sm:w-auto h-auto text-lg rounded py-2 px-4 mt-2 text-black"
               placeholder="name@company.com"
               required
             />
           </div>
           <div className="flex flex-col pt-4 pb-8 px-4">
             {" "}
-            {/* Added padding and changed to flex flex-col */}
             <label className="text-rose text-2xl font-bold">Message</label>
             <textarea
               name="message"
-              className="w-full sm:w-auto h-36 sm:h-72 text-lg rounded pt-2 px-4 mt-2 resize-none text-black" // Adjusted padding here
+              className="w-full sm:w-auto h-36 sm:h-72 text-lg rounded pt-2 px-4 mt-2 resize-none text-black"
               placeholder="Type your message here..."
               required
             />
           </div>
           <div className="w-full flex justify-center">
             {" "}
-            {/* Adjusted button width for mobile */}
             <button
               className={`items-center w-[150px] md:min-w-1/3 h-[30px] border border-rose rounded hover:bg-teal ${
                 message ? "bg-teal" : "bg-black"
