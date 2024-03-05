@@ -26,14 +26,16 @@ export default function TestimonialCards() {
   ];
   return (
     <div className="flex flex-col items-center rounded">
-      <h3 className="text-6xl py-4 text-center text-rose">Testimonials</h3>
-      <div className="w-full h-4/5 flex flex-row items-center mt-16">
+      <h3 className="text-5xl py-4 text-center text-rose 2xl:text-6xl">
+        Testimonials
+      </h3>
+      <div className="w-full h-4/5 flex flex-col items-center mt-16 3xl:flex-row">
         {data.map((d) => (
           <div
             className={
               d.featured
-                ? "w-[400px] h-3/4 rounded flex flex-col py-12 px-4 -mx-8 hover:scale-105 hover:duration-1000 transition ease-in-out duration-1000 bg-blackish-blue border border-rose shadow-md shadow-black"
-                : "w-[350px] h-4/6 rounded flex flex-col py-8 m-auto hover:scale-105 hover:duration-1000 transition ease-in-out duration-1000 bg-blackish-blue border border-rose shadow-md shadow-black"
+                ? "mb-4 max-w-[350px] max-h-4/6 rounded flex flex-col py-12 px-4 hover:scale-105 hover:duration-1000 transition ease-in-out duration-1000 bg-blackish-blue border border-rose shadow-md shadow-black 3xl:w-[400px] 3xl:h-5/6 3xl:-mx-8"
+                : "mb-4 max-w-[350px] max-h-4/6 rounded flex flex-col py-8 m-auto hover:scale-105 hover:duration-1000 transition ease-in-out duration-1000 bg-blackish-blue border border-rose shadow-md shadow-black"
             }
           >
             <div className="flex items-center justify-center bg-blackish-blue">

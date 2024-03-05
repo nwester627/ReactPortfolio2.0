@@ -14,24 +14,24 @@ export default function Skills() {
   return (
     <div>
       <div>
-        <h3 className="text-6xl py-4 text-center text-rose">
+        <h3 className="text-5xl py-4 text-center text-rose 2xl:text-6xl">
           Technical Skills
         </h3>
         <div className="flex flex-row justify-center text-teal">
-          <SiJavascript className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <SiTypescript className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaReact className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaPhp className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaLaravel className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaHtml5 className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaCss3 className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaPython className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <FaAngular className="size-20 px-2 transition ease=out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <GrMysql className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
-          <SiTailwindcss className="size-20 px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100" />
+          <SiJavascript className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
+          <SiTypescript className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
+          <FaReact className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
+          <FaPhp className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
+          <FaLaravel className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
+          <FaHtml5 className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
+          <FaCss3 className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
+          <FaPython className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
+          <FaAngular className="px-2 transition ease=out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
+          <GrMysql className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
+          <SiTailwindcss className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
         </div>
       </div>
-      <div className="text-center text-xl leading-8 py-4 text-rose text-balance">
+      <div className="text-center text-md leading-8 py-4 text-rose text-balance 2xl:text-xl">
         <p>
           I have been programming in <a className="text-teal"> HTML </a> and{" "}
           <a className="text-teal">CSS</a> for about 4 years now between

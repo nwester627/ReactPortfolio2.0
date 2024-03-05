@@ -8,8 +8,10 @@ import { FaArrowRight } from "react-icons/fa";
 export default function Projects() {
   return (
     <div>
-      <h3 className="text-6xl py-4 text-center">Projects I've Worked On</h3>
-      <div className="grid grid-cols-4">
+      <h3 className="text-5xl py-4 text-center 2xl:text-6xl">
+        Projects I've Worked On
+      </h3>
+      <div className="grid grid-cols-1 lg:grid-cols-2 4xl:grid-cols-4">
         <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8">
           <Image className="rounded-t-lg min-h-44" src={discordBot} alt="" />
           <div className="p-5">

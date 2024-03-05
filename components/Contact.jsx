@@ -35,60 +35,75 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="rounded bg-space w-1/2 m-auto py-4">
-      <h3 className="text-6xl text-center text-rose">Contact Me!</h3>
+    <div className="rounded bg-space w-full md:w-1/2 m-auto py-4">
+      <h3 className="text-5xl sm:text-6xl text-center text-rose flex justify-center">
+        <span className="whitespace-nowrap">Contact Me!</span>
+      </h3>
+
       <form
-        className="w-9/12 h-9/12 flex flex-col m-auto mt-8 bg-blackish-blue rounded border border-rose"
+        className="w-full sm:w-96 h-auto m-auto mt-8 bg-blackish-blue rounded border border-rose p-4" // Added padding here
         ref={form}
         onSubmit={sendEmail}
       >
-        <div className="rounded w-1/2 pl-16 py-4 flex flex-col text-rose">
-          <div className="py-8">
+        <div className="rounded w-full py-4 text-rose">
+          {" "}
+          <div className="flex flex-col px-4">
+            {" "}
             <label className="text-rose text-3xl font-bold">Email</label>
             <input
               name="email"
-              className="w-[410px] h-[40px] text-lg rounded py-4 mt-2 pl-2 text-black"
+              className="w-full sm:w-auto h-auto text-lg rounded py-2 px-4 mt-2 text-black" // Adjusted padding here
               placeholder="name@company.com"
               required
             />
           </div>
-          <div className="pt-4 pb-8">
+          <div className="flex flex-col pt-4 pb-8 px-4">
+            {" "}
+            {/* Added padding and changed to flex flex-col */}
             <label className="text-rose text-2xl font-bold">Message</label>
             <textarea
               name="message"
-              className="w-[410px] h-[200px] text-lg rounded pt-2 mt-2 pl-2 resize-none text-black"
+              className="w-full sm:w-auto h-36 sm:h-72 text-lg rounded pt-2 px-4 mt-2 resize-none text-black" // Adjusted padding here
               placeholder="Type your message here..."
               required
             />
           </div>
-          <button
-            className={`flex items-center justify-center w-[150px] h-[30px] border border-rose rounded mt-8 mb-4 ml-32 hover:bg-teal ${
-              message ? "bg-teal" : "bg-black"
-            } ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
-            disabled={loading}
-          >
-            {loading && (
-              <svg
-                className="animate-spin h-5 w-5 mr-3 text-rose"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path className="opacity-75" fill="currentColor"></path>
-              </svg>
-            )}
-            {loading ? "Sending..." : message ? "Success!" : "Submit!"}
-          </button>
+          <div className="w-full flex justify-center">
+            {" "}
+            {/* Added flex justify-center for button alignment */}
+            <button
+              className={`items-center w-48 sm:w-[150px] h-[30px] border border-rose rounded hover:bg-teal ${
+                message ? "bg-teal" : "bg-black"
+              } ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+              disabled={loading}
+              style={{ padding: "0 4px" }}
+            >
+              {loading && (
+                <svg
+                  className="animate-spin h-5 w-5 mr-3 text-rose"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path className="opacity-75" fill="currentColor"></path>
+                </svg>
+              )}
+              {loading ? "Sending..." : message ? "Success!" : "Submit!"}
+            </button>
+          </div>
         </div>
-        <span className="text-center pb-2">
+        <span className="text-center block mt-4">
           If you would like to save my email for future reference, I can be
-          reached at <a className="text-teal">nwester627@yahoo.com</a>
+          reached at{" "}
+          <a className="text-teal" href="nwester627@yahoo.com">
+            nwester627@yahoo.com
+          </a>
         </span>
       </form>
     </div>

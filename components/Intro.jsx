@@ -7,10 +7,10 @@ export default function Intro() {
   return (
     <div>
       <div className="text-center p-10 drop-shadow-2xl">
-        <h2 className="text-5xl py-2 font-medium animate-fade-down animate-duration-1000 animate-ease-linear">
+        <h2 className="text-5xl py-2 font-medium animate-fade-down animate-duration-1000 animate-ease-linear 2xl:text-6xl">
           Nicolas Wester
         </h2>
-        <h3 className="text-2xl py-2 font-medium text-teal">
+        <h3 className="text-2xl py-2 font-medium text-teal 2xl:text-3xl">
           <Typewriter
             words={["Software Engineer", "React Enthusiast", "WGU Student"]}
             loop={false}
@@ -28,7 +28,7 @@ export default function Intro() {
       <div className="flex justify-center rounded-md pt-8">
         <button
           type="button"
-          className="items-center px-6 py-4 text-xl font-medium !text-rose bg-black border border-teal rounded-s-lg hover:cursor-pointer hover:bg-teal"
+          className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-s-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
         >
           <a href="https://www.linkedin.com/in/nicolaswester/">
             <FaLinkedin className="w-3 h-3 me-2 inline-flex" />
@@ -37,7 +37,7 @@ export default function Intro() {
         </button>
         <button
           type="button"
-          className="items-center px-6 py-4 text-xl font-medium !text-rose bg-black border-t border-b border-teal hover:cursor-pointer hover:bg-teal"
+          className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border-t border-b border-teal hover:cursor-pointer hover:bg-teal 2xl:py-4 2xl:px-8 2xl:text-2xl"
         >
           <a href="https://github.com/nwester627">
             <FaGithubSquare className="w-3 h-3 me-2 inline-flex" />
@@ -46,7 +46,7 @@ export default function Intro() {
         </button>
         <button
           type="button"
-          className="inline-flex items-center px-6 py-4 text-xl font-medium !text-rose bg-black border border-teal rounded-e-lg hover:cursor-pointer hover:bg-teal"
+          className="inline-flex items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-e-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
         >
           <a href="https://nicolaswesterresume.tiiny.site/">
             <FaCloudDownloadAlt className="w-3 h-3 me-2 inline-flex" />
@@ -54,10 +54,10 @@ export default function Intro() {
           </a>
         </button>
       </div>
-      <h4 className="text-xl pt-8 pb-4 font-medium text-center">
+      <h4 className="text-xl pt-8 pb-4 font-medium text-center 2xl:text-3xl">
         A Little Bit About Me
       </h4>
-      <p className="text-md px-4 text-center text-balance">
+      <p className="text-md px-4 text-center text-balance 2xl:text-xl">
         Hi there! My name is Nicolas Wester. I have been developing software for
         a little over 4 years in my personal life, and two years professionally.
         I love programming and solving the puzzles that come along with it.
