@@ -36,32 +36,33 @@ export default function Intro() {
         </div>
       </div>
       <div className="flex justify-center rounded-md pt-8">
-        <button
-          href="https://www.linkedin.com/in/nicolaswester/"
-          type="button"
-          className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-s-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
-        >
-          <FaLinkedin className="w-3 h-3 me-2 inline-flex" />
-          LinkedIn
-        </button>
-        <button
-          href="https://github.com/nwester627"
-          type="button"
-          className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border-t border-b border-teal hover:cursor-pointer hover:bg-teal 2xl:py-4 2xl:px-8 2xl:text-2xl"
-        >
-          <FaGithubSquare className="w-3 h-3 me-2 inline-flex" />
-          GitHub
-        </button>
-        <button
-          href="https://white-muire-77.tiiny.site/"
-          type="button"
-          className="inline-flex items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-e-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
-        >
-          <a href="https://white-muire-77.tiiny.site/">
+        <a href="https://www.linkedin.com/in/nicolaswester/">
+          <button
+            type="button"
+            className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-s-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
+          >
+            <FaLinkedin className="w-3 h-3 me-2 inline-flex" />
+            LinkedIn
+          </button>
+        </a>
+        <a href="https://github.com/nwester627">
+          <button
+            type="button"
+            className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border-t border-b border-teal hover:cursor-pointer hover:bg-teal 2xl:py-4 2xl:px-8 2xl:text-2xl"
+          >
+            <FaGithubSquare className="w-3 h-3 me-2 inline-flex" />
+            GitHub
+          </button>
+        </a>
+        <a href="https://white-muire-77.tiiny.site/">
+          <button
+            type="button"
+            className="inline-flex items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-e-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
+          >
             <FaCloudDownloadAlt className="w-3 h-3 me-2 inline-flex" />
             Resume
-          </a>
-        </button>
+          </button>
+        </a>
       </div>
       <h4 className="text-xl pt-8 pb-4 font-medium text-center 2xl:text-3xl">
         A Little Bit About Me
