@@ -37,24 +37,23 @@ export default function Intro() {
       </div>
       <div className="flex justify-center rounded-md pt-8">
         <button
+          href="https://www.linkedin.com/in/nicolaswester/"
           type="button"
           className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-s-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
         >
-          <a href="https://www.linkedin.com/in/nicolaswester/">
-            <FaLinkedin className="w-3 h-3 me-2 inline-flex" />
-            LinkedIn
-          </a>
+          <FaLinkedin className="w-3 h-3 me-2 inline-flex" />
+          LinkedIn
         </button>
         <button
+          href="https://github.com/nwester627"
           type="button"
           className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border-t border-b border-teal hover:cursor-pointer hover:bg-teal 2xl:py-4 2xl:px-8 2xl:text-2xl"
         >
-          <a href="https://github.com/nwester627">
-            <FaGithubSquare className="w-3 h-3 me-2 inline-flex" />
-            GitHub
-          </a>
+          <FaGithubSquare className="w-3 h-3 me-2 inline-flex" />
+          GitHub
         </button>
         <button
+          href="https://white-muire-77.tiiny.site/"
           type="button"
           className="inline-flex items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-e-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
         >
