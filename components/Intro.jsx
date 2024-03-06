@@ -36,29 +36,29 @@ export default function Intro() {
         </div>
       </div>
       <div className="flex justify-center rounded-md pt-8">
-        <a href="https://www.linkedin.com/in/nicolaswester/">
-          <button
-            type="button"
-            className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-s-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
-          >
+        <a
+          className="items-center px-4 py-4 text-xl font-medium !text-rose bg-black border border-teal rounded-s-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
+          href="https://www.linkedin.com/in/nicolaswester/"
+        >
+          <button type="button">
             <FaLinkedin className="w-3 h-3 me-2 inline-flex" />
             LinkedIn
           </button>
         </a>
-        <a href="https://github.com/nwester627">
-          <button
-            type="button"
-            className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border-t border-b border-teal hover:cursor-pointer hover:bg-teal 2xl:py-4 2xl:px-8 2xl:text-2xl"
-          >
+        <a
+          className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border-t border-b border-teal hover:cursor-pointer hover:bg-teal 2xl:py-4 2xl:px-8 2xl:text-2xl"
+          href="https://github.com/nwester627"
+        >
+          <button type="button">
             <FaGithubSquare className="w-3 h-3 me-2 inline-flex" />
             GitHub
           </button>
         </a>
-        <a href="https://white-muire-77.tiiny.site/">
-          <button
-            type="button"
-            className="inline-flex items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-e-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
-          >
+        <a
+          className="inline-flex items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-e-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
+          href="https://white-muire-77.tiiny.site/"
+        >
+          <button type="button">
             <FaCloudDownloadAlt className="w-3 h-3 me-2 inline-flex" />
             Resume
           </button>
