@@ -96,13 +96,6 @@ export default function ContactForm() {
             </button>
           </div>
         </div>
-        <span className="text-center block mt-4">
-          If you would like to save my email for future reference, I can be
-          reached at{" "}
-          <a className="text-teal" href="nwester627@yahoo.com">
-            nwester627@yahoo.com
-          </a>
-        </span>
       </form>
     </div>
   );
