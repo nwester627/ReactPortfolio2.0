@@ -46,7 +46,7 @@ export default function Intro() {
           </button>
         </a>
         <a
-          className="items-center px-4 py-2 text-xl font-medium !text-rose bg-black border-t border-b border-teal hover:cursor-pointer hover:bg-teal 2xl:py-4 2xl:px-8 2xl:text-2xl"
+          className="items-center px-4 py-4 text-xl font-medium !text-rose bg-black border-t border-b border-teal hover:cursor-pointer hover:bg-teal 2xl:py-4 2xl:px-8 2xl:text-2xl"
           href="https://github.com/nwester627"
         >
           <button type="button">
