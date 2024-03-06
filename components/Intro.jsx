@@ -58,7 +58,7 @@ export default function Intro() {
           type="button"
           className="inline-flex items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-e-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
         >
-          <a href="https://nicolaswesterresume.tiiny.site/">
+          <a href="https://white-muire-77.tiiny.site/">
             <FaCloudDownloadAlt className="w-3 h-3 me-2 inline-flex" />
             Resume
           </a>
