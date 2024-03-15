@@ -69,7 +69,7 @@ export default function Projects() {
               This project is currently in production! This will be developed in
               <a className="text-teal"> JavaScript</a> and{" "}
               <a className="text-teal">React</a>. I am hoping to have this out
-              by Mid-March of 2024. Check back soon for more updates!
+              in the near future. Check back soon for more updates!
             </p>
             <a
               aria-disabled="true"
