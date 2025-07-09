@@ -68,11 +68,11 @@ export default function Intro() {
         A Little Bit About Me
       </h4>
       <p className="text-md px-4 text-center text-balance 2xl:text-xl">
-        Hi there! My name is Nicolas Wester. I have been developing software professionally for 
-        4 years and an additional 2 in my personal life.
-        I love programming and solving the puzzles that come along with it.
+        Hi there! My name is Nicolas Wester. I have been developing software
+        professionally for 4 years and an additional 2 in my personal life. I
+        love programming and solving the puzzles that come along with it.
         Outside of programming, I'm a huge nerd. I enjoy video games, anime, and
-        hanging out with my two cats.
+        hanging out with my three cats.
       </p>
     </div>
   );

@@ -34,7 +34,7 @@ export default function Skills() {
       <div className="text-center text-md leading-8 py-4 text-rose text-balance 2xl:text-xl">
         <p>
           Full Stack Developer with 4 years of experience using
-          <a className="text-teal">JavaScript/TypeScript</a>,{" "}
+          <a className="text-teal"> JavaScript/TypeScript</a>,{" "}
           <a className="text-teal">React</a>, <a className="text-teal">PHP</a>,{" "}
           <a className="text-teal">Laravel</a>,{" "}
           <a className="text-teal">HTML</a>, and{" "}
