@@ -68,7 +68,7 @@ export default function Intro() {
       <h4 className="text-xl pt-8 pb-4 font-medium text-center 2xl:text-3xl">
         A Little Bit About Me
       </h4>
-      <p className="text-md px-4 text-center text-balance 2xl:text-xl">
+      <p className="w-11/12 sm:w-9/12 mx-auto text-md px-4 text-center text-balance 2xl:text-xl">
         Hi there! My name is Nicolas Wester. I have been developing software
         professionally for 3 years and an additional 2 in my personal life. I
         love programming and solving the puzzles that come along with it.
