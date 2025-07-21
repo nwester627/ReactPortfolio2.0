@@ -15,10 +15,10 @@
     "@emailjs/browser": "^4.1.0",
     "bootstrap": "^5.3.3",
     "flowbite-react": "^0.7.2",
-    "next": "14.1.0",
-    "react": "^18",
+    "next": "^15.4.2",
+    "react": "^19.1.0",
     "react-bootstrap": "^2.10.1",
-    "react-dom": "^18",
+    "react-dom": "^19.1.0",
     "react-icons": "^5.0.1",
     "react-responsive-carousel": "^3.2.23",
     "react-simple-typewriter": "^5.0.1"

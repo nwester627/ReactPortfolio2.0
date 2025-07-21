@@ -26,7 +26,7 @@ export default function TestimonialCards() {
   ];
   return (
     <div className="flex flex-col items-center rounded">
-      <h3 className="text-5xl py-4 text-center text-rose 2xl:text-6xl">
+      <h3 className="text-5xl py-4 text-center text-light-gray 2xl:text-6xl">
         Testimonials
       </h3>
       <div className="w-full h-4/5 flex flex-col items-center mt-16 3xl:flex-row">

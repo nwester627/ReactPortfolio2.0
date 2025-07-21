@@ -7,9 +7,9 @@ module.exports = {
   ],
   theme: {
     colors: {
-      teal: "#1ba098",
+      lavender: "#7c3aed",
       space: "#051622",
-      rose: "#deb992",
+      "light-gray": "#d1d5db",
       white: "#FFFFFF",
       black: "#000000",
       "blackish-blue": "#191e28",
@@ -27,7 +27,6 @@ module.exports = {
       "3xl": "1800px",
       "4xl": "1801px",
     },
-    extend: {},
   },
   plugins: [require("tailwindcss-animated")],
 };
