@@ -56,7 +56,7 @@ export default function Intro() {
         </a>
         <a
           className="inline-flex items-center px-4 py-2 text-xl font-medium !text-rose bg-black border border-teal rounded-e-lg hover:cursor-pointer hover:bg-teal 2xl:px-8 2xl:text-2xl"
-          href="https://drive.google.com/file/d/1vKD4vqVRbWKr9wGxQc8uhWt8J0ufKdPQ/view?usp=sharing"
+          href="https://drive.google.com/file/d/1b3jnUc-d9EwklABf-nZEC3sDf8QXty_v/view?usp=sharing"
         >
           <button type="button">
             <FaCloudDownloadAlt className="w-3 h-3 me-2 inline-flex" />
