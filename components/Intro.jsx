@@ -13,7 +13,7 @@ export default function Intro() {
         </h2>
         <h3 className="text-2xl py-2 font-medium text-lavender 2xl:text-3xl">
           <Typewriter
-            words={["Software Engineer", "React Enthusiast", "WGU Student"]}
+            words={["Full Stack Developer", "React Enthusiast", "WGU Alumni"]}
             loop={false}
             cursor={true}
             deleteSpeed={100}
