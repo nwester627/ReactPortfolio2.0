@@ -23,7 +23,7 @@ export default function Home() {
           src="https://www.googletagmanager.com/ns.html?id=GTM-5H8RZFQT"
           height="0"
           width="0"
-          style="display:none;visibility:hidden"
+          style={"display:none;visibility:hidden"}
         ></iframe>
       </noscript>
       <noscript
