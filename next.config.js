@@ -1,20 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: "export",
   distDir: "dist",
   images: {
     unoptimized: true,
-    domains: ["localhost"],
+    domains: ["www.nicolaswester.com", "localhost"],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "**",
       },
     ],
-  },
-  // Custom domain, no need for assetPrefix or basePath
-  images: {
-    domains: ['www.nicolaswester.com'],
   },
   trailingSlash: true,
 };
