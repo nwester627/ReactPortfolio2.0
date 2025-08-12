@@ -79,6 +79,8 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
+          # Keep the .nojekyll file to prevent GitHub Pages from trying to process the site with Jekyll
+          artifact-name: .nojekyll
 
   # Deployment job
   deploy:

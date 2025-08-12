@@ -2,8 +2,26 @@ import { Typewriter } from "react-simple-typewriter";
 import Image from "next/image";
 import { FaLinkedin, FaGithubSquare, FaCloudDownloadAlt } from "react-icons/fa";
 import GlassButton from "./GlassButton";
+import { useState } from "react";
 
 export default function Intro() {
+  const [clickCount, setClickCount] = useState(0);
+  const [showSecretMessage, setShowSecretMessage] = useState(false);
+
+  const handlePortraitClick = () => {
+    setClickCount((prev) => {
+      const newCount = prev + 1;
+      if (newCount === 7) {
+        // Lucky number 7!
+        setShowSecretMessage(true);
+        setTimeout(() => {
+          setShowSecretMessage(false);
+          return 0;
+        }, 3000);
+      }
+      return newCount;
+    });
+  };
   return (
     <div>
       <div className="text-center p-10 drop-shadow-2xl">
@@ -12,7 +30,14 @@ export default function Intro() {
         </h2>
         <h3 className="text-2xl py-2 font-medium text-lavender 2xl:text-3xl">
           <Typewriter
-            words={["Full Stack Developer", "React Enthusiast", "WGU Alumni"]}
+            words={[
+              "Full Stack Developer",
+              "React Enthusiast",
+              "WGU Alumni",
+              ...(Math.random() < 0.1
+                ? ["Secret Message: I love cats! 🐱"]
+                : []), // 10% chance of showing secret message
+            ]}
             loop={false}
             cursor={true}
             deleteSpeed={100}
@@ -36,7 +61,10 @@ export default function Intro() {
               src="/utilities/images/portrait.png"
               alt="Portrait"
               fill
-              className="rounded-full object-cover"
+              className={`rounded-full object-cover cursor-pointer transition-transform duration-300 ${
+                showSecretMessage ? "scale-110" : ""
+              }`}
+              onClick={handlePortraitClick}
             />
           </div>
         </div>
@@ -73,6 +101,13 @@ export default function Intro() {
         Outside of programming, I'm a huge nerd. I enjoy video games, anime, and
         hanging out with my three cats.
       </p>
+      {showSecretMessage && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+          <div className="text-4xl animate-ping text-lavender">
+            🌟 You found a secret! 🌟
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -9,8 +9,6 @@ export default function GlassButton({
   disabled = false,
   onClick,
 }) {
-  console.log("GlassButton loading prop:", loading); // Debugging log
-
   const baseClasses = `
     inline-flex items-center justify-center gap-2
     px-4 py-2 rounded-lg
