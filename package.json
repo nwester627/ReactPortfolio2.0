@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "next build && touch dist/.nojekyll && gh-pages -d dist -t true"
   },
   "dependencies": {
     "@emailjs/browser": "^4.1.0",
