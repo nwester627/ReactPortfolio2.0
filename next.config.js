@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: "export",
+  output: "export",
   distDir: "dist",
-  // basePath: "/ReactPortfolio2.0",
-  // assetPrefix: "/ReactPortfolio2.0",
+  basePath: "/ReactPortfolio2.0",
+  assetPrefix: "/ReactPortfolio2.0",
   images: {
     unoptimized: true,
   },
