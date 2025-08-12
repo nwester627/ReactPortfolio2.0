@@ -18,7 +18,6 @@ export default function Home() {
 
   return (
     <div>
-      {/* This is the correct noscript block, using dangerouslySetInnerHTML */}
       <noscript
         dangerouslySetInnerHTML={{
           __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5H8RZFQT"
@@ -28,8 +27,6 @@ export default function Home() {
 
       <Head>
         <title>Nicolas Wester Portfolio</title>
-
-        {/* The Google Tag Manager script for the head */}
         <Script
           id="gtm-script"
           strategy="afterInteractive"
