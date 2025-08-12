@@ -12,8 +12,10 @@ const nextConfig = {
       },
     ],
   },
-  assetPrefix: process.env.NODE_ENV === "production" ? "/ReactPortfolio2.0" : "",
-  basePath: process.env.NODE_ENV === "production" ? "/ReactPortfolio2.0" : "",
+  // Custom domain, no need for assetPrefix or basePath
+  images: {
+    domains: ['www.nicolaswester.com'],
+  },
   trailingSlash: true,
 };
 
