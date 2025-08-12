@@ -1,3 +1,5 @@
+import { FaArrowRight } from "react-icons/fa";
+
 export default function GlassButton({
   href,
   children,
@@ -7,6 +9,8 @@ export default function GlassButton({
   disabled = false,
   onClick,
 }) {
+  console.log("GlassButton loading prop:", loading); // Debugging log
+
   const baseClasses = `
     inline-flex items-center justify-center gap-2
     px-4 py-2 rounded-lg
@@ -19,7 +23,6 @@ export default function GlassButton({
     focus:outline-none focus:ring-2 focus:ring-white/20
   `;
 
-  // Merge with disabled and loading states:
   const disabledClasses =
     loading || disabled
       ? "opacity-50 cursor-not-allowed hover:bg-white/10"
@@ -31,11 +34,7 @@ export default function GlassButton({
 
   const content = (
     <>
-      {children}
-      {icon && !loading && (
-        <span className="flex justify-center text-lg">{icon}</span>
-      )}
-      {loading && (
+      {loading ? (
         <svg
           className="animate-spin h-5 w-5 text-light-gray"
           xmlns="http://www.w3.org/2000/svg"
@@ -56,33 +55,51 @@ export default function GlassButton({
             d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
           ></path>
         </svg>
+      ) : (
+        <>
+          {children}
+          {icon && <span className="flex justify-center text-lg">{icon}</span>}
+        </>
       )}
     </>
   );
 
-  if (isExternal) {
+  if (href) {
+    if (isExternal) {
+      return (
+        <a
+          href={href}
+          className={combinedClasses}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-disabled={loading || disabled}
+          onClick={loading || disabled ? (e) => e.preventDefault() : onClick}
+        >
+          {content}
+        </a>
+      );
+    }
+
     return (
       <a
         href={href}
         className={combinedClasses}
-        target="_blank"
-        rel="noopener noreferrer"
         aria-disabled={loading || disabled}
         onClick={loading || disabled ? (e) => e.preventDefault() : onClick}
       >
-        {loading ? "Sending..." : content}
+        {content}
       </a>
     );
   }
 
   return (
-    <a
-      href={href}
+    <button
+      type="button"
       className={combinedClasses}
-      aria-disabled={loading || disabled}
-      onClick={loading || disabled ? (e) => e.preventDefault() : onClick}
+      disabled={loading || disabled}
+      onClick={onClick}
     >
-      {loading ? "Sending..." : content}
-    </a>
+      {content}
+    </button>
   );
 }

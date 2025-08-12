@@ -27,6 +27,22 @@ module.exports = {
       "3xl": "1800px",
       "4xl": "1801px",
     },
+    extend: {
+      animation: {
+        typewriter: "typewriter 1s steps(10) infinite",
+        gradient: "gradient 5s ease infinite",
+      },
+      keyframes: {
+        typewriter: {
+          "0%": { width: "0%" },
+          "100%": { width: "100%" },
+        },
+        gradient: {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
+      },
+    },
   },
   plugins: [require("tailwindcss-animated")],
 };

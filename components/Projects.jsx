@@ -4,17 +4,23 @@ import GlassButton from "./GlassButton";
 
 export default function Projects() {
   return (
-    <div>
-      <h3 className="text-5xl py-4 text-center 2xl:text-6xl">
+    <div className="px-4 py-8">
+      {/* Center the header */}
+      <h3 className="text-5xl py-4 text-center text-light-gray 2xl:text-6xl mb-8">
         Projects I've Worked On
       </h3>
-      <div className="grid grid-cols-1 lg:grid-cols-2 4xl:grid-cols-4">
-        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8 overflow-hidden">
-          <Image
-            className="rounded-t-lg min-h-44"
-            src={"/utilities/images/discordBot.png"}
-            alt=""
-          />
+
+      {/* Adjust grid layout */}
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3 4xl:grid-cols-4">
+        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto overflow-hidden">
+          <div className="relative w-full h-44">
+            <Image
+              src="/utilities/images/discordBot.png"
+              alt="Discord Bot"
+              fill
+              className="rounded-t-lg object-cover"
+            />
+          </div>
           <div className="p-5 bg-blackish-blue">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
               Discord Bot
@@ -30,17 +36,22 @@ export default function Projects() {
               icon={
                 <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
               }
+              className="transition-colors duration-300 hover:bg-rose hover:text-white hover:shadow-lg"
             >
               Source Code
             </GlassButton>
           </div>
         </div>
-        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8 overflow-hidden">
-          <Image
-            className="rounded-t-lg max-h-44"
-            src={"/utilities/images/inventorymanagementproject.png"}
-            alt=""
-          />
+
+        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto overflow-hidden">
+          <div className="relative w-full h-44">
+            <Image
+              src="/utilities/images/inventorymanagementproject.png"
+              alt="Inventory Tracker"
+              fill
+              className="rounded-t-lg object-cover"
+            />
+          </div>
           <div className="p-5 bg-blackish-blue">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
               Inventory Tracker
@@ -57,17 +68,22 @@ export default function Projects() {
               icon={
                 <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
               }
+              className="transition-colors duration-300 hover:bg-rose hover:text-white hover:shadow-lg"
             >
               Source Code
             </GlassButton>
           </div>
         </div>
-        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8 overflow-hidden">
-          <Image
-            className="rounded-t-lg max-h-44"
-            src={"/utilities/images/videogames.jpeg"}
-            alt=""
-          />
+
+        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto overflow-hidden">
+          <div className="relative w-full h-44">
+            <Image
+              src="/utilities/images/videogames.jpeg"
+              alt="Video Game Royale"
+              fill
+              className="rounded-t-lg object-cover"
+            />
+          </div>
           <div className="p-5 bg-blackish-blue">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
               Video Game Royale
@@ -82,18 +98,23 @@ export default function Projects() {
               icon={
                 <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
               }
-              className="hover:cursor-not-allowed"
+              className="cursor-not-allowed opacity-50"
+              disabled
             >
               Coming Soon!
             </GlassButton>
           </div>
         </div>
-        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8 overflow-hidden">
-          <Image
-            className="rounded-t-lg max-h-44"
-            src={"/utilities/images/webdeveloper.jpg"}
-            alt=""
-          />
+
+        <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto overflow-hidden">
+          <div className="relative w-full h-44">
+            <Image
+              src="/utilities/images/webdeveloper.jpg"
+              alt="Portfolio Website"
+              fill
+              className="rounded-t-lg object-cover"
+            />
+          </div>
           <div className="p-5 bg-blackish-blue">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
               Portfolio Website
@@ -111,6 +132,7 @@ export default function Projects() {
               icon={
                 <FaArrowRight className="w-3.5 h-3.5 ms-2 rtl:rotate-180" />
               }
+              className="transition-colors duration-300 hover:bg-rose hover:text-white hover:shadow-lg"
             >
               Source Code
             </GlassButton>

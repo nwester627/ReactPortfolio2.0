@@ -33,11 +33,10 @@ export default function Intro() {
             }}
           >
             <Image
-              src={"/utilities/images/portrait.png"}
-              layout="fill"
-              objectFit="cover"
+              src="/utilities/images/portrait.png"
               alt="Portrait"
-              className="rounded-full"
+              fill
+              className="rounded-full object-cover"
             />
           </div>
         </div>

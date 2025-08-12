@@ -14,7 +14,7 @@ export default function Skills() {
   return (
     <div>
       <div>
-        <h3 className="text-5xl py-4 text-center text-light-gray 2xl:text-6xl">
+        <h3 className="text-5xl py-4 text-center text-light-gray 2xl:text-6xl mb-8">
           Technical Skills
         </h3>
         <div className="flex flex-row justify-center text-lavender">
