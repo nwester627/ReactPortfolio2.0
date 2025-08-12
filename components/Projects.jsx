@@ -1,7 +1,3 @@
-import discordBot from "../public/utilities/images/discordBot.png";
-import inventoryManagementSystem from "../public/utilities/images/inventorymanagementproject.png";
-import videoGames from "../public/utilities/images/videogames.jpeg";
-import webDeveloper from "../public/utilities/images/webdeveloper.jpg";
 import Image from "next/image";
 import { FaArrowRight } from "react-icons/fa";
 import GlassButton from "./GlassButton";
@@ -14,7 +10,11 @@ export default function Projects() {
       </h3>
       <div className="grid grid-cols-1 lg:grid-cols-2 4xl:grid-cols-4">
         <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8 overflow-hidden">
-          <Image className="rounded-t-lg min-h-44" src={discordBot} alt="" />
+          <Image
+            className="rounded-t-lg min-h-44"
+            src={"/utilities/images/discordBot.png"}
+            alt=""
+          />
           <div className="p-5 bg-blackish-blue">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
               Discord Bot
@@ -38,7 +38,7 @@ export default function Projects() {
         <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8 overflow-hidden">
           <Image
             className="rounded-t-lg max-h-44"
-            src={inventoryManagementSystem}
+            src={"/utilities/images/inventorymanagementproject.png"}
             alt=""
           />
           <div className="p-5 bg-blackish-blue">
@@ -63,7 +63,11 @@ export default function Projects() {
           </div>
         </div>
         <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8 overflow-hidden">
-          <Image className="rounded-t-lg max-h-44" src={videoGames} alt="" />
+          <Image
+            className="rounded-t-lg max-h-44"
+            src={"/utilities/images/videogames.jpeg"}
+            alt=""
+          />
           <div className="p-5 bg-blackish-blue">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
               Video Game Royale
@@ -85,7 +89,11 @@ export default function Projects() {
           </div>
         </div>
         <div className="max-w-xs bg-space border border-rose rounded-lg shadow-md m-auto mt-8 overflow-hidden">
-          <Image className="rounded-t-lg max-h-44" src={webDeveloper} alt="" />
+          <Image
+            className="rounded-t-lg max-h-44"
+            src={"/utilities/images/webdeveloper.jpg"}
+            alt=""
+          />
           <div className="p-5 bg-blackish-blue">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
               Portfolio Website

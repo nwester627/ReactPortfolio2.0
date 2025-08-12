@@ -1,6 +1,5 @@
 import { Typewriter } from "react-simple-typewriter";
 import Image from "next/image";
-import portrait from "../public/utilities/images/portrait.png";
 import { FaLinkedin, FaGithubSquare, FaCloudDownloadAlt } from "react-icons/fa";
 import GlassButton from "./GlassButton";
 
@@ -34,7 +33,7 @@ export default function Intro() {
             }}
           >
             <Image
-              src={portrait}
+              src={"/utilities/images/portrait.png"}
               layout="fill"
               objectFit="cover"
               alt="Portrait"
