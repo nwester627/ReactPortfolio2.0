@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Script from "next/script"; // Import Next.js's Script component
+import Script from "next/script";
 import ContactForm from "@/components/Contact";
 import Testimonials from "@/components/Testimonials";
 import Projects from "@/components/Projects";
@@ -18,14 +18,7 @@ export default function Home() {
 
   return (
     <div>
-      <noscript>
-        <iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-5H8RZFQT"
-          height="0"
-          width="0"
-          style={"display:none;visibility:hidden"}
-        ></iframe>
-      </noscript>
+      {/* This is the correct noscript block, using dangerouslySetInnerHTML */}
       <noscript
         dangerouslySetInnerHTML={{
           __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5H8RZFQT"
