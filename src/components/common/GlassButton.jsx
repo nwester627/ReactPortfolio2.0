@@ -13,14 +13,14 @@ export default function GlassButton({
   const { isDarkMode } = useTheme();
 
   const baseClasses = `
-    inline-flex items-center justify-center gap-2
-    px-4 py-2 rounded-lg
+  inline-flex items-center justify-center gap-2
+  px-5 py-2.5 rounded-lg
     ${
       isDarkMode
         ? "bg-white/10 hover:bg-lavender text-light-gray border-white/10"
         : "bg-light-primary/10 hover:bg-lavender text-light-text border-light-primary/20"
     }
-    font-medium border
+  font-bold text-sm sm:text-base tracking-tight border
     backdrop-blur-sm
     shadow-md hover:shadow-lg
     transition duration-150 ease-in-out

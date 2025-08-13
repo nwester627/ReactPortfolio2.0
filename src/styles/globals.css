@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
 :root {
   --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
     "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
@@ -22,9 +20,7 @@ body {
   overflow-x: hidden;
 }
 
-body {
-  font-family: "Poppins", sans-serif;
-}
+/* Body font now provided via Tailwind's font-sans + Nunito variable class applied in _app/_document */
 
 a {
   color: inherit;

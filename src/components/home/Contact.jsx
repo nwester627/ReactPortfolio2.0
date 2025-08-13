@@ -73,7 +73,7 @@ export default function Contact() {
               required
               aria-label="Email"
             />
-            <label className="absolute left-4 top-4 text-light-gray text-sm transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-20px] peer-focus:text-sm peer-focus:text-lavender">
+            <label className="absolute left-4 top-4 text-light-gray text-sm sm:text-base font-medium transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-20px] peer-focus:text-sm peer-focus:text-lavender">
               Email
             </label>
           </div>
@@ -87,7 +87,7 @@ export default function Contact() {
               required
               aria-label="Message"
             />
-            <label className="absolute left-4 top-4 text-light-gray text-sm transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-20px] peer-focus:text-sm peer-focus:text-lavender">
+            <label className="absolute left-4 top-4 text-light-gray text-sm sm:text-base font-medium transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-20px] peer-focus:text-sm peer-focus:text-lavender">
               Message
             </label>
           </div>

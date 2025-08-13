@@ -25,6 +25,8 @@ module.exports = {
       "light-container": "#F8FAFD",
     },
     fontFamily: {
+      // Primary rounded sans stack (Nunito + fallback Poppins)
+      sans: ["var(--font-rounded)", "Poppins", "sans-serif"],
       poppins: ["Poppins", "sans-serif"],
     },
     screens: {

@@ -23,7 +23,7 @@ export default function Home() {
       </Head>
 
       <main
-        className={`flex-1 font-poppins pb-1 relative z-0 ${
+        className={`flex-1 font-sans pb-1 relative z-0 ${
           isDarkMode ? "text-light-gray" : "text-light-text"
         }`}
       >
