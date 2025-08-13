@@ -9,13 +9,13 @@ export default function Contact() {
   const form = useRef();
   const { isDarkMode } = useTheme();
 
-  const inputClasses = `peer w-full text-base sm:text-lg rounded-lg py-2 px-3 sm:px-4 
+  const inputClasses = `peer w-full text-base sm:text-lg rounded-lg py-2 px-3 sm:px-4 border backdrop-blur-sm
     ${
       isDarkMode
-        ? "text-white bg-blackish-blue border-white/10 hover:border-white/20"
-        : "text-light-text bg-light-surface border-light-primary/20 hover:border-light-primary/40"
-    } 
-    border focus:outline-none focus:ring-2 focus:ring-lavender transition-colors duration-300`;
+        ? "text-light-gray bg-blackish-blue/70 border-white/10 hover:border-white/20 focus:ring-white/20"
+        : "text-light-text bg-white/80 supports-[backdrop-filter]:bg-white/60 border-light-primary/30 hover:border-light-primary/50 focus:ring-light-primary/30"
+    }
+    focus:outline-none focus:ring-2 transition-colors duration-300`;
 
   function sendEmail(e) {
     e.preventDefault();
@@ -35,35 +35,36 @@ export default function Contact() {
   }
 
   return (
-    <div className="w-full flex items-center justify-center py-6 md:py-10">
+    <div className="w-full flex items-center justify-center py-12 sm:py-16">
       <form
-        className={`w-11/12 sm:w-5/6 md:w-3/4 lg:w-1/2 rounded-lg shadow-lg p-6 sm:p-8 md:p-10 border
-          ${isDarkMode ? "border-gray-700" : "border-light-primary/20"}
+        className={`w-11/12 sm:w-5/6 md:w-3/4 lg:w-[52%] rounded-2xl shadow-lg p-6 sm:p-8 md:p-10 border backdrop-blur-sm
           ${
             isDarkMode
-              ? "bg-blackish-blue/50"
-              : "bg-gradient-to-b from-white via-light-surface to-light-container"
-          }
-          backdrop-blur-sm
-        `}
+              ? "border-white/10 bg-blackish-blue/80"
+              : "border-light-primary/15 bg-white/85 supports-[backdrop-filter]:bg-white/65"
+          }`}
         ref={form}
         onSubmit={sendEmail}
       >
-        <h3
-          className={`text-3xl sm:text-4xl md:text-5xl text-center mb-6 ${
-            isDarkMode ? "text-light-gray" : "text-light-text"
-          }`}
+        <h2
+          className={`hero-fade text-[clamp(2rem,5vw,3.25rem)] font-bold tracking-tight leading-tight text-center mb-6 bg-gradient-to-r ${
+            isDarkMode
+              ? "from-lavender via-light-gray to-white/80"
+              : "from-light-primary via-lavender to-light-text"
+          } bg-clip-text text-transparent`}
         >
-          <Typewriter
-            words={["Contact Me!", "Let's Connect!"]}
-            loop={0}
-            cursor
-            cursorStyle="|"
-            typeSpeed={70}
-            deleteSpeed={50}
-            delaySpeed={3000}
-          />
-        </h3>
+          <span className="block min-h-[2.4rem]">
+            <Typewriter
+              words={["Contact Me", "Let's Connect"]}
+              loop={0}
+              cursor
+              cursorStyle="|"
+              typeSpeed={70}
+              deleteSpeed={50}
+              delaySpeed={2500}
+            />
+          </span>
+        </h2>
         <div className="flex flex-col mb-6">
           <div className="relative">
             <input
@@ -93,13 +94,15 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="w-full flex justify-center">
-          <GlassButton type="submit">Submit</GlassButton>
+        <div className="w-full flex justify-center pt-2">
+          <GlassButton type="submit" size="lg" variant="primary">
+            Send Message
+          </GlassButton>
         </div>
 
         {message && (
-          <p className="text-center text-lavender mt-4">
-            Thank you! Your message has been sent.
+          <p className="text-center mt-4 text-sm font-medium text-lavender dark:text-lavender">
+            Message sent — thank you.
           </p>
         )}
       </form>

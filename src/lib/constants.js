@@ -4,7 +4,7 @@
 
 export const siteConfig = {
   title: "Nicolas Wester's Portfolio",
-  description: "Full Stack Developer Portfolio",
+  description: "Full stack developer – projects, stack, and contact info.",
   author: "Nicolas Wester",
 };
 

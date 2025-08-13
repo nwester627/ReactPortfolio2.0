@@ -39,6 +39,20 @@ module.exports = {
       "4xl": "1801px",
     },
     extend: {
+      colors: {
+        icon: {
+          js: "#F7DF1E",
+          ts: "#3178C6",
+          react: "#61DAFB",
+          php: "#777BB4",
+          laravel: "#FF2D20",
+          html: "#E34F26",
+          css: "#1572B6",
+          python: "#3776AB",
+          mysql: "#00618A",
+          tailwind: "#38BDF8",
+        },
+      },
       transitionDuration: {
         800: "800ms",
         900: "900ms",

@@ -41,3 +41,80 @@ a {
   background-size: 200% 200%;
   animation: gradient 5s ease infinite;
 }
+
+/* Hero heading entrance */
+@keyframes heroIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes heroInDelay {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-fade {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: heroIn 0.6s cubic-bezier(0.4, 0.1, 0.2, 1) 0.1s forwards;
+}
+.hero-fade-delay {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: heroInDelay 0.6s cubic-bezier(0.4, 0.1, 0.2, 1) 0.25s forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-fade,
+  .hero-fade-delay {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Skills grid item fade */
+@keyframes skillFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.skill-fade {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: skillFadeIn 0.55s cubic-bezier(0.4, 0.1, 0.2, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skill-fade {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Light-mode contrast helpers for pale / neon icon colors */
+.contrast-icon-wrapper {
+  position: relative;
+}
+.contrast-icon-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at 40% 35%,
+    rgba(0, 0, 0, 0.06),
+    rgba(0, 0, 0, 0.15)
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.contrast-icon-wrapper.contrast-icon-boost::before {
+  opacity: 1;
+}
+.contrast-icon-wrapper:hover::before {
+  opacity: 0.9;
+}

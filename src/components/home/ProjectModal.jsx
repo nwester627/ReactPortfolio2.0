@@ -75,9 +75,10 @@ export default function ProjectModal({ project, onClose }) {
 
   if (!project) return null;
 
+  // Adjusted light mode chip text color for contrast (light-primary on light-surface failed AA for small text)
   const chipClass = isDarkMode
     ? "bg-blackish-blue text-lavender border border-lavender/20"
-    : "bg-light-surface text-light-primary border border-light-primary/20";
+    : "bg-light-surface text-light-text border border-light-primary/20";
 
   // Align buttons with card "View Details" glass style
   const actionBase = isDarkMode
@@ -115,23 +116,27 @@ export default function ProjectModal({ project, onClose }) {
             className={`relative z-[65] w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl focus:outline-none backdrop-blur-sm
               ${
                 isDarkMode
-                  ? // Dark mode keeps solid surface for depth
-                    "bg-space/95 border border-gray-700 text-light-gray shadow-2xl"
-                  : // Light mode: frosted / translucent surface aligned with FrostedSection
-                    "bg-white/70 supports-[backdrop-filter]:bg-white/55 border border-light-primary/10 text-light-text shadow-md"
+                  ? "bg-space/95 border border-gray-700 text-light-gray shadow-2xl"
+                  : // Increased opacity for readability & consistent contrast
+                    "bg-white/85 supports-[backdrop-filter]:bg-white/70 border border-light-primary/10 text-light-text shadow-md"
               }
             `}
           >
             <button
               onClick={onClose}
-              className={`absolute top-4 right-4 z-10 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-light-primary/60 transition-colors ${
-                isDarkMode
-                  ? "bg-blackish-blue/60 text-light-gray hover:text-white hover:bg-blackish-blue/70"
-                  : "bg-white/60 text-light-secondary hover:text-light-primary hover:bg-white/80"
-              }`}
+              data-close
+              className={`absolute top-4 right-4 z-10 inline-flex items-center justify-center w-10 h-10 rounded-full
+                transition-colors duration-200 backdrop-blur-sm border
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+                ${
+                  isDarkMode
+                    ? "bg-blackish-blue/50 border-gray-600/40 text-light-gray hover:bg-blackish-blue/70 hover:text-lavender focus-visible:ring-lavender/60 focus-visible:ring-offset-space/80"
+                    : "bg-white/40 border-white/30 text-light-text hover:bg-white/60 hover:text-light-primary focus-visible:ring-light-primary/60 focus-visible:ring-offset-white/60"
+                }`}
               aria-label="Close project modal"
             >
               <FaTimes className="w-5 h-5" />
+              <span className="sr-only">Close modal (Esc)</span>
             </button>
             <div className="p-5 sm:p-6 md:p-8">
               <div
@@ -177,7 +182,7 @@ export default function ProjectModal({ project, onClose }) {
                   <p
                     style={{ hyphens: "auto" }}
                     className={`font-normal ${
-                      isDarkMode ? "text-light-gray" : "text-light-secondary"
+                      isDarkMode ? "text-light-gray" : "text-light-text"
                     }`}
                   >
                     {project.description}
@@ -192,9 +197,7 @@ export default function ProjectModal({ project, onClose }) {
                           <li
                             key={i}
                             className={`font-normal ${
-                              isDarkMode
-                                ? "text-light-gray"
-                                : "text-light-secondary"
+                              isDarkMode ? "text-light-gray" : "text-light-text"
                             }`}
                           >
                             {f}
@@ -210,9 +213,7 @@ export default function ProjectModal({ project, onClose }) {
                       </h4>
                       <p
                         className={`font-normal ${
-                          isDarkMode
-                            ? "text-light-gray"
-                            : "text-light-secondary"
+                          isDarkMode ? "text-light-gray" : "text-light-text"
                         }`}
                       >
                         {project.challenges}
