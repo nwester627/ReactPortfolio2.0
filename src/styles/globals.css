@@ -19,9 +19,43 @@
   filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.18));
 }
 
+/* Reusable text shadow utilities (kept very subtle to avoid blur) */
+.text-shadow-subtle {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+.dark .text-shadow-subtle {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+.text-shadow-soft {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+}
+.dark .text-shadow-soft {
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+}
+.text-shadow-glow {
+  text-shadow: 0 0 4px rgba(124, 58, 237, 0.35), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+.dark .text-shadow-glow {
+  text-shadow: 0 0 6px rgba(124, 58, 237, 0.55), 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .accent-shadow {
     filter: none;
+  }
+}
+
+/* Global reduced-motion overrides for custom animation utility classes */
+@media (prefers-reduced-motion: reduce) {
+  .animate-materialize,
+  .animate-pageIn,
+  .skill-fade,
+  .hero-fade,
+  .hero-fade-delay {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 }
 

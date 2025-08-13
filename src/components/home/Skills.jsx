@@ -369,10 +369,10 @@ export default function Skills() {
           : "bg-light-primary/10 text-light-text/70 ring-1 ring-light-primary/20"
         : isDarkMode
         ? type === "core"
-          ? "bg-lavender/25 text-lavender ring-1 ring-lavender/40"
+          ? "bg-lavender/25 text-lavender ring-1 ring-lavender/40 lavender-emphasis"
           : "bg-white/7 text-light-gray/70 ring-1 ring-white/10"
         : type === "core"
-        ? "bg-light-primary/15 text-light-primary ring-1 ring-light-primary/25"
+        ? "bg-light-primary/15 text-light-primary ring-1 ring-light-primary/25 text-shadow-subtle"
         : "bg-light-primary/10 text-light-text/70 ring-1 ring-light-primary/20";
     return (
       <span
@@ -418,7 +418,7 @@ export default function Skills() {
       <div className="text-center mb-10">
         <h2
           id="skills-heading"
-          className={`text-[clamp(2.25rem,5vw,3.5rem)] font-bold tracking-tight leading-tight mb-4 ${
+          className={`text-[clamp(2.25rem,5vw,3.5rem)] font-bold tracking-tight leading-tight mb-4 text-shadow-soft ${
             isDarkMode ? "text-light-gray" : "text-light-text accent-shadow"
           }`}
         >

@@ -89,7 +89,9 @@ export default function GlassButton({
               {icon}
             </span>
           )}
-          <span className="relative z-10 flex items-center">{children}</span>
+          <span className="relative z-10 flex items-center text-shadow-subtle dark:text-shadow-subtle">
+            {children}
+          </span>
         </>
       )}
     </>

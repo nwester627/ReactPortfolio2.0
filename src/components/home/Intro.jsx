@@ -66,7 +66,7 @@ export default function Intro() {
     <div>
       <div className="text-center px-6 pt-12 pb-8 sm:p-10 drop-shadow-2xl">
         <h1
-          className={`hero-fade text-[clamp(2.75rem,6vw,4.25rem)] py-2 font-bold tracking-tight leading-tight bg-gradient-to-r ${
+          className={`hero-fade text-[clamp(2.75rem,6vw,4.25rem)] py-2 font-bold tracking-tight leading-tight bg-gradient-to-r text-shadow-soft ${
             isDarkMode
               ? "from-lavender via-light-gray to-white/80"
               : "from-light-primary via-lavender to-light-text accent-shadow"
@@ -75,7 +75,7 @@ export default function Intro() {
           Nicolas Wester
         </h1>
         <h2
-          className={`hero-fade-delay text-2xl py-2 font-medium 2xl:text-3xl min-h-[2.5rem] 2xl:min-h-[3.25rem] ${
+          className={`hero-fade-delay text-2xl py-2 font-medium 2xl:text-3xl min-h-[2.5rem] 2xl:min-h-[3.25rem] text-shadow-subtle ${
             isDarkMode
               ? "text-lavender lavender-emphasis"
               : "text-light-primary accent-shadow"
@@ -136,7 +136,7 @@ export default function Intro() {
         </GlassButton>
       </div>
       <h4
-        className={`text-xl pt-8 pb-4 font-medium text-center 2xl:text-3xl ${
+        className={`text-xl pt-8 pb-4 font-medium text-center 2xl:text-3xl text-shadow-subtle ${
           isDarkMode ? "text-light-gray" : "text-light-text"
         }`}
       >

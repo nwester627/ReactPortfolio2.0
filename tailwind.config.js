@@ -80,6 +80,8 @@ module.exports = {
         fadeInUp: "fadeInUp 0.55s cubic-bezier(.25,1,.4,1) forwards",
         fadeOut: "fadeOut 0.45s ease forwards",
         materialize: "materialize 0.8s cubic-bezier(.33,1,.68,1) forwards",
+        loaderPulse: "loaderPulse 1.4s ease-in-out infinite",
+        pageIn: "pageIn 0.65s cubic-bezier(.33,1,.68,1) forwards",
       },
       keyframes: {
         typewriter: {
@@ -113,6 +115,23 @@ module.exports = {
           "100%": {
             opacity: 1,
             transform: "scale(1) translateY(0)",
+            filter: "blur(0)",
+          },
+        },
+        loaderPulse: {
+          "0%, 100%": { opacity: 0.2, transform: "scale(.9)" },
+          "50%": { opacity: 0.9, transform: "scale(1)" },
+        },
+        pageIn: {
+          "0%": {
+            opacity: 0,
+            transform: "translateY(14px) scale(.985)",
+            filter: "blur(6px)",
+          },
+          "60%": { opacity: 0.85, filter: "blur(1.5px)" },
+          "100%": {
+            opacity: 1,
+            transform: "translateY(0) scale(1)",
             filter: "blur(0)",
           },
         },
