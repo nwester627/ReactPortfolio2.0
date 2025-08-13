@@ -1,4 +1,4 @@
-import { FaArrowRight } from "react-icons/fa";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function GlassButton({
   href,
@@ -8,17 +8,24 @@ export default function GlassButton({
   loading = false,
   disabled = false,
   onClick,
+  type = "button",
 }) {
+  const { isDarkMode } = useTheme();
+
   const baseClasses = `
     inline-flex items-center justify-center gap-2
     px-4 py-2 rounded-lg
-    bg-white/10 hover:bg-white/20
-    text-light-gray font-medium
-    border border-white/10
+    ${
+      isDarkMode
+        ? "bg-white/10 hover:bg-lavender text-light-gray border-white/10"
+        : "bg-light-primary/10 hover:bg-lavender text-light-text border-light-primary/20"
+    }
+    font-medium border
     backdrop-blur-sm
     shadow-md hover:shadow-lg
     transition duration-150 ease-in-out
-    focus:outline-none focus:ring-2 focus:ring-white/20
+    focus:outline-none focus:ring-2 
+    ${isDarkMode ? "focus:ring-white/20" : "focus:ring-light-primary/20"}
   `;
 
   const disabledClasses =
@@ -34,7 +41,9 @@ export default function GlassButton({
     <>
       {loading ? (
         <svg
-          className="animate-spin h-5 w-5 text-light-gray"
+          className={`animate-spin h-5 w-5 ${
+            isDarkMode ? "text-light-gray" : "text-light-text"
+          }`}
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -92,7 +101,7 @@ export default function GlassButton({
 
   return (
     <button
-      type="button"
+      type={type}
       className={combinedClasses}
       disabled={loading || disabled}
       onClick={onClick}

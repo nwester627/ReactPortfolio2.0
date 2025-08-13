@@ -1,16 +1,21 @@
 import { useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { Typewriter } from "react-simple-typewriter";
+import GlassButton from "../common/GlassButton";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function Contact() {
   const [message, setMessage] = useState(false);
   const form = useRef();
+  const { isDarkMode } = useTheme();
 
-  const inputClasses =
-    "peer w-full text-base sm:text-lg rounded-lg py-2 px-3 sm:px-4 text-white bg-blackish-blue border border-white/10 hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-lavender transition-colors duration-300";
-
-  const labelClasses =
-    "absolute left-3 sm:left-4 top-3 sm:top-4 text-light-gray text-sm transition-all duration-300 peer-placeholder-shown:top-3 sm:peer-placeholder-shown:top-4 peer-placeholder-shown:text-base sm:peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-20px] peer-focus:text-sm peer-focus:text-lavender";
+  const inputClasses = `peer w-full text-base sm:text-lg rounded-lg py-2 px-3 sm:px-4 
+    ${
+      isDarkMode
+        ? "text-white bg-blackish-blue border-white/10 hover:border-white/20"
+        : "text-light-text bg-light-surface border-light-primary/20 hover:border-light-primary/40"
+    } 
+    border focus:outline-none focus:ring-2 focus:ring-lavender transition-colors duration-300`;
 
   function sendEmail(e) {
     e.preventDefault();
@@ -23,8 +28,8 @@ export default function Contact() {
         "qY8OSrRdpQ5DTHQ_X"
       )
       .then(
-        (result) => {
-          console.log("Email sent successfully:", result.text);
+        (_result) => {
+          // Email sent successfully
           setMessage(true);
           setTimeout(() => setMessage(false), 5000);
         },
@@ -39,11 +44,23 @@ export default function Contact() {
   return (
     <div className="w-full flex items-center justify-center py-6 md:py-10">
       <form
-        className="w-11/12 sm:w-5/6 md:w-3/4 lg:w-1/2 rounded-lg shadow-lg p-6 sm:p-8 md:p-10 border border-gray-700"
+        className={`w-11/12 sm:w-5/6 md:w-3/4 lg:w-1/2 rounded-lg shadow-lg p-6 sm:p-8 md:p-10 border
+          ${isDarkMode ? "border-gray-700" : "border-light-primary/20"}
+          ${
+            isDarkMode
+              ? "bg-blackish-blue/50"
+              : "bg-gradient-to-b from-white via-light-surface to-light-container"
+          }
+          backdrop-blur-sm
+        `}
         ref={form}
         onSubmit={sendEmail}
       >
-        <h3 className="text-3xl sm:text-4xl md:text-5xl text-center text-light-gray mb-6">
+        <h3
+          className={`text-3xl sm:text-4xl md:text-5xl text-center mb-6 ${
+            isDarkMode ? "text-light-gray" : "text-light-text"
+          }`}
+        >
           <Typewriter
             words={["Contact Me!", "Let's Connect!"]}
             loop={0}
@@ -77,12 +94,7 @@ export default function Contact() {
         </div>
 
         <div className="w-full flex justify-center">
-          <button
-            type="submit"
-            className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-white/10 hover:bg-lavender text-light-gray font-medium border border-white/10 backdrop-blur-sm shadow-md hover:shadow-lg transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-white/20"
-          >
-            Submit
-          </button>
+          <GlassButton type="submit">Submit</GlassButton>
         </div>
 
         {message && (

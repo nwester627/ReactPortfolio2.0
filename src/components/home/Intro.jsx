@@ -1,12 +1,15 @@
 import { Typewriter } from "react-simple-typewriter";
 import Image from "next/image";
 import { FaLinkedin, FaGithubSquare, FaCloudDownloadAlt } from "react-icons/fa";
-import GlassButton from "./GlassButton";
+import GlassButton from "../common/GlassButton";
 import { useState } from "react";
+import { useTheme } from "../../context/ThemeContext";
+import portraitImg from "../../assets/images/portrait.png";
 
 export default function Intro() {
-  const [clickCount, setClickCount] = useState(0);
+  const [_clickCount, setClickCount] = useState(0);
   const [showSecretMessage, setShowSecretMessage] = useState(false);
+  const { isDarkMode } = useTheme();
 
   const handlePortraitClick = () => {
     setClickCount((prev) => {
@@ -24,10 +27,18 @@ export default function Intro() {
   return (
     <div>
       <div className="text-center p-10 drop-shadow-2xl">
-        <h2 className="text-5xl py-2 font-medium animate-fade-down animate-duration-1000 animate-ease-linear 2xl:text-6xl">
+        <h2
+          className={`text-5xl py-2 font-medium animate-fade-down animate-duration-1000 animate-ease-linear 2xl:text-6xl ${
+            isDarkMode ? "text-light-gray" : "text-light-text"
+          }`}
+        >
           Nicolas Wester
         </h2>
-        <h3 className="text-2xl py-2 font-medium text-lavender 2xl:text-3xl">
+        <h3
+          className={`text-2xl py-2 font-medium 2xl:text-3xl ${
+            isDarkMode ? "text-lavender" : "text-light-primary"
+          }`}
+        >
           <Typewriter
             words={[
               "Full Stack Developer",
@@ -49,21 +60,32 @@ export default function Intro() {
       <div className="my-12 flex justify-center">
         <div className="relative w-72 h-72 md:w-96 md:h-96 group">
           <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-teal-400 via-blue-500 to-purple-600 opacity-10 filter blur-3xl -z-10"></div>
-          <div className="absolute inset-0 rounded-full border border-white/5 overflow-hidden bg-gradient-to-b from-space via-space to-blackish-blue">
+          <div
+            className={`absolute inset-0 rounded-full overflow-hidden transition-colors duration-300 ${
+              isDarkMode
+                ? "border border-white/5 bg-gradient-to-b from-space via-space to-blackish-blue"
+                : "border border-light-primary/10 bg-gradient-to-b from-light-bg via-light-surface to-light-container"
+            }`}
+          >
             <div className="relative w-full h-full transition-transform duration-300 group-hover:scale-105">
-              <div className="absolute inset-0 bg-black/20 z-10"></div>
-              <Image
-                src="/utilities/images/portrait.png"
-                alt="Portrait"
-                fill
-                quality={100}
-                priority
-                sizes="(max-width: 768px) 288px, 384px"
-                className={`rounded-full object-cover cursor-pointer brightness-90 transition-transform duration-300 ${
-                  showSecretMessage ? "scale-110" : ""
+              <div
+                className={`absolute inset-0 z-10 ${
+                  isDarkMode ? "bg-black/20" : "bg-black/5"
                 }`}
-                onClick={handlePortraitClick}
-              />
+              >
+                <Image
+                  src={portraitImg.src}
+                  alt="Portrait"
+                  fill
+                  quality={100}
+                  priority
+                  sizes="(max-width: 768px) 288px, 384px"
+                  className={`rounded-full object-cover cursor-pointer brightness-100 transition-transform duration-300 ${
+                    showSecretMessage ? "scale-110" : ""
+                  }`}
+                  onClick={handlePortraitClick}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -90,10 +112,18 @@ export default function Intro() {
           Resume
         </GlassButton>
       </div>
-      <h4 className="text-xl pt-8 pb-4 font-medium text-center 2xl:text-3xl">
+      <h4
+        className={`text-xl pt-8 pb-4 font-medium text-center 2xl:text-3xl ${
+          isDarkMode ? "text-light-gray" : "text-light-text"
+        }`}
+      >
         A Little Bit About Me
       </h4>
-      <p className="w-11/12 sm:w-9/12 mx-auto text-md px-4 text-center text-balance 2xl:text-xl">
+      <p
+        className={`w-11/12 sm:w-9/12 mx-auto text-md px-4 text-center text-balance 2xl:text-xl ${
+          isDarkMode ? "text-light-gray" : "text-light-secondary"
+        }`}
+      >
         Hi there! My name is Nicolas Wester. I have been developing software
         professionally for 3 years and an additional 2 in my personal life. I
         love programming and solving the puzzles that come along with it.
