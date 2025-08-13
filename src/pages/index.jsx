@@ -1,21 +1,7 @@
 import Head from "next/head";
 import ContactForm from "@/components/home/Contact";
-import dynamic from "next/dynamic";
-const Testimonials = dynamic(() => import("@/components/home/Testimonials"), {
-  loading: () => (
-    <div className="flex flex-col gap-4 animate-pulse" aria-hidden>
-      <div className="h-6 w-40 rounded bg-white/30 dark:bg-white/10" />
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <div
-            key={i}
-            className="h-40 rounded-2xl bg-white/30 dark:bg-white/5 backdrop-blur-xl border border-white/10"
-          />
-        ))}
-      </div>
-    </div>
-  ),
-});
+// Use direct import for debugging invalid element type instead of dynamic()
+import Testimonials from "@/components/home/Testimonials";
 import ProjectsCompare from "@/components/home/ProjectsCompare";
 import Skills from "@/components/home/Skills";
 import Intro from "@/components/home/Intro";

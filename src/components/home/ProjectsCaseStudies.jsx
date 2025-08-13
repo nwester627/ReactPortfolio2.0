@@ -74,8 +74,8 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
             <span
               className={`text-xs font-semibold px-2.5 py-1 rounded-full tracking-wide ${
                 isDarkMode
-                  ? "bg-white/10 text-light-gray/80"
-                  : "bg-light-primary/15 text-light-text/80"
+                  ? "bg-white/12 text-light-gray/90"
+                  : "bg-light-primary/20 text-light-text/90"
               }`}
             >
               {project.status}
@@ -84,8 +84,8 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
               <span
                 className={`text-[0.6rem] font-semibold px-2 py-1 rounded-full tracking-wide ring-1 ${
                   isDarkMode
-                    ? "ring-white/15 bg-white/10 text-light-gray/70"
-                    : "ring-light-primary/20 bg-light-primary/10 text-light-text/70"
+                    ? "ring-white/20 bg-white/12 text-light-gray/85"
+                    : "ring-light-primary/25 bg-light-primary/15 text-light-text/85"
                 }`}
               >
                 {impact}
@@ -209,8 +209,8 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
                         key={i}
                         className={`px-2.5 py-1 rounded-full text-[0.6rem] font-semibold tracking-wide ring-1 ${
                           isDarkMode
-                            ? "bg-white/5 text-light-gray/70 ring-white/10"
-                            : "bg-light-primary/10 text-light-text/70 ring-light-primary/20"
+                            ? "bg-white/8 text-light-gray/85 ring-white/15"
+                            : "bg-light-primary/12 text-light-text/85 ring-light-primary/25"
                         }`}
                       >
                         {p}
