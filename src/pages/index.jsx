@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { React } from "react";
 import ContactForm from "@/components/home/Contact";
 import Testimonials from "@/components/home/Testimonials";
 import Projects from "@/components/home/Projects";
@@ -15,8 +14,8 @@ export default function Home() {
     <div
       className={`min-h-screen flex flex-col transition-colors duration-300 ${
         isDarkMode
-          ? "bg-gradient-to-br from-space to to-blackish-blue"
-          : "bg-gradient-to-br from-light-bg to to-light-accent"
+          ? "bg-gradient-to-br from-space to-blackish-blue"
+          : "bg-gradient-to-br from-light-bg to-light-accent"
       }`}
     >
       <Head>
@@ -24,7 +23,7 @@ export default function Home() {
       </Head>
 
       <main
-        className={`flex-1 font-poppins pb-1 ${
+        className={`flex-1 font-poppins pb-1 relative z-0 ${
           isDarkMode ? "text-light-gray" : "text-light-text"
         }`}
       >

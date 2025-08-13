@@ -6,17 +6,12 @@ export function ThemeProvider({ children }) {
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
-    // Check if user has a theme preference in localStorage
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === "dark");
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      setIsDarkMode(prefersDark);
-    }
+    if (savedTheme) return setIsDarkMode(savedTheme === "dark");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    setIsDarkMode(prefersDark);
   }, []);
 
   const toggleTheme = () => {

@@ -62,6 +62,9 @@ module.exports = {
           "50%": { backgroundPosition: "100% 50%" },
         },
       },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+      },
     },
   },
   plugins: [require("tailwindcss-animated")],

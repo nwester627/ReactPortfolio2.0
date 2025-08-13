@@ -17,7 +17,6 @@ export default function ThemeToggle() {
           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lavender`}
         aria-label={`Switch to ${isDarkMode ? "light" : "dark"} mode`}
       >
-        {/* Sliding button with icon */}
         <div
           className={`absolute top-1 bottom-1 w-8 h-8 my-auto rounded-full
             transform transition-all duration-700 ease-extra-smooth
@@ -36,9 +35,7 @@ export default function ThemeToggle() {
           </div>
         </div>
 
-        {/* Labels with smooth transitions */}
         <div className="absolute inset-0 w-full h-full select-none pointer-events-none overflow-hidden">
-          {/* Light text */}
           <div
             className={`absolute inset-y-0 left-0 flex items-center
               transition-all duration-700 ease-extra-smooth transform
@@ -52,8 +49,6 @@ export default function ThemeToggle() {
               Light
             </span>
           </div>
-
-          {/* Dark text */}
           <div
             className={`absolute inset-y-0 right-0 flex items-center
               transition-all duration-700 ease-extra-smooth transform

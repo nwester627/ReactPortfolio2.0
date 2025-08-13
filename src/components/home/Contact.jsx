@@ -19,7 +19,6 @@ export default function Contact() {
 
   function sendEmail(e) {
     e.preventDefault();
-
     emailjs
       .sendForm(
         "service_dj3jp0v",
@@ -27,17 +26,11 @@ export default function Contact() {
         form.current,
         "qY8OSrRdpQ5DTHQ_X"
       )
-      .then(
-        (_result) => {
-          // Email sent successfully
-          setMessage(true);
-          setTimeout(() => setMessage(false), 5000);
-        },
-        (error) => {
-          console.error("Error sending email:", error.text);
-        }
-      );
-
+      .then(() => {
+        setMessage(true);
+        setTimeout(() => setMessage(false), 5000);
+      })
+      .catch((err) => console.error("Error sending email:", err));
     e.target.reset();
   }
 
@@ -73,7 +66,13 @@ export default function Contact() {
         </h3>
         <div className="flex flex-col mb-6">
           <div className="relative">
-            <input name="email" className={`${inputClasses} h-14`} required />
+            <input
+              name="email"
+              type="email"
+              className={`${inputClasses} h-14`}
+              required
+              aria-label="Email"
+            />
             <label className="absolute left-4 top-4 text-light-gray text-sm transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-20px] peer-focus:text-sm peer-focus:text-lavender">
               Email
             </label>
@@ -86,6 +85,7 @@ export default function Contact() {
               name="message"
               className={`${inputClasses} h-64 resize-none caret-lavender`}
               required
+              aria-label="Message"
             />
             <label className="absolute left-4 top-4 text-light-gray text-sm transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-20px] peer-focus:text-sm peer-focus:text-lavender">
               Message

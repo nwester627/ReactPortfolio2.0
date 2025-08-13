@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
 import JaredSmithImg from "../../assets/images/JaredSmith.png";

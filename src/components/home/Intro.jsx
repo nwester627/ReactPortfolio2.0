@@ -7,22 +7,17 @@ import { useTheme } from "../../context/ThemeContext";
 import portraitImg from "../../assets/images/portrait.png";
 
 export default function Intro() {
-  const [_clickCount, setClickCount] = useState(0);
+  const [clickCount, setClickCount] = useState(0);
   const [showSecretMessage, setShowSecretMessage] = useState(false);
   const { isDarkMode } = useTheme();
 
   const handlePortraitClick = () => {
-    setClickCount((prev) => {
-      const newCount = prev + 1;
-      if (newCount === 7) {
-        setShowSecretMessage(true);
-        setTimeout(() => {
-          setShowSecretMessage(false);
-          return 0;
-        }, 3000);
-      }
-      return newCount;
-    });
+    const newCount = clickCount + 1;
+    if (newCount === 7) {
+      setShowSecretMessage(true);
+      setTimeout(() => setShowSecretMessage(false), 3000);
+    }
+    setClickCount(newCount === 7 ? 0 : newCount);
   };
   return (
     <div>
