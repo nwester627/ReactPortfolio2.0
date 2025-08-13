@@ -7,8 +7,10 @@ module.exports = {
   ],
   theme: {
     colors: {
-      lavender: "#7c3aed",
+      lavender: "#7c3aed", // original accent
       "lavender-light": "#9747FF",
+      // Added a darker variant for improved contrast in dark mode text contexts
+      "lavender-dark": "#5b2bb0",
       space: "#051622",
       "light-gray": "#d1d5db",
       white: "#FFFFFF",
@@ -51,6 +53,13 @@ module.exports = {
           python: "#3776AB",
           mysql: "#00618A",
           tailwind: "#38BDF8",
+          node: "#339933",
+          aws: "#FF9900",
+          docker: "#2496ED",
+          github: "#181717",
+          jest: "#C21325",
+          redux: "#764ABC",
+          nextjs: "#000000",
         },
       },
       transitionDuration: {
@@ -67,6 +76,10 @@ module.exports = {
       animation: {
         typewriter: "typewriter 1s steps(10) infinite",
         gradient: "gradient 5s ease infinite",
+        fadeIn: "fadeIn 0.6s ease forwards",
+        fadeInUp: "fadeInUp 0.55s cubic-bezier(.25,1,.4,1) forwards",
+        fadeOut: "fadeOut 0.45s ease forwards",
+        materialize: "materialize 0.8s cubic-bezier(.33,1,.68,1) forwards",
       },
       keyframes: {
         typewriter: {
@@ -76,6 +89,32 @@ module.exports = {
         gradient: {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
+        },
+        fadeIn: {
+          "0%": { opacity: 0, transform: "translateY(12px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+        fadeInUp: {
+          "0%": { opacity: 0, transform: "translateY(10px) scale(.985)" },
+          "60%": { opacity: 1 },
+          "100%": { opacity: 1, transform: "translateY(0) scale(1)" },
+        },
+        fadeOut: {
+          "0%": { opacity: 0.7, transform: "translateY(0)" },
+          "100%": { opacity: 0, transform: "translateY(-4px)" },
+        },
+        materialize: {
+          "0%": {
+            opacity: 0,
+            transform: "scale(.92) translateY(8px)",
+            filter: "blur(6px)",
+          },
+          "55%": { opacity: 0.85, filter: "blur(1.5px)" },
+          "100%": {
+            opacity: 1,
+            transform: "scale(1) translateY(0)",
+            filter: "blur(0)",
+          },
         },
       },
       backgroundImage: {

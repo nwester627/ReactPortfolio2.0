@@ -103,7 +103,7 @@ export default function ProjectModal({ project, onClose }) {
           aria-live="polite"
         >
           <div
-            className="fixed inset-0 bg-black/50"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
             onClick={onClose}
             aria-label="Close project modal"
           />
@@ -113,26 +113,20 @@ export default function ProjectModal({ project, onClose }) {
             aria-modal="true"
             aria-labelledby="project-modal-title"
             tabIndex={-1}
-            className={`relative z-[65] w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl focus:outline-none backdrop-blur-sm
-              ${
-                isDarkMode
-                  ? "bg-space/95 border border-gray-700 text-light-gray shadow-2xl"
-                  : // Increased opacity for readability & consistent contrast
-                    "bg-white/85 supports-[backdrop-filter]:bg-white/70 border border-light-primary/10 text-light-text shadow-md"
-              }
-            `}
+            className={`relative z-[65] w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl focus:outline-none backdrop-blur-md border will-change-transform opacity-0 translate-y-4 scale-[0.985] animate-[materialize_0.75s_cubic-bezier(.33,1,.68,1)_forwards] ${
+              isDarkMode
+                ? "bg-white/[0.05] border-white/8 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.55)]"
+                : "bg-white/80 supports-[backdrop-filter]:bg-white/65 border-light-primary/15 shadow-[0_8px_28px_-6px_rgba(0,0,0,0.35)]"
+            }`}
           >
             <button
               onClick={onClose}
               data-close
-              className={`absolute top-4 right-4 z-10 inline-flex items-center justify-center w-10 h-10 rounded-full
-                transition-colors duration-200 backdrop-blur-sm border
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
-                ${
-                  isDarkMode
-                    ? "bg-blackish-blue/50 border-gray-600/40 text-light-gray hover:bg-blackish-blue/70 hover:text-lavender focus-visible:ring-lavender/60 focus-visible:ring-offset-space/80"
-                    : "bg-white/40 border-white/30 text-light-text hover:bg-white/60 hover:text-light-primary focus-visible:ring-light-primary/60 focus-visible:ring-offset-white/60"
-                }`}
+              className={`absolute top-4 right-4 z-10 inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-300 border backdrop-blur-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lavender/60 focus-visible:ring-offset-transparent ${
+                isDarkMode
+                  ? "bg-white/10 border-white/10 text-light-gray hover:bg-lavender/30 hover:text-space"
+                  : "bg-light-primary/10 border-light-primary/20 text-light-text hover:bg-lavender/30 hover:text-white"
+              }`}
               aria-label="Close project modal"
             >
               <FaTimes className="w-5 h-5" />
@@ -163,7 +157,7 @@ export default function ProjectModal({ project, onClose }) {
                     ${
                       isDarkMode
                         ? "text-white"
-                        : "text-light-text bg-gradient-to-r from-light-primary/90 to-light-primary bg-clip-text text-transparent"
+                        : "text-light-text bg-gradient-to-r from-light-primary/90 to-light-primary bg-clip-text text-transparent accent-shadow"
                     }`}
                 >
                   {project.title}
@@ -189,7 +183,7 @@ export default function ProjectModal({ project, onClose }) {
                   </p>
                   {project.features?.length > 0 && (
                     <div className="space-y-2">
-                      <h4 className="text-lg font-semibold text-light-primary dark:text-lavender">
+                      <h4 className="text-lg font-semibold text-light-primary dark:text-lavender lavender-emphasis">
                         Key Features
                       </h4>
                       <ul className="list-disc list-inside space-y-1">
@@ -208,7 +202,7 @@ export default function ProjectModal({ project, onClose }) {
                   )}
                   {project.challenges && (
                     <div className="space-y-2">
-                      <h4 className="text-lg font-semibold text-light-primary dark:text-lavender">
+                      <h4 className="text-lg font-semibold text-light-primary dark:text-lavender lavender-emphasis">
                         Challenges & Solutions
                       </h4>
                       <p
@@ -227,7 +221,7 @@ export default function ProjectModal({ project, onClose }) {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm sm:text-base font-bold tracking-tight transition-colors backdrop-blur-sm shadow-md hover:shadow-lg border ${actionBase}`}
+                      className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm sm:text-base font-semibold tracking-tight transition-colors backdrop-blur-sm shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lavender/60 focus-visible:ring-offset-transparent border ${actionBase}`}
                       aria-label="View source code on GitHub"
                     >
                       <FaGithub className="w-5 h-5" />
@@ -239,7 +233,7 @@ export default function ProjectModal({ project, onClose }) {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm sm:text-base font-bold tracking-tight transition-colors backdrop-blur-sm shadow-md hover:shadow-lg border ${actionBase}`}
+                      className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm sm:text-base font-semibold tracking-tight transition-colors backdrop-blur-sm shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lavender/60 focus-visible:ring-offset-transparent border ${actionBase}`}
                       aria-label="Open live demo"
                     >
                       <FaExternalLinkAlt className="w-4 h-4" />

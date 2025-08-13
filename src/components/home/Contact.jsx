@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import { Typewriter } from "react-simple-typewriter";
 import GlassButton from "../common/GlassButton";
@@ -8,14 +8,22 @@ export default function Contact() {
   const [message, setMessage] = useState(false);
   const form = useRef();
   const { isDarkMode } = useTheme();
+  const prefersReducedMotion = useRef(false);
 
-  const inputClasses = `peer w-full text-base sm:text-lg rounded-lg py-2 px-3 sm:px-4 border backdrop-blur-sm
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      prefersReducedMotion.current = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+    }
+  }, []);
+
+  const inputClasses = `peer w-full text-base sm:text-lg rounded-xl py-3 px-4 border backdrop-blur-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent
     ${
       isDarkMode
-        ? "text-light-gray bg-blackish-blue/70 border-white/10 hover:border-white/20 focus:ring-white/20"
-        : "text-light-text bg-white/80 supports-[backdrop-filter]:bg-white/60 border-light-primary/30 hover:border-light-primary/50 focus:ring-light-primary/30"
-    }
-    focus:outline-none focus:ring-2 transition-colors duration-300`;
+        ? "text-light-gray bg-white/[0.05] border-white/10 hover:border-white/20 focus:ring-lavender/60"
+        : "text-light-text bg-white/80 supports-[backdrop-filter]:bg-white/60 border-light-primary/25 hover:border-light-primary/50 focus:ring-light-primary/50"
+    }`;
 
   function sendEmail(e) {
     e.preventDefault();
@@ -35,22 +43,25 @@ export default function Contact() {
   }
 
   return (
-    <div className="w-full flex items-center justify-center py-12 sm:py-16">
+    <section
+      aria-labelledby="contact-heading"
+      className="w-full flex items-center justify-center py-16"
+    >
       <form
-        className={`w-11/12 sm:w-5/6 md:w-3/4 lg:w-[52%] rounded-2xl shadow-lg p-6 sm:p-8 md:p-10 border backdrop-blur-sm
-          ${
-            isDarkMode
-              ? "border-white/10 bg-blackish-blue/80"
-              : "border-light-primary/15 bg-white/85 supports-[backdrop-filter]:bg-white/65"
-          }`}
+        className={`w-11/12 sm:w-5/6 md:w-3/4 lg:w-[52%] rounded-2xl p-8 sm:p-10 border backdrop-blur-md will-change-transform opacity-0 translate-y-4 scale-[0.985] animate-[materialize_0.85s_cubic-bezier(.33,1,.68,1)_forwards] shadow-sm focus-within:shadow-md transition-shadow duration-500 ${
+          isDarkMode
+            ? "border-white/8 bg-white/[0.05]"
+            : "border-light-primary/15 bg-white/80 supports-[backdrop-filter]:bg-white/65"
+        }`}
         ref={form}
         onSubmit={sendEmail}
       >
         <h2
-          className={`hero-fade text-[clamp(2rem,5vw,3.25rem)] font-bold tracking-tight leading-tight text-center mb-6 bg-gradient-to-r ${
+          id="contact-heading"
+          className={`text-[clamp(2.25rem,5vw,3.25rem)] font-bold tracking-tight leading-tight text-center mb-8 bg-gradient-to-r ${
             isDarkMode
-              ? "from-lavender via-light-gray to-white/80"
-              : "from-light-primary via-lavender to-light-text"
+              ? "from-lavender via-light-gray to-white/85"
+              : "from-light-primary via-lavender to-light-text accent-shadow"
           } bg-clip-text text-transparent`}
         >
           <span className="block min-h-[2.4rem]">
@@ -70,7 +81,7 @@ export default function Contact() {
             <input
               name="email"
               type="email"
-              className={`${inputClasses} h-14`}
+              className={`${inputClasses} h-16`}
               required
               aria-label="Email"
             />
@@ -101,11 +112,11 @@ export default function Contact() {
         </div>
 
         {message && (
-          <p className="text-center mt-4 text-sm font-medium text-lavender dark:text-lavender">
+          <p className="text-center mt-4 text-sm font-medium text-lavender dark:text-lavender drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
             Message sent — thank you.
           </p>
         )}
       </form>
-    </div>
+    </section>
   );
 }

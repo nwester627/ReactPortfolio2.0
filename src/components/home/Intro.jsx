@@ -69,14 +69,16 @@ export default function Intro() {
           className={`hero-fade text-[clamp(2.75rem,6vw,4.25rem)] py-2 font-bold tracking-tight leading-tight bg-gradient-to-r ${
             isDarkMode
               ? "from-lavender via-light-gray to-white/80"
-              : "from-light-primary via-lavender to-light-text"
+              : "from-light-primary via-lavender to-light-text accent-shadow"
           } bg-clip-text text-transparent`}
         >
           Nicolas Wester
         </h1>
         <h2
           className={`hero-fade-delay text-2xl py-2 font-medium 2xl:text-3xl min-h-[2.5rem] 2xl:min-h-[3.25rem] ${
-            isDarkMode ? "text-lavender" : "text-light-primary"
+            isDarkMode
+              ? "text-lavender lavender-emphasis"
+              : "text-light-primary accent-shadow"
           }`}
         >
           <Typewriter

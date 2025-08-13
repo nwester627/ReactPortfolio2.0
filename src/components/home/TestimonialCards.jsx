@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
+import { useEffect, useRef } from "react";
 import JaredSmithImg from "../../assets/images/JaredSmith.png";
 import TylerSorensonImg from "../../assets/images/TylerSorenson.png";
 import KennyRichmondImg from "../../assets/images/KennyRichmond.png";
@@ -31,74 +32,95 @@ const testimonialsData = [
 
 export default function TestimonialCards() {
   const { isDarkMode } = useTheme();
+  const prefersReducedMotion = useRef(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      prefersReducedMotion.current = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+    }
+  }, []);
 
   return (
-    <div className="flex flex-col items-center px-4 py-8 rounded-lg">
-      <h3
-        className={`text-5xl py-4 text-center 2xl:text-6xl mb-4 ${
-          isDarkMode ? "text-light-gray" : "text-light-text"
-        }`}
-      >
-        Testimonials
-      </h3>
-      <div
-        className={`w-24 h-1 mb-8 ${
-          isDarkMode ? "bg-lavender" : "bg-light-primary"
-        }`}
-      ></div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full mx-auto px-4">
-        {testimonialsData.map((d) => (
-          <div
-            key={d.id}
-            className={`flex flex-col items-center justify-between h-auto rounded-lg shadow-md p-6 sm:p-8 transition-all duration-300 hover:scale-105 hover:shadow-2xl animate-fadeIn
-              ${
+    <section
+      aria-labelledby="testimonials-heading"
+      className="flex flex-col items-center px-4 py-12"
+    >
+      <div className="text-center mb-10">
+        <h3
+          id="testimonials-heading"
+          className={`text-[clamp(2.25rem,5vw,3.5rem)] font-bold tracking-tight leading-tight mb-4 ${
+            isDarkMode ? "text-light-gray" : "text-light-text accent-shadow"
+          }`}
+        >
+          Testimonials
+        </h3>
+        <p
+          className={`max-w-2xl mx-auto text-base sm:text-lg leading-relaxed px-4 ${
+            isDarkMode ? "text-light-gray/80" : "text-light-text/80"
+          }`}
+        >
+          What teammates and engineering managers have said about working with
+          me.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full mx-auto px-2 sm:px-4 max-w-7xl">
+        {testimonialsData.map((d, idx) => {
+          const reduce = prefersReducedMotion.current;
+          const delay = reduce ? 0 : 80 + idx * 130;
+          return (
+            <figure
+              key={d.id}
+              className={`relative flex flex-col items-center justify-start h-full rounded-xl border p-7 sm:p-8 text-center backdrop-blur-sm will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lavender/60 focus-visible:ring-offset-transparent transition-all duration-700 shadow-sm hover:shadow-md ${
                 isDarkMode
-                  ? "bg-space/90 border-lavender shadow-black"
-                  : "bg-gradient-to-b from-white via-light-surface to-light-accent/50 border-light-primary/10 shadow-light-primary/5"
-              } border backdrop-blur-sm`}
-          >
-            <div className="absolute top-4 left-4 text-rose text-4xl opacity-20">
-              <i className="fas fa-quote-left"></i>
-            </div>
-
-            <div className="relative h-[60px] w-[60px] rounded-full bg-gradient-to-br from-rose to-lavender p-1 hover:shadow-lg hover:shadow-rose transition-transform duration-300 hover:rotate-3 mb-4 overflow-hidden shadow-md border-2 border-white">
-              <Image
-                className="rounded-full object-cover"
-                src={d.img}
-                alt={`${d.name}'s Picture`}
-                fill
-                sizes="60px"
-              />
-            </div>
-
-            <p
-              className={`text-center mb-6 flex-grow ${
-                isDarkMode ? "text-light-gray" : "text-light-secondary"
+                  ? "border-white/8 bg-white/[0.04] hover:bg-white/[0.07]"
+                  : "border-light-primary/15 bg-light-primary/5 hover:bg-light-primary/10"
+              } ${
+                reduce
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-3 animate-[materialize_0.9s_cubic-bezier(.33,1,.68,1)_forwards]"
               }`}
+              style={reduce ? undefined : { animationDelay: `${delay}ms` }}
+              tabIndex={0}
             >
-              {d.desc}
-            </p>
-
-            <div className="text-center">
-              <h3
-                className={`text-xl font-bold ${
-                  isDarkMode ? "text-white" : "text-light-text"
+              <div className="absolute inset-px rounded-[inherit] pointer-events-none opacity-0 transition-opacity duration-700 group-hover:opacity-100 bg-gradient-to-br from-white/25 via-transparent to-white/5 dark:from-lavender/25 dark:to-white/5" />
+              <div className="relative h-[70px] w-[70px] rounded-full bg-gradient-to-br from-rose to-lavender p-1 mb-5 shadow-md ring-1 ring-white/30 dark:ring-white/10">
+                <Image
+                  className="rounded-full object-cover"
+                  src={d.img}
+                  alt={`${d.name}'s Picture`}
+                  fill
+                  sizes="70px"
+                />
+              </div>
+              <blockquote
+                className={`mb-6 text-sm sm:text-base leading-relaxed ${
+                  isDarkMode ? "text-light-gray/85" : "text-light-text/85"
                 }`}
               >
-                {d.name}
-              </h3>
-              <h4
-                className={
-                  isDarkMode ? "text-light-gray" : "text-light-secondary"
-                }
-              >
-                {d.title}
-              </h4>
-            </div>
-          </div>
-        ))}
+                {d.desc}
+              </blockquote>
+              <figcaption className="space-y-1">
+                <div
+                  className={`text-base font-semibold tracking-tight ${
+                    isDarkMode ? "text-light-gray" : "text-light-text"
+                  }`}
+                >
+                  {d.name}
+                </div>
+                <div
+                  className={`text-xs sm:text-sm tracking-wide ${
+                    isDarkMode ? "text-light-gray/60" : "text-light-text/60"
+                  }`}
+                >
+                  {d.title}
+                </div>
+              </figcaption>
+            </figure>
+          );
+        })}
       </div>
-    </div>
+    </section>
   );
 }
