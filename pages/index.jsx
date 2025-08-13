@@ -9,12 +9,12 @@ import FrostedSection from "@/components/FrostedSection";
 
 export default function Home() {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-space to to-black">
       <Head>
         <title>Nicolas Wester's Portfolio</title>
       </Head>
 
-      <main className="bg-gradient-to-br from-space to to-black text-light-gray font-poppins">
+      <main className="flex-1 text-light-gray font-poppins pb-1">
         <section>
           <Intro />
         </section>
@@ -27,7 +27,7 @@ export default function Home() {
         <FrostedSection>
           <Testimonials />
         </FrostedSection>
-        <FrostedSection>
+        <FrostedSection variant="contact">
           <ContactForm />
         </FrostedSection>
       </main>

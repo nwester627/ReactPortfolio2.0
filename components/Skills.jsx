@@ -17,18 +17,18 @@ export default function Skills() {
         <h3 className="text-5xl py-4 text-center text-light-gray 2xl:text-6xl mb-8">
           Technical Skills
         </h3>
-        <div className="flex flex-row justify-center text-lavender">
-          <SiJavascript className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
-          <SiTypescript className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
-          <FaReact className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
-          <FaPhp className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
-          <FaLaravel className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
-          <FaHtml5 className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
-          <FaCss3 className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
-          <FaPython className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
-          <FaAngular className="px-2 transition ease=out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
-          <GrMysql className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
-          <SiTailwindcss className="px-2 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 md:size-20" />
+        <div className="hidden md:flex flex-wrap justify-center gap-4 text-lavender px-4">
+          <SiJavascript className="size-16 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 lg:size-20" />
+          <SiTypescript className="size-16 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 lg:size-20" />
+          <FaReact className="size-16 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 lg:size-20" />
+          <FaPhp className="size-16 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 lg:size-20" />
+          <FaLaravel className="size-16 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 lg:size-20" />
+          <FaHtml5 className="size-16 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 lg:size-20" />
+          <FaCss3 className="size-16 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 lg:size-20" />
+          <FaPython className="size-16 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 lg:size-20" />
+          <FaAngular className="size-16 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 lg:size-20" />
+          <GrMysql className="size-16 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 lg:size-20" />
+          <SiTailwindcss className="size-16 transition ease-out hover:-translate-y-1 hover:scale-110 duration-100 lg:size-20" />
         </div>
       </div>
       <div className="text-center text-md leading-8 py-4 text-light-gray text-balance 2xl:text-xl">

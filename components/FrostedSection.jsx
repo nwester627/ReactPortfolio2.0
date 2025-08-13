@@ -1,4 +1,4 @@
-export default function FrostedSection({ children, className = "" }) {
+export default function FrostedSection({ children, className = "", variant }) {
   return (
     <section
       className={`
@@ -7,8 +7,9 @@ export default function FrostedSection({ children, className = "" }) {
         rounded-2xl border border-white/10 
         bg-white/5 backdrop-blur-sm 
         shadow-md shadow-black/10
+        ${variant === "contact" ? "mb-16 sm:mb-24" : ""}
         ${className}
-      `}
+      `.trim()}
     >
       {children}
     </section>

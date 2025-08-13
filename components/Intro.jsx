@@ -12,7 +12,6 @@ export default function Intro() {
     setClickCount((prev) => {
       const newCount = prev + 1;
       if (newCount === 7) {
-        // Lucky number 7!
         setShowSecretMessage(true);
         setTimeout(() => {
           setShowSecretMessage(false);
@@ -48,28 +47,28 @@ export default function Intro() {
         </h3>
       </div>
       <div className="my-12 flex justify-center">
-        <div className="relative w-72 h-72 md:w-96 md:h-96">
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-teal-400 via-blue-500 to-purple-600 opacity-30 filter blur-3xl -z-10"></div>
-          <div
-            className="relative w-full h-full overflow-hidden rounded-full border-4 border-white/20 shadow-lg shadow-black/40"
-            style={{
-              boxShadow: `inset 0 0 13.5px 9px rgba(5, 22, 34, 0.45),
-                          inset 0 0 22.5px 18px rgba(5, 22, 34, 0.27)`,
-            }}
-          >
-            <Image
-              src="/utilities/images/portrait.png"
-              alt="Portrait"
-              fill
-              className={`rounded-full object-cover cursor-pointer transition-transform duration-300 ${
-                showSecretMessage ? "scale-110" : ""
-              }`}
-              onClick={handlePortraitClick}
-            />
+        <div className="relative w-72 h-72 md:w-96 md:h-96 group">
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-teal-400 via-blue-500 to-purple-600 opacity-10 filter blur-3xl -z-10"></div>
+          <div className="absolute inset-0 rounded-full border border-white/5 overflow-hidden bg-gradient-to-b from-space via-space to-blackish-blue">
+            <div className="relative w-full h-full transition-transform duration-300 group-hover:scale-105">
+              <div className="absolute inset-0 bg-black/20 z-10"></div>
+              <Image
+                src="/utilities/images/portrait.png"
+                alt="Portrait"
+                fill
+                quality={100}
+                priority
+                sizes="(max-width: 768px) 288px, 384px"
+                className={`rounded-full object-cover cursor-pointer brightness-90 transition-transform duration-300 ${
+                  showSecretMessage ? "scale-110" : ""
+                }`}
+                onClick={handlePortraitClick}
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div className="flex justify-center rounded-md pt-8 gap-8">
+      <div className="flex flex-wrap justify-center rounded-md pt-8 gap-4 sm:gap-8">
         <GlassButton
           href="https://www.linkedin.com/in/nicolaswester/"
           icon={<FaLinkedin className="inline-flex" />}
