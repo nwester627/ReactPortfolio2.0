@@ -6,7 +6,6 @@ import { useTheme } from "../../context/ThemeContext";
 import WebDevDark from "./svgs/WebDevDark";
 import WebDevLight from "./svgs/WebDevLight";
 
-// HeroIllustration (formerly Headshot): themed SVG hero art with subtle effects
 function HeroIllustration({
   isDarkMode,
   onActivate,
@@ -14,14 +13,12 @@ function HeroIllustration({
   variant = "card",
 }) {
   const containerBase = "relative group outline-none";
-  // Align width with other containers by letting the wrapper be full-width within its parent;
-  // cap the actual illustration with a responsive max width and keep a square aspect.
   const sizeClasses = "w-full aspect-square max-w-[28rem] md:max-w-[32rem]";
   const rounded = variant === "circle" ? "rounded-full" : "rounded-[2rem]";
   const frame = isDarkMode
     ? "border border-white/10 bg-gradient-to-b from-space via-space to-blackish-blue backdrop-blur-xl"
     : "border border-light-primary/20 bg-gradient-to-b from-white via-light-surface to-light-container backdrop-blur-xl";
-  const overlayShade = isDarkMode ? "bg-white/5" : "bg-black/5"; // subtle tint for contrast without dulling colors
+  const overlayShade = isDarkMode ? "bg-white/5" : "bg-black/5";
   const edgeGradient = isDarkMode
     ? "from-lavender/40 via-blue-500/30 to-purple-600/40"
     : "from-light-primary/50 via-lavender/40 to-light-text/20";

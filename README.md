@@ -1,40 +1,62 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+---
 
-## Getting Started
+# React Portfolio Website
 
-First, run the development server:
+A modern, single-page portfolio application built with Next.js and React to showcase my skills, projects, and professional experience as a web developer.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Live Demo: [www.nicolaswester.com](https://www.nicolaswester.com/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- **Single-Page Application (SPA):** Uses React's component-based architecture for a fast, seamless user experience.
+- **Dynamic Content Sections:**
+  - **About Me:** Brief intro to my background and passion for development.
+  - **Portfolio:** Curated gallery of projects, each with a description and links to the live app and GitHub repo.
+  - **Contact:** Functional contact form with client-side validation (checks for valid email, required fields, and instant feedback).
+  - **Resume:** Downloadable PDF resume.
+- **Responsive Design:** Fully responsive layout for all devices, from mobile to desktop.
+- **Dark/Light Theme:** Toggle between dark and light modes with animated transitions.
+- **Animated UI:** Smooth page transitions, frosted glass effects, and interactive elements.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Technologies Used
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- [Next.js](https://nextjs.org/): React framework for production-grade web apps.
+- [React](https://reactjs.org/): UI library for building interactive interfaces.
+- [Tailwind CSS](https://tailwindcss.com/): Utility-first CSS framework for rapid styling.
+- JavaScript (ES6+)
+- HTML5 & CSS3
+- [EmailJS](https://www.emailjs.com/): For contact form email delivery.
+- [React Icons](https://react-icons.github.io/react-icons/): Icon library for UI elements.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation and Setup
 
-## Learn More
+To clone and run this project locally:
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/nwester627/ReactPortfolio2.0.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd ReactPortfolio2.0
+   ```
+3. Install dependencies:
+   ```bash
+   yarn install
+   # or
+   npm install
+   ```
+4. Run the development server:
+   ```bash
+   yarn dev
+   # or
+   npm run dev
+   ```
+5. Open your browser and go to [http://localhost:3000](http://localhost:3000)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contact
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Feel free to reach out or browse my other projects:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- GitHub: [nwester627](https://github.com/nwester627)
+- Portfolio: [www.nicolaswester.com](https://www.nicolaswester.com/)
