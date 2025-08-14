@@ -4,6 +4,8 @@ const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isModalActive, setIsModalActive] = useState(false);
+  const [hasModalBeenDismissed, setHasModalBeenDismissed] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -20,7 +22,16 @@ export function ThemeProvider({ children }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{
+        isDarkMode,
+        toggleTheme,
+        isModalActive,
+        setIsModalActive,
+        hasModalBeenDismissed,
+        setHasModalBeenDismissed,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );

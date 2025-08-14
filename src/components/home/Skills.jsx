@@ -20,6 +20,10 @@ import {
   SiJest,
   SiGithubactions,
   SiJira,
+  SiSupabase,
+  SiLeaflet,
+  SiPostgresql,
+  SiVercel,
 } from "react-icons/si";
 import { GrMysql } from "react-icons/gr";
 import { TbApi } from "react-icons/tb";
@@ -110,10 +114,14 @@ export default function Skills() {
   const iconsMap = {
     SiJavascript,
     SiTypescript,
+    SiPostgresql,
     FaPhp,
     FaPython,
     FaReact,
     SiNextdotjs,
+    SiSupabase,
+    SiLeaflet,
+    SiVercel,
     FaLaravel,
     FaHtml5,
     FaCss3,
@@ -192,6 +200,46 @@ export default function Skills() {
         tier: "core",
         since: 2023,
         usedFor: "SSR & routing",
+      },
+      {
+        name: "Supabase",
+        iconKey: "SiSupabase",
+        color: "text-emerald-500",
+        category: "data",
+        usage: "weekly",
+        tier: "regular",
+        since: 2024,
+        usedFor: "Auth & Postgres",
+      },
+      {
+        name: "PostgreSQL",
+        iconKey: "SiPostgresql",
+        color: "text-sky-700 dark:text-sky-400",
+        category: "data",
+        usage: "weekly",
+        tier: "regular",
+        since: 2024,
+        usedFor: "Relational data",
+      },
+      {
+        name: "Leaflet.js",
+        iconKey: "SiLeaflet",
+        color: "text-green-600",
+        category: "frontend",
+        usage: "weekly",
+        tier: "regular",
+        since: 2024,
+        usedFor: "Maps & markers",
+      },
+      {
+        name: "Vercel",
+        iconKey: "SiVercel",
+        color: "text-black dark:text-white",
+        category: "tools",
+        usage: "weekly",
+        tier: "regular",
+        since: 2024,
+        usedFor: "Serverless deploy",
       },
       {
         name: "Laravel",
@@ -415,7 +463,7 @@ export default function Skills() {
 
   return (
     <section aria-labelledby="skills-heading" className="relative">
-      <div className="text-center mb-10">
+      <div className="text-center mb-8 sm:mb-10">
         <h2
           id="skills-heading"
           className={`text-[clamp(2.25rem,5vw,3.5rem)] font-bold tracking-tight leading-tight mb-4 text-shadow-soft ${
@@ -425,7 +473,7 @@ export default function Skills() {
           Technical Skills
         </h2>
         <p
-          className={`mx-auto max-w-3xl text-base sm:text-lg 2xl:text-xl px-4 leading-relaxed ${
+          className={`mx-auto max-w-3xl text-sm sm:text-base 2xl:text-xl px-3 sm:px-4 leading-relaxed ${
             isDarkMode ? "text-light-gray" : "text-light-text/85"
           }`}
         >
@@ -466,7 +514,7 @@ export default function Skills() {
           key={activeCategory + "-container"}
           aria-live="polite"
           id="skills-grid"
-          className="flex flex-wrap justify-center gap-6 pt-1 px-1 transition-[height]"
+          className="flex flex-wrap justify-center gap-4 sm:gap-6 pt-1 px-1 transition-[height]"
         >
           {grouped[activeCategory]?.map((skill, idx) => {
             const Icon = iconsMap[skill.iconKey];

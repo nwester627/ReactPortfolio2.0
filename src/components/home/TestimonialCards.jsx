@@ -1,5 +1,5 @@
 import { useTheme } from "@/context/ThemeContext";
-import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { testimonials } from "@/lib/testimonials";
 
 // Simple rotating ledger testimonials component
@@ -39,12 +39,6 @@ export default function TestimonialCards() {
         roleType = "lead";
         icon = "star";
       }
-
-      // Generate consistent color based on name
-      const hash = name.split("").reduce((a, b) => {
-        a = (a << 5) - a + b.charCodeAt(0);
-        return a & a;
-      }, 0);
 
       // Role-based color schemes
       const roleColors = {
@@ -177,18 +171,13 @@ export default function TestimonialCards() {
   }, [index, paused]);
 
   const t = testimonials[index];
-  const sentences = useMemo(
-    () => t.full.split(/(?<=[.!?])\s+/).filter(Boolean),
-    [t.full]
-  );
-  const preview = sentences.slice(0, 2).join(" ");
 
   return (
     <section
       aria-labelledby="testimonials-heading"
-      className="flex flex-col items-center px-4 py-12"
+      className="flex flex-col items-center px-4 py-10 sm:py-12"
     >
-      <div className="text-center mb-10">
+      <div className="text-center mb-8 sm:mb-10">
         <h3
           id="testimonials-heading"
           className={`text-[clamp(2.25rem,5vw,3.5rem)] font-bold tracking-tight leading-tight mb-4 ${
@@ -198,7 +187,7 @@ export default function TestimonialCards() {
           Testimonials
         </h3>
         <p
-          className={`max-w-2xl mx-auto text-base sm:text-lg leading-relaxed px-4 ${
+          className={`max-w-2xl mx-auto text-sm sm:text-base leading-relaxed px-2 sm:px-4 ${
             isDarkMode ? "text-light-gray/80" : "text-light-text/80"
           }`}
         >
@@ -208,19 +197,19 @@ export default function TestimonialCards() {
       </div>
 
       <div
-        className="w-full max-w-3xl mx-auto flex flex-col gap-4 px-2 sm:px-4"
+        className="w-full max-w-3xl mx-auto flex flex-col gap-3 sm:gap-4 px-2 sm:px-4"
         aria-label="Rotating testimonial ledger"
         tabIndex={0}
         onKeyDown={onKey}
       >
         <div
-          className={`relative overflow-hidden rounded-2xl ring-1 backdrop-blur-sm p-6 sm:p-8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 ${
+          className={`relative overflow-hidden rounded-2xl ring-1 backdrop-blur-sm p-5 sm:p-8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 ${
             isDarkMode
               ? "bg-white/[0.055] ring-white/10"
               : "bg-light-primary/5 ring-light-primary/15"
           }`}
         >
-          <div className="flex items-start gap-5 mb-4">
+          <div className="flex items-start gap-4 sm:gap-5 mb-3 sm:mb-4">
             <RoleAvatar person={t} />
             <div className="flex-1 min-w-0">
               <h4
@@ -242,7 +231,7 @@ export default function TestimonialCards() {
               <button
                 type="button"
                 onClick={() => setPaused((p) => !p)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold ring-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 ${
+                className={`px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold ring-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 ${
                   isDarkMode
                     ? "bg-white/8 text-light-gray/90 ring-white/15 hover:bg-white/12 hover:text-white"
                     : "bg-light-primary/15 text-light-text/90 ring-light-primary/25 hover:bg-light-primary/20 hover:text-light-text"
@@ -254,14 +243,14 @@ export default function TestimonialCards() {
             </div>
           </div>
           <blockquote
-            className={`relative text-sm sm:text-base leading-relaxed transition-[opacity,transform] duration-700 will-change-transform ${
+            className={`relative text-[15px] sm:text-base leading-relaxed transition-[opacity,transform] duration-700 will-change-transform ${
               prefersReducedMotion.current ? "opacity-100" : "opacity-100"
             } ${isDarkMode ? "text-light-gray/85" : "text-light-text/85"}`}
             key={t.id}
           >
             "{t.full}"
           </blockquote>
-          <div className="mt-6 flex items-center gap-3">
+          <div className="mt-5 sm:mt-6 flex items-center gap-2 sm:gap-3">
             <div className="flex-1 h-1.5 rounded-full overflow-hidden bg-white/10 dark:bg-white/10 relative">
               <div
                 ref={progressRef}
@@ -274,7 +263,7 @@ export default function TestimonialCards() {
                   key={i}
                   type="button"
                   onClick={() => setIndex(i)}
-                  className={`w-2.5 h-2.5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 ${
+                  className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 ${
                     i === index
                       ? isDarkMode
                         ? "bg-lavender/80"
@@ -293,7 +282,7 @@ export default function TestimonialCards() {
             Showing testimonial {index + 1} of {testimonials.length}: {t.name}.
           </div>
         </div>
-        <div className="flex flex-wrap justify-center gap-2 text-sm font-medium">
+        <div className="flex flex-wrap justify-center gap-2 text-[13px] sm:text-sm font-medium">
           {testimonials.map((ti, i) => (
             <button
               key={ti.id}

@@ -1,15 +1,12 @@
 // Centralized testimonial data
-// Each testimonial: id, name, title, image (imported path), summary (short pull quote), full (detailed text), context (short descriptor), tags
-import JaredSmithImg from "@/assets/images/JaredSmith.png";
-import TylerSorensonImg from "@/assets/images/TylerSorenson.png";
-import KennyRichmondImg from "@/assets/images/KennyRichmond.png";
+// Each testimonial: id, name, title, image (public path), summary (short pull quote), full (detailed text), context (short descriptor), tags
 
 export const testimonials = [
   {
     id: "jared-smith",
     name: "Jared Smith",
     title: "Director of Engineering – BoomTown",
-    image: JaredSmithImg.src,
+    image: "/utilities/images/JaredSmith.png",
     context: "Internship mentorship",
     tags: ["Mentorship", "Growth", "Initiative"],
     summary:
@@ -20,7 +17,7 @@ export const testimonials = [
     id: "tyler-sorenson",
     name: "Tyler Sorenson",
     title: "Engineering Manager – IRE",
-    image: TylerSorensonImg.src,
+    image: "/utilities/images/TylerSorenson.png",
     context: "Team collaboration",
     tags: ["Collaboration", "Learning", "Ownership"],
     summary:
@@ -31,7 +28,7 @@ export const testimonials = [
     id: "kenny-richmond",
     name: "Kenny Richmond",
     title: "Software Engineering Manager – IRE",
-    image: KennyRichmondImg.src,
+    image: "/utilities/images/KennyRichmond.png",
     context: "Debug & reliability",
     tags: ["Debugging", "Reliability", "Problem-Solving"],
     summary: "Systematic, fast debugging that added real reliability for us.",

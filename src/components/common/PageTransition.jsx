@@ -2,26 +2,36 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Cross-fade / materialize style transition between route changes using a simple opacity + transform + blur animation.
- * Wraps page component. Adds ephemeral key to trigger re-animation.
+ * PageTransition: tiny route-change polish.
+ * - On route start, we nudge content down a hair (translate-y-1) for continuity.
+ * - On route complete, we play a subtle page-in transform/blur (no opacity dim).
+ * - Respects reduced motion via global CSS overrides.
  */
 export default function PageTransition({ children }) {
   const router = useRouter();
   const [renderKey, setRenderKey] = useState(() => router.asPath);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const timeoutRef = useRef();
 
   useEffect(() => {
     const handleStart = (url) => {
       if (url === router.asPath) return;
-      // pre-trigger can add class for exit if desired in future
+      setIsTransitioning(true);
     };
+
     const handleDone = () => {
-      // change key to retrigger animation
-      setRenderKey(router.asPath + Date.now());
+      // Small delay to allow exit animation, then trigger enter animation
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setRenderKey(router.asPath + Date.now());
+        setIsTransitioning(false);
+      }, 50);
     };
+
     router.events.on("routeChangeStart", handleStart);
     router.events.on("routeChangeComplete", handleDone);
     router.events.on("routeChangeError", handleDone);
+
     return () => {
       router.events.off("routeChangeStart", handleStart);
       router.events.off("routeChangeComplete", handleDone);
@@ -31,7 +41,12 @@ export default function PageTransition({ children }) {
   }, [router]);
 
   return (
-    <div key={renderKey} className="will-change-transform animate-pageIn">
+    <div
+      key={renderKey}
+      className={`will-change-transform transition-transform duration-300 ${
+        isTransitioning ? "translate-y-1" : "animate-pageIn"
+      }`}
+    >
       {children}
     </div>
   );

@@ -1,25 +1,94 @@
 import { FaSun, FaMoon } from "react-icons/fa";
 import { useTheme } from "@/context/ThemeContext";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
-/*
-  ThemeToggle (refined animation)
-  - Smooth knob slide using transform translate instead of switching left/right properties (prevents layout jump)
-  - Fades target mode text (shows the mode you will switch TO, like before)
-  - Adds motion-safe guards & reduced-motion respect for users with preferences
-  - Removes duplicate component file to avoid ambiguity
-*/
-
+/**
+ * Animated theme toggle switch with sliding knob and smooth label transitions.
+ * Features accessibility support, reduced motion handling, modal-aware visibility,
+ * and entrance animation that triggers after the welcome modal is dismissed.
+ */
 export default function ThemeToggle() {
-  const { isDarkMode, toggleTheme } = useTheme();
+  const { isDarkMode, toggleTheme, isModalActive, hasModalBeenDismissed } =
+    useTheme();
+  const router = useRouter();
+  const [isVisible, setIsVisible] = useState(false);
+  const [prefersReduced, setPrefersReduced] = useState(false);
 
-  // Distance knob travels: track (w-28=112px) - horizontal padding (2*4px) - knob width (36px) = 68px
-  // Tailwind arbitrary value used: translate-x-[68px]
+  // Check for reduced motion preference
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setPrefersReduced(mq.matches);
+    update();
+    mq.addEventListener
+      ? mq.addEventListener("change", update)
+      : mq.addListener(update);
+    return () => {
+      mq.removeEventListener
+        ? mq.removeEventListener("change", update)
+        : mq.removeListener(update);
+    };
+  }, []);
+
+  // Trigger entrance animation when modal is dismissed
+  useEffect(() => {
+    if (hasModalBeenDismissed && !isModalActive) {
+      // Delay to allow modal to finish hiding
+      const timer = setTimeout(
+        () => {
+          setIsVisible(true);
+        },
+        prefersReduced ? 0 : 200
+      );
+      return () => clearTimeout(timer);
+    }
+  }, [hasModalBeenDismissed, isModalActive, prefersReduced]);
+
+  // Animate on route changes as well
+  useEffect(() => {
+    if (!hasModalBeenDismissed) return; // only after initial modal flow
+    const start = () => setIsVisible(false);
+    const done = () => {
+      const t = setTimeout(() => setIsVisible(true), prefersReduced ? 0 : 120);
+      return () => clearTimeout(t);
+    };
+    router.events.on("routeChangeStart", start);
+    router.events.on("routeChangeComplete", done);
+    router.events.on("routeChangeError", done);
+    return () => {
+      router.events.off("routeChangeStart", start);
+      router.events.off("routeChangeComplete", done);
+      router.events.off("routeChangeError", done);
+    };
+  }, [router, hasModalBeenDismissed, prefersReduced]);
+
+  // Hide if modal is active
+  if (isModalActive) {
+    return null;
+  }
+
+  // Don't render until modal has been dismissed (for entrance animation)
+  if (!hasModalBeenDismissed) {
+    return null;
+  }
+
   return (
-    <div className="fixed top-4 right-4 z-50">
+    <div
+      className={`fixed top-4 right-4 sm:right-[140px] z-50 transition-all duration-700 ease-extra-smooth transform-gpu ${
+        isVisible
+          ? "transform translate-x-0 opacity-100"
+          : "transform translate-x-full opacity-0"
+      }`}
+      style={{
+        transitionDelay: isVisible ? "0ms" : "0ms",
+        willChange: "transform, opacity",
+      }}
+    >
       <button
         onClick={toggleTheme}
         className={`group relative w-28 h-11 rounded-full text-[0.85rem] sm:text-sm font-semibold tracking-tight
-          transition-colors duration-500 ease-out motion-reduce:transition-none
+          transition-colors duration-700 ease-extra-smooth motion-reduce:transition-none backdrop-blur-sm
           ${
             isDarkMode
               ? "bg-lavender hover:bg-lavender-light"
@@ -31,9 +100,9 @@ export default function ThemeToggle() {
       >
         {/* Sliding knob */}
         <div
-          className={`absolute top-1 left-1 h-9 w-9 rounded-full bg-white shadow-sm flex items-center justify-center
-            will-change-transform
-            transition-transform motion-safe:duration-800 motion-safe:ease-[cubic-bezier(.65,.05,.36,1)] motion-reduce:transition-none motion-reduce:transform-none
+          className={`absolute top-1 left-1 h-9 w-9 rounded-full bg-white shadow-md flex items-center justify-center
+            will-change-transform transform-gpu
+            transition-transform motion-safe:duration-900 motion-safe:ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none motion-reduce:transform-none
             ${isDarkMode ? "translate-x-[68px]" : "translate-x-0"}
             group-active:scale-95`}
         >
@@ -44,35 +113,33 @@ export default function ThemeToggle() {
           )}
         </div>
 
-        {/* Single dynamic label (shows target mode) to avoid overlap/ghost flicker */}
+        {/* Dynamic labels */}
         <div className="absolute inset-0 select-none pointer-events-none">
-          {/* Left label: shows DARK when dark mode active (knob on right) */}
           <span
             aria-hidden={!isDarkMode}
             className={`absolute top-1/2 -translate-y-1/2 left-3 text-xs sm:text-sm font-extrabold tracking-tight text-white/90
-              transition-all ease-out will-change-opacity
+              transition-opacity transition-transform duration-500 ease-extra-smooth will-change-opacity will-change-transform
                ${
                  isDarkMode
                    ? "opacity-100 translate-x-0"
                    : "opacity-0 -translate-x-2"
                }
             `}
-            style={{ transitionDelay: isDarkMode ? "600ms" : "0ms" }}
+            style={{ transitionDelay: isDarkMode ? "180ms" : "0ms" }}
           >
             Dark
           </span>
-          {/* Right label: shows LIGHT when light mode active (knob on left) */}
           <span
             aria-hidden={isDarkMode}
             className={`absolute top-1/2 -translate-y-1/2 right-3 text-xs sm:text-sm font-extrabold tracking-tight text-white/90 text-right
-                transition-all ease-out will-change-opacity
+                transition-opacity transition-transform duration-500 ease-extra-smooth will-change-opacity will-change-transform
                  ${
                    !isDarkMode
                      ? "opacity-100 translate-x-0"
                      : "opacity-0 translate-x-2"
                  }
               `}
-            style={{ transitionDelay: !isDarkMode ? "600ms" : "0ms" }}
+            style={{ transitionDelay: !isDarkMode ? "180ms" : "0ms" }}
           >
             Light
           </span>

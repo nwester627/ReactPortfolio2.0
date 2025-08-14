@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import Head from "next/head";
 import { Nunito } from "next/font/google";
 import { ThemeProvider, useTheme } from "@/context/ThemeContext";
 import ThemeToggle from "@/components/common/ThemeToggle";
@@ -75,6 +76,9 @@ function AppContent({ Component, pageProps }) {
           : "bg-gradient-to-b from-light-bg via-light-accent to-light-container text-light-text"
       }`}
     >
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <ThemeToggle />
       {mounted && (
         <PageTransition>

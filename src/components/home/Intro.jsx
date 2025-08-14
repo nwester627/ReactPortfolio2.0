@@ -1,50 +1,68 @@
 import { Typewriter } from "react-simple-typewriter";
-import Image from "next/image";
 import { FaLinkedin, FaGithubSquare, FaCloudDownloadAlt } from "react-icons/fa";
 import GlassButton from "../common/GlassButton";
 import { useState, useCallback } from "react";
 import { useTheme } from "../../context/ThemeContext";
-import portraitImg from "../../assets/images/portrait.png";
+import WebDevDark from "./svgs/WebDevDark";
+import WebDevLight from "./svgs/WebDevLight";
 
-// Headshot component extracted for clarity & accessibility improvements
-function Headshot({ isDarkMode, onActivate, showSecret }) {
-  const containerBase =
-    "relative group outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-full";
-  const sizeClasses = "w-72 h-72 md:w-96 md:h-96";
-  const outerGlow =
-    "absolute inset-0 rounded-full bg-gradient-to-tr from-teal-400 via-blue-500 to-purple-600 opacity-10 blur-3xl -z-10";
+// HeroIllustration (formerly Headshot): themed SVG hero art with subtle effects
+function HeroIllustration({
+  isDarkMode,
+  onActivate,
+  showSecret,
+  variant = "card",
+}) {
+  const containerBase = "relative group outline-none";
+  // Align width with other containers by letting the wrapper be full-width within its parent;
+  // cap the actual illustration with a responsive max width and keep a square aspect.
+  const sizeClasses = "w-full aspect-square max-w-[28rem] md:max-w-[32rem]";
+  const rounded = variant === "circle" ? "rounded-full" : "rounded-[2rem]";
   const frame = isDarkMode
-    ? "border border-white/5 bg-gradient-to-b from-space via-space to-blackish-blue"
-    : "border border-light-primary/10 bg-gradient-to-b from-light-bg via-light-surface to-light-container";
-  const overlayShade = isDarkMode ? "bg-black/20" : "bg-black/10"; // slightly stronger in light mode for contrast
+    ? "border border-white/10 bg-gradient-to-b from-space via-space to-blackish-blue backdrop-blur-xl"
+    : "border border-light-primary/20 bg-gradient-to-b from-white via-light-surface to-light-container backdrop-blur-xl";
+  const overlayShade = isDarkMode ? "bg-white/5" : "bg-black/5"; // subtle tint for contrast without dulling colors
+  const edgeGradient = isDarkMode
+    ? "from-lavender/40 via-blue-500/30 to-purple-600/40"
+    : "from-light-primary/50 via-lavender/40 to-light-text/20";
 
   return (
-    <div className={`${containerBase} ${sizeClasses}`}>
-      <div className={outerGlow} aria-hidden="true" />
-      <button
-        type="button"
-        onClick={onActivate}
-        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onActivate()}
-        aria-label="Personal headshot – activate for a fun secret after several clicks"
-        className={`relative block w-full h-full rounded-full overflow-hidden transition-colors duration-300 ${frame} before:absolute before:inset-0 before:rounded-full before:pointer-events-none before:ring-1 before:ring-white/30 before:dark:ring-white/10 before:mix-blend-overlay`}
+    <div className={`${containerBase} ${sizeClasses} ${rounded} mx-auto`}>
+      <div
+        className={`absolute inset-0 ${rounded} pointer-events-none blur-3xl opacity-20 -z-10 bg-gradient-to-tr ${edgeGradient}`}
+        aria-hidden="true"
+      />
+      <div
+        className={`${rounded} p-[1px] bg-gradient-to-tr ${edgeGradient} shadow-xl md:shadow-2xl`}
       >
-        <span
-          className={`relative w-full h-full block transition-transform duration-500 group-hover:scale-105 motion-reduce:group-hover:scale-100 ${
-            showSecret ? "scale-105" : "scale-100"
-          }`}
+        <button
+          type="button"
+          onClick={onActivate}
+          onKeyDown={(e) =>
+            (e.key === "Enter" || e.key === " ") && onActivate()
+          }
+          aria-label="Decorative web design layout illustration – activate for a fun secret after several clicks"
+          className={`relative block w-full h-full ${rounded} overflow-hidden transition-colors duration-300 ${frame} before:absolute before:inset-0 before:rounded-[inherit] before:pointer-events-none before:ring-1 before:ring-white/20 before:dark:ring-white/10 before:mix-blend-overlay after:absolute after:inset-0 after:rounded-[inherit] after:pointer-events-none after:bg-gradient-to-tr after:from-white/0 after:via-white/10 after:to-white/0 after:opacity-0 group-hover:after:opacity-100 after:transition-opacity after:duration-500 motion-reduce:group-hover:after:opacity-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent`}
         >
-          <span className={`absolute inset-0 z-10 ${overlayShade}`} />
-          <Image
-            src={portraitImg.src}
-            alt="Nicolas Wester – full-color circular headshot"
-            fill
-            priority
-            sizes="(max-width: 640px) 18rem, (max-width: 1024px) 24rem, 28rem"
-            className="rounded-full object-cover select-none"
-            draggable={false}
-          />
-        </span>
-      </button>
+          <span
+            className={`relative w-full h-full block transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:group-hover:scale-100 ${
+              showSecret ? "scale-105" : "scale-100"
+            }`}
+          >
+            {/* subtle overlay behind illustration for depth */}
+            <span
+              className={`absolute inset-0 z-0 ${overlayShade} ${rounded}`}
+            />
+            <div className="w-full h-full flex items-center justify-center p-4 md:p-6 relative z-10 select-none">
+              {isDarkMode ? (
+                <WebDevDark className="w-full h-full" />
+              ) : (
+                <WebDevLight className="w-full h-full" />
+              )}
+            </div>
+          </span>
+        </button>
+      </div>
     </div>
   );
 }
@@ -62,9 +80,10 @@ export default function Intro() {
     }
     setClickCount(newCount === 7 ? 0 : newCount);
   }, [clickCount]);
+
   return (
     <div>
-      <div className="text-center px-6 pt-12 pb-8 sm:p-10 drop-shadow-2xl">
+      <div className="text-center px-4 sm:px-6 pt-10 sm:pt-12 pb-6 sm:pb-8 sm:p-10 drop-shadow-2xl">
         <h1
           className={`hero-fade text-[clamp(2.75rem,6vw,4.25rem)] py-2 font-bold tracking-tight leading-tight bg-gradient-to-r text-shadow-soft ${
             isDarkMode
@@ -99,14 +118,17 @@ export default function Intro() {
           />
         </h2>
       </div>
-      <div className="my-12 flex justify-center">
-        <Headshot
-          isDarkMode={isDarkMode}
-          onActivate={handlePortraitClick}
-          showSecret={showSecretMessage}
-        />
+      <div className="my-8 sm:my-12 flex justify-center">
+        <div className="w-11/12 sm:w-10/12 md:w-9/12 mx-auto">
+          <HeroIllustration
+            isDarkMode={isDarkMode}
+            onActivate={handlePortraitClick}
+            showSecret={showSecretMessage}
+          />
+        </div>
       </div>
-      <div className="flex flex-wrap justify-center rounded-md pt-8 gap-4 sm:gap-8">
+      {/* Attribution removed per new request to use downloaded SVGs */}
+      <div className="flex flex-wrap justify-center rounded-md pt-8 gap-3 sm:gap-4">
         <GlassButton
           href="https://www.linkedin.com/in/nicolaswester/"
           icon={<FaLinkedin className="inline-flex text-xl" />}
@@ -143,7 +165,7 @@ export default function Intro() {
         A Little Bit About Me
       </h4>
       <p
-        className={`w-11/12 sm:w-9/12 mx-auto text-md px-4 text-center text-balance 2xl:text-xl ${
+        className={`w-11/12 sm:w-10/12 md:w-9/12 mx-auto text-[15px] sm:text-md px-4 text-center text-pretty 2xl:text-xl ${
           isDarkMode ? "text-light-gray" : "text-light-secondary"
         }`}
       >

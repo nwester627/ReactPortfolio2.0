@@ -1,11 +1,6 @@
 // Central project data model (case study view).
-// Fields: id, title, tagline, description, problem, approach, outcome, image, technologies,
+// Fields: id, title, tagline, description, problem, approach, outcome, technologies,
 // features, challenges, githubUrl, liveUrl, status, constraints, patterns.
-
-import discordBot from "../assets/images/discordBot.png";
-import inventoryManagement from "../assets/images/inventorymanagementproject.png";
-import videoGames from "../assets/images/videogames.jpeg";
-import webDeveloper from "../assets/images/webdeveloper.jpg";
 
 export const projectsData = [
   {
@@ -22,7 +17,6 @@ export const projectsData = [
     outcome:
       "Cut manual moderation overhead; members self‑serve playback and announcements run on schedule.",
     impact: "Reduced manual moderation effort ~60% via automation.",
-    image: discordBot,
     technologies: ["Python", "Discord.py", "SQLite", "APIs"],
     features: [
       "Moderation tools",
@@ -61,7 +55,6 @@ export const projectsData = [
     outcome:
       "Faster part lookup and fewer data mismatches; simplified training for new users.",
     impact: "Decreased lookup time and onboarding friction for new users.",
-    image: inventoryManagement,
     technologies: ["Java", "JavaFX", "SQL", "Scene Builder"],
     features: [
       "Parts & products CRUD",
@@ -83,46 +76,6 @@ export const projectsData = [
     patterns: ["Model layer", "Observable lists", "Search normalization"],
   },
   {
-    id: 3,
-    title: "Video Game Royale",
-    slug: "video-game-royale",
-    tagline: "Tournament & stats hub (early)",
-    description:
-      "In‑progress hub for tournaments and stats; early groundwork on data model and bracket logic.",
-    problem:
-      "Disjoint tracking of brackets and player stats across ad‑hoc tools.",
-    approach:
-      "Designing unified schema + bracket engine prototypes while isolating real‑time layer.",
-    outcome:
-      "Foundation for consistent future updates without schema rewrites.",
-    impact:
-      "Established stable schema groundwork for future real-time features.",
-    image: videoGames,
-    technologies: ["React", "JavaScript", "CSS", "APIs"],
-    features: [
-      "Brackets",
-      "Live scoring (planned)",
-      "Player profiles",
-      "Real‑time updates (planned)",
-      "Game stats",
-    ],
-    challenges:
-      "Upcoming focus: consistent real‑time updates without stale client state.",
-    githubUrl: null,
-    liveUrl: null,
-    status: "in-progress",
-    constraints: [
-      "Future real-time load",
-      "Bracket consistency",
-      "Schema stability",
-    ],
-    patterns: [
-      "Schema-first design",
-      "Isolation of live layer",
-      "Prototype bracket engine",
-    ],
-  },
-  {
     id: 4,
     title: "Portfolio Website",
     slug: "portfolio-website",
@@ -135,7 +88,6 @@ export const projectsData = [
       "Data‑driven skills, progressive enhancements (loader, reduced motion), unified glass design tokens.",
     outcome: "Faster initial paint and cohesive brand feel across sections.",
     impact: "Improved first paint feel & consistent brand/storytelling.",
-    image: webDeveloper,
     technologies: ["React", "Next.js", "Tailwind CSS", "JavaScript"],
     features: [
       "Responsive layout",
@@ -149,12 +101,60 @@ export const projectsData = [
     githubUrl: "https://github.com/nwester627/ReactPortfolio2.0",
     liveUrl: "https://www.nicolaswester.com",
     status: "released",
+    aiEnhanced: {
+      enabled: true,
+      tools: ["GPT-5", "Claude"],
+      description:
+        "Human-led build with AI as a productivity co-pilot for speed and polish.",
+    },
     constraints: ["Static export", "Fast first paint", "Accessible motion"],
     patterns: [
       "Progressive enhancement",
       "Design tokens",
       "Reduced motion support",
       "Data-driven sections",
+      "AI-assisted architecture",
+    ],
+  },
+  {
+    id: 5,
+    title: "The Grassroots Guide (Working Title)",
+    slug: "grassroots-guide",
+    tagline: "Action hub for local progressive politics",
+    description:
+      "Action-oriented web platform to help progressives find and engage in local politics.",
+    problem:
+      "Finding local opportunities is hard—info lives across government sites, social groups, and scattered calendars.",
+    approach:
+      'Centralize location-based discovery, pair listings with "Action Kits" (key dates + links) to convert interest into action.',
+    outcome:
+      "Pilot for Polk County, FL; staged roadmap to statewide and national expansion.",
+    impact:
+      "Lowers barrier to entry and turns passive interest into concrete next steps.",
+    technologies: [
+      "Next.js",
+      "Vercel Functions",
+      "Supabase (Postgres)",
+      "Leaflet.js",
+      "Tailwind CSS",
+    ],
+    features: [
+      "Location-based search",
+      "Local offices to run for",
+      "Protests & meetings",
+      "Group connections",
+      "Action Kits",
+    ],
+    challenges:
+      "Aggregating disparate sources and normalizing geo data while keeping UX simple.",
+    githubUrl: null,
+    liveUrl: null,
+    status: "in-progress",
+    constraints: ["Serverless friendly", "Simple MVP", "Accessible maps"],
+    patterns: [
+      "Geocoded search",
+      "Serverless API routes",
+      "Progressive disclosure",
     ],
   },
 ];

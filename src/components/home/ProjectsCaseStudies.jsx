@@ -1,19 +1,26 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { FaGithub, FaExternalLinkAlt, FaChevronDown } from "react-icons/fa";
+import { SiOpenai } from "react-icons/si";
 import { projectsData } from "@/lib/projects";
 import { useTheme } from "@/context/ThemeContext";
 import StackClusterAvatar from "./StackClusterAvatar";
 
-// Hook: detect user preference for reduced motion (system setting)
+/**
+ * Hook to detect user's motion preferences for accessibility
+ */
 function usePrefersReducedMotion() {
   const [prefers, setPrefers] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
+
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => setPrefers(mq.matches);
     update();
+
     mq.addEventListener
       ? mq.addEventListener("change", update)
       : mq.addListener(update);
+
     return () => {
       mq.removeEventListener
         ? mq.removeEventListener("change", update)
@@ -22,7 +29,6 @@ function usePrefersReducedMotion() {
   }, []);
   return prefers;
 }
-import { FaGithub, FaExternalLinkAlt, FaChevronDown } from "react-icons/fa";
 
 function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
   const { isDarkMode } = useTheme();
@@ -59,10 +65,10 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
         onClick={onToggle}
         aria-expanded={open}
         ref={headerRef}
-        className="case-header w-full text-left px-5 py-5 flex items-start gap-5 focus:outline-none"
+        className="case-header w-full text-left px-4 sm:px-5 py-4 sm:py-5 flex items-start gap-4 sm:gap-5 focus:outline-none"
       >
-        <StackClusterAvatar technologies={project.technologies} size={60} />
-        <div className="flex-1 min-w-0 space-y-2">
+        <StackClusterAvatar technologies={project.technologies} size={56} />
+        <div className="flex-1 min-w-0 space-y-1.5 sm:space-y-2">
           <div className="flex items-center gap-3 flex-wrap">
             <h3
               className={`text-xl font-bold tracking-tight text-shadow-subtle ${
@@ -80,6 +86,42 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
             >
               {project.status}
             </span>
+            {project.aiEnhanced?.enabled && (
+              <span
+                className={`text-[0.6rem] font-semibold pl-2.5 pr-3 py-1 rounded-full tracking-wide relative overflow-hidden inline-flex items-center gap-1.5 ${
+                  isDarkMode
+                    ? "bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-200 border border-purple-400/30"
+                    : "bg-gradient-to-r from-purple-500/15 to-blue-500/15 text-purple-700 border border-purple-500/40"
+                }`}
+                style={{
+                  boxShadow: isDarkMode
+                    ? "0 0 10px rgba(147, 51, 234, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1)"
+                    : "0 0 8px rgba(147, 51, 234, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35)",
+                }}
+                title={project.aiEnhanced.description}
+              >
+                <SiOpenai className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                <span className="relative z-10 whitespace-nowrap">
+                  {`Enabled with ${project.aiEnhanced?.tools?.[0] || "AI"}`}
+                </span>
+                {/* Moving glow sweep */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-full overflow-hidden"
+                >
+                  <span
+                    className={`absolute top-0 -left-1/3 h-full w-1/3 blur-sm opacity-60 ${
+                      isDarkMode
+                        ? "bg-gradient-to-r from-transparent via-white/50 to-transparent"
+                        : "bg-gradient-to-r from-transparent via-white/70 to-transparent"
+                    } motion-reduce:opacity-0`}
+                    style={{
+                      animation: "badgeSweep 2.6s linear infinite alternate",
+                    }}
+                  />
+                </span>
+              </span>
+            )}
             {impact && (
               <span
                 className={`text-[0.6rem] font-semibold px-2 py-1 rounded-full tracking-wide ring-1 ${
@@ -136,8 +178,11 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
         }
         aria-hidden={!open}
       >
-        <div ref={contentRef} className="pt-0 pb-6 space-y-6">
-          <div className="grid md:grid-cols-3 gap-6 pt-2">
+        <div
+          ref={contentRef}
+          className="pt-0 pb-5 sm:pb-6 space-y-5 sm:space-y-6"
+        >
+          <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 pt-2">
             <div className="md:col-span-1 space-y-4">
               <section>
                 <h4 className="text-xs font-semibold tracking-wider uppercase mb-1 opacity-70 text-shadow-subtle">
@@ -233,6 +278,34 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
                   </p>
                 </section>
               )}
+              {project.aiEnhanced?.enabled && (
+                <section>
+                  <h4 className="text-xs font-semibold tracking-wider uppercase mb-1 opacity-70 text-shadow-subtle">
+                    AI-Enhanced Development
+                  </h4>
+                  <p
+                    className={`text-sm mb-2 ${
+                      isDarkMode ? "text-light-gray/85" : "text-light-text/85"
+                    }`}
+                  >
+                    {project.aiEnhanced.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.aiEnhanced.tools.map((tool, i) => (
+                      <span
+                        key={i}
+                        className={`px-2 py-1 rounded-md text-[0.6rem] font-semibold tracking-wide ${
+                          isDarkMode
+                            ? "bg-purple-500/15 text-purple-200 border border-purple-400/30"
+                            : "bg-purple-500/10 text-purple-700 border border-purple-500/30"
+                        }`}
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              )}
               <section className="flex flex-wrap gap-3 pt-2">
                 {project.githubUrl && (
                   <a
@@ -273,8 +346,12 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
   );
 }
 
+/**
+ * Interactive project showcase with expandable case study details.
+ * Features keyboard navigation, deep linking, and smooth animations.
+ */
 export default function ProjectsCaseStudies() {
-  const [openIds, setOpenIds] = useState([]); // single open; index 0 if any
+  const [openIds, setOpenIds] = useState([]);
   const headerRefs = useRef({});
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -285,39 +362,41 @@ export default function ProjectsCaseStudies() {
   const toggleId = useCallback(
     (id) => {
       setOpenIds((prev) => (prev.includes(id) ? [] : [id]));
-      // update hash
+
+      // Update URL hash for deep linking
       const proj = projectsData.find((p) => p.id === id);
-      if (proj && typeof window !== "undefined") {
-        if (history.replaceState) {
-          if (!openIds.includes(id)) {
-            history.replaceState(null, "", `#${proj.slug}`);
-          } else {
-            history.replaceState(null, "", window.location.pathname);
-          }
+      if (proj && typeof window !== "undefined" && history.replaceState) {
+        if (!openIds.includes(id)) {
+          history.replaceState(null, "", `#${proj.slug}`);
+        } else {
+          history.replaceState(null, "", window.location.pathname);
         }
       }
-      // auto-scroll after next frame (allow height set) if opening
+
+      // Auto-scroll to opened project after animation frame
       requestAnimationFrame(() => {
         const proj = projectsData.find((p) => p.id === id);
         if (!proj) return;
+
         const el = document.getElementById(proj.slug);
         if (el) {
           const rect = el.getBoundingClientRect();
           const needsScroll = rect.top < 0 || rect.bottom > window.innerHeight;
+
           if (needsScroll) {
             el.scrollIntoView({
               block: "nearest",
               behavior: prefersReducedMotion ? "auto" : "smooth",
             });
           }
-          // Secondary correction after height expansion (animation ~600ms)
+
+          // Adjust scroll position after height expansion completes
           setTimeout(
             () => {
               const r2 = el.getBoundingClientRect();
               if (r2.top < 8) {
-                // nudge down slightly so header not flush to top
                 window.scrollBy({
-                  top: r2.top - 16, // negative value scrolls up a bit
+                  top: r2.top - 16,
                   left: 0,
                   behavior: prefersReducedMotion ? "auto" : "smooth",
                 });
@@ -331,11 +410,13 @@ export default function ProjectsCaseStudies() {
     [openIds, prefersReducedMotion]
   );
 
-  // Hash linking on mount
+  // Handle URL hash on initial load for deep linking
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     const hash = window.location.hash.replace("#", "");
     if (!hash) return;
+
     const proj = projectsData.find((p) => p.slug === hash);
     if (proj) {
       setOpenIds([proj.id]);

@@ -6,6 +6,10 @@ import {
   SiSqlite,
   SiJavascript,
   SiTailwindcss,
+  SiLeaflet,
+  SiSupabase,
+  SiVercel,
+  SiNextdotjs,
 } from "react-icons/si";
 
 // Mapping includes icon and brand color (fallback neutral if theme overrides)
@@ -19,6 +23,10 @@ const techMeta = {
   react: { Icon: FaReact, color: "#61DAFB" },
   javascript: { Icon: SiJavascript, color: "#F7DF1E" },
   tailwind: { Icon: SiTailwindcss, color: "#06B6D4" },
+  leaflet: { Icon: SiLeaflet, color: "#199900" },
+  supabase: { Icon: SiSupabase, color: "#3ECF8E" },
+  vercel: { Icon: SiVercel, color: "#000000" },
+  next: { Icon: SiNextdotjs, color: "#000000" },
 };
 
 function pickIcons(technologies = [], max = 3) {

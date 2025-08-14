@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import emailjs from "@emailjs/browser";
-import { Typewriter } from "react-simple-typewriter";
 import GlassButton from "../common/GlassButton";
 import { useTheme } from "@/context/ThemeContext";
 
-export default function Contact() {
+export default function Contact({ layout = "default" }) {
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,27 +17,30 @@ export default function Contact() {
     company: "",
     timeline: "",
     budget: "",
+    position: "",
+    workArrangement: "",
+    location: "",
     attachments: [],
   });
   const [isDraftSaved, setIsDraftSaved] = useState(false);
   const form = useRef();
   const { isDarkMode } = useTheme();
-  const prefersReducedMotion = useRef(false);
+  //
 
   const MAX_MESSAGE_LENGTH = 2000;
   const TOTAL_STEPS = 3;
 
   const subjectOptions = [
-    { value: "", label: "Select a topic..." },
-    { value: "web-development", label: "Web Development Project" },
-    { value: "consultation", label: "Technical Consultation" },
-    { value: "collaboration", label: "Collaboration Opportunity" },
-    { value: "employment", label: "Employment Inquiry" },
+    { value: "", label: "Select employment type..." },
+    { value: "full-time", label: "Full-time" },
+    { value: "contract", label: "Contract" },
+    { value: "contract-to-hire", label: "Contract-to-hire" },
+    { value: "internship", label: "Internship" },
     { value: "other", label: "Other" },
   ];
 
   const timelineOptions = [
-    { value: "", label: "Select timeline..." },
+    { value: "", label: "Select hiring timeline..." },
     { value: "asap", label: "ASAP (Rush job)" },
     { value: "1-2weeks", label: "1-2 weeks" },
     { value: "1month", label: "1 month" },
@@ -48,31 +50,26 @@ export default function Contact() {
   ];
 
   const budgetOptions = [
-    { value: "", label: "Select budget range..." },
-    { value: "under-5k", label: "Under $5,000" },
-    { value: "5k-15k", label: "$5,000 - $15,000" },
-    { value: "15k-50k", label: "$15,000 - $50,000" },
-    { value: "50k+", label: "$50,000+" },
+    { value: "", label: "Select compensation range..." },
+    { value: "50k-80k", label: "$50k - $80k" },
+    { value: "80k-120k", label: "$80k - $120k" },
+    { value: "120k-160k", label: "$120k - $160k" },
+    { value: "160k+", label: "$160k+" },
     { value: "discuss", label: "Let's discuss" },
   ];
 
   const steps = [
-    { id: 1, title: "Basic Info", description: "Name, email & topic" },
+    { id: 1, title: "Basic Info", description: "Your name & work email" },
     {
       id: 2,
-      title: "Project Details",
-      description: "Timeline, budget & company",
+      title: "Role Details",
+      description: "Company, title, location & logistics",
     },
-    { id: 3, title: "Message & Files", description: "Details & attachments" },
+    { id: 3, title: "Message & Files", description: "Notes & job description" },
   ];
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      prefersReducedMotion.current = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-
-      // Load saved draft
       const savedDraft = localStorage.getItem("contact-form-draft");
       if (savedDraft) {
         try {
@@ -87,20 +84,22 @@ export default function Contact() {
     }
   }, []);
 
-  // Auto-save draft
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (
-        Object.values(formData).some((value) =>
-          Array.isArray(value) ? value.length > 0 : value.trim()
-        )
-      ) {
-        localStorage.setItem("contact-form-draft", JSON.stringify(formData));
-        setIsDraftSaved(true);
-        // Don't set it back to false here to avoid infinite loop
+      try {
+        const hasAnyValue = Object.entries(formData).some(([key, value]) => {
+          if (key === "attachments")
+            return Array.isArray(value) && value.length > 0;
+          return typeof value === "string" ? value.trim().length > 0 : !!value;
+        });
+        if (hasAnyValue) {
+          localStorage.setItem("contact-form-draft", JSON.stringify(formData));
+          setIsDraftSaved(true);
+        }
+      } catch (e) {
+        console.error("Error saving draft:", e);
       }
-    }, 2000);
-
+    }, 600);
     return () => clearTimeout(timer);
   }, [formData]);
 
@@ -112,28 +111,24 @@ export default function Contact() {
     }
   }, [isDraftSaved]);
 
-  // Validation functions
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  // Pure validation helper that DOES NOT mutate state (safe to call during render logic)
+  // Validation helpers (pure)
   const getFieldError = useCallback(
     (name, value) => {
       switch (name) {
+        case "email": {
+          if (!value.trim()) return "Work email is required";
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(value)
+            ? null
+            : "Please enter a valid work email";
+        }
         case "name":
           if (!value.trim()) return "Name is required";
           if (value.trim().length < 2)
             return "Name must be at least 2 characters";
           return null;
-        case "email":
-          if (!value.trim()) return "Email is required";
-          if (!validateEmail(value))
-            return "Please enter a valid email address";
-          return null;
         case "subject":
-          if (!value) return "Please select a topic";
+          if (!value) return "Please select an employment type";
           return null;
         case "message":
           if (!value.trim()) return "Message is required";
@@ -149,7 +144,6 @@ export default function Contact() {
     [MAX_MESSAGE_LENGTH]
   );
 
-  // Imperative validator that UPDATES state (only call in handlers, never in render)
   const validateField = useCallback(
     (name, value) => {
       const errorMsg = getFieldError(name, value);
@@ -177,22 +171,24 @@ export default function Contact() {
         setMessageLength(value.length);
       }
 
-      // Clear error when user starts typing
       if (errors[name]) {
         validateField(name, value);
       }
     },
-    [errors]
+    [errors, validateField]
   );
 
-  const handleBlur = useCallback((e) => {
-    const { name, value } = e.target;
-    validateField(name, value);
-  }, []);
+  const handleBlur = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+      validateField(name, value);
+    },
+    [validateField]
+  );
 
   const handleFileUpload = useCallback((e) => {
     const files = Array.from(e.target.files);
-    const maxSize = 10 * 1024 * 1024; // 10MB
+    const maxSize = 10 * 1024 * 1024;
     const allowedTypes = [
       "application/pdf",
       "image/jpeg",
@@ -228,7 +224,6 @@ export default function Contact() {
     }));
   }, []);
 
-  // Pure step validity (no state mutation)
   const isCurrentStepValid = useMemo(() => {
     switch (currentStep) {
       case 1:
@@ -238,7 +233,7 @@ export default function Contact() {
           getFieldError("subject", formData.subject),
         ].every((err) => !err);
       case 2:
-        return true; // All optional
+        return true;
       case 3:
         return !getFieldError("message", formData.message);
       default:
@@ -247,7 +242,6 @@ export default function Contact() {
   }, [currentStep, formData, getFieldError]);
 
   const nextStep = useCallback(() => {
-    // Run validation only for required fields of this step (updates error state once)
     if (currentStep === 1) {
       const a = validateField("name", formData.name);
       const b = validateField("email", formData.email);
@@ -278,6 +272,9 @@ export default function Contact() {
       company: "",
       timeline: "",
       budget: "",
+      position: "",
+      workArrangement: "",
+      location: "",
       attachments: [],
     });
     setMessageLength(0);
@@ -286,7 +283,7 @@ export default function Contact() {
 
   const getInputClasses = (fieldName) => {
     const hasError = errors[fieldName];
-    const baseClasses = `peer w-full text-base sm:text-lg rounded-xl py-3 px-4 border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent`;
+    const baseClasses = `peer w-full text-base sm:text-lg rounded-xl py-3 px-4 border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent placeholder:text-white/95`;
 
     if (hasError) {
       return `${baseClasses} ${
@@ -306,7 +303,6 @@ export default function Contact() {
   function sendEmail(e) {
     e.preventDefault();
 
-    // Final validation
     const isNameValid = validateField("name", formData.name);
     const isEmailValid = validateField("email", formData.email);
     const isSubjectValid = validateField("subject", formData.subject);
@@ -319,20 +315,20 @@ export default function Contact() {
     setIsSubmitting(true);
     setMessage("");
 
-    // Create form data for EmailJS
     const emailData = {
       name: formData.name,
       email: formData.email,
-      subject: formData.subject,
+      employment_type: formData.subject,
       message: formData.message,
       company: formData.company || "Not specified",
-      timeline: formData.timeline || "Not specified",
-      budget: formData.budget || "Not specified",
+      hiring_timeline: formData.timeline || "Not specified",
+      compensation_range: formData.budget || "Not specified",
+      position: formData.position || "Not specified",
+      work_arrangement: formData.workArrangement || "Not specified",
+      location: formData.location || "Not specified",
       attachments_count: formData.attachments.length,
     };
 
-    // For now, we'll send without file attachments via EmailJS
-    // In a real implementation, you'd need a backend to handle file uploads
     emailjs
       .send(
         "service_dj3jp0v",
@@ -356,9 +352,7 @@ export default function Contact() {
       });
   }
 
-  const getProgressPercentage = () => {
-    return ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100;
-  };
+  //
 
   const ProgressIndicator = () => (
     <div className="mb-8">
@@ -366,14 +360,14 @@ export default function Contact() {
         {steps.map((step, index) => (
           <div key={step.id} className="flex items-center">
             <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${
+              className={`w-11 h-11 rounded-full flex items-center justify-center text-base sm:text-lg font-semibold transition-all duration-300 shadow-sm ${
                 step.id <= currentStep
                   ? isDarkMode
-                    ? "bg-lavender/30 text-lavender ring-2 ring-lavender/50"
-                    : "bg-lavender/40 text-white ring-2 ring-lavender/60"
+                    ? "bg-lavender/70 text-white ring-2 ring-lavender/60"
+                    : "bg-lavender text-white ring-2 ring-lavender/60"
                   : isDarkMode
-                  ? "bg-white/10 text-light-gray/60 ring-2 ring-white/20"
-                  : "bg-light-primary/10 text-light-text/60 ring-2 ring-light-primary/20"
+                  ? "bg-white/10 text-light-gray/80 ring-2 ring-white/25"
+                  : "bg-light-primary/10 text-light-text/80 ring-2 ring-light-primary/25"
               }`}
             >
               {step.id < currentStep ? (
@@ -431,13 +425,20 @@ export default function Contact() {
       className="w-full flex items-center justify-center py-16"
     >
       <form
-        className={`w-11/12 sm:w-5/6 md:w-3/4 lg:w-[52%] rounded-2xl p-8 sm:p-10 border backdrop-blur-md will-change-transform opacity-0 translate-y-4 scale-[0.985] animate-[materialize_0.85s_cubic-bezier(.33,1,.68,1)_forwards] shadow-sm focus-within:shadow-md transition-shadow duration-500 ${
+        className={`${
+          layout === "embedded"
+            ? "w-full"
+            : "w-11/12 sm:w-5/6 md:w-3/4 lg:w-[52%]"
+        } rounded-2xl ${
+          layout === "embedded" ? "p-6 sm:p-8" : "p-8 sm:p-10"
+        } border backdrop-blur-md will-change-transform opacity-0 translate-y-4 scale-[0.985] animate-[materialize_0.85s_cubic-bezier(.33,1,.68,1)_forwards] shadow-sm focus-within:shadow-md transition-shadow duration-500 ${
           isDarkMode
             ? "border-white/8 bg-white/[0.05]"
             : "border-light-primary/15 bg-white/80 supports-[backdrop-filter]:bg-white/65"
         }`}
         ref={form}
         onSubmit={sendEmail}
+        data-theme={isDarkMode ? "dark" : "light"}
       >
         <h2
           id="contact-heading"
@@ -447,17 +448,8 @@ export default function Contact() {
               : "from-light-primary via-lavender to-light-text accent-shadow"
           } bg-clip-text text-transparent`}
         >
-          <span className="block min-h-[2.4rem]">
-            <Typewriter
-              words={["Contact Me", "Let's Connect"]}
-              loop={0}
-              cursor
-              cursorStyle="|"
-              typeSpeed={70}
-              deleteSpeed={50}
-              delaySpeed={2500}
-            />
-          </span>
+          Contact
+          <div className="mx-auto mt-3 h-[3px] w-16 rounded-full bg-gradient-to-r from-rose via-lavender to-lavender/60" />
         </h2>
         {/* Progress Indicator */}
         <ProgressIndicator />
@@ -484,7 +476,7 @@ export default function Contact() {
         )}
         {/* Step 1: Basic Info */}
         {currentStep === 1 && (
-          <div className="space-y-6">
+          <div className="space-y-7 md:space-y-8">
             {/* Name Field */}
             <div className="relative">
               <input
@@ -494,18 +486,21 @@ export default function Contact() {
                 className={`${getInputClasses("name")} h-16`}
                 required
                 aria-label="Name"
+                placeholder=" "
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
               <label
                 className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
                   formData.name
-                    ? "top-[-20px] text-sm text-lavender"
-                    : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-20px] peer-focus:text-sm"
+                    ? "top-[-26px] text-sm text-lavender"
+                    : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm"
                 } ${
                   errors.name
                     ? "text-red-400"
-                    : "peer-focus:text-lavender text-light-gray"
+                    : isDarkMode
+                    ? "peer-focus:text-lavender text-white/90"
+                    : "peer-focus:text-lavender text-light-text/80"
                 }`}
               >
                 Name *
@@ -528,7 +523,7 @@ export default function Contact() {
               )}
             </div>
 
-            {/* Email Field */}
+            {/* Work Email Field */}
             <div className="relative">
               <input
                 name="email"
@@ -536,22 +531,25 @@ export default function Contact() {
                 value={formData.email}
                 className={`${getInputClasses("email")} h-16`}
                 required
-                aria-label="Email"
+                aria-label="Work Email"
+                placeholder=" "
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
               <label
                 className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
                   formData.email
-                    ? "top-[-20px] text-sm text-lavender"
-                    : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-20px] peer-focus:text-sm"
+                    ? "top-[-26px] text-sm text-lavender"
+                    : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm"
                 } ${
                   errors.email
                     ? "text-red-400"
-                    : "peer-focus:text-lavender text-light-gray"
+                    : isDarkMode
+                    ? "peer-focus:text-lavender text-white/90"
+                    : "peer-focus:text-lavender text-light-text/80"
                 }`}
               >
-                Email *
+                Work Email *
               </label>
               {errors.email && (
                 <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
@@ -571,14 +569,16 @@ export default function Contact() {
               )}
             </div>
 
-            {/* Subject Dropdown */}
+            {/* Employment Type */}
             <div className="relative">
               <select
                 name="subject"
                 value={formData.subject}
-                className={`${getInputClasses("subject")} h-16 cursor-pointer`}
+                className={`${getInputClasses(
+                  "subject"
+                )} h-16 cursor-pointer appearance-none pr-12 bg-transparent`}
                 required
-                aria-label="Subject"
+                aria-label="Employment Type"
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               >
@@ -588,12 +588,25 @@ export default function Contact() {
                   </option>
                 ))}
               </select>
+              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-light-gray/70">
+                <svg
+                  className="w-5 h-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
               <label
-                className={`absolute left-4 top-[-20px] text-sm font-medium transition-all duration-300 pointer-events-none ${
+                className={`absolute left-4 top-[-26px] text-sm font-medium transition-all duration-300 pointer-events-none ${
                   errors.subject ? "text-red-400" : "text-lavender"
                 }`}
               >
-                Subject *
+                Employment Type *
               </label>
               {errors.subject && (
                 <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
@@ -614,9 +627,9 @@ export default function Contact() {
             </div>
           </div>
         )}
-        {/* Step 2: Project Details */}
+        {/* Step 2: Role Details */}
         {currentStep === 2 && (
-          <div className="space-y-6">
+          <div className="space-y-7 md:space-y-8">
             {/* Company Field */}
             <div className="relative">
               <input
@@ -625,26 +638,55 @@ export default function Contact() {
                 value={formData.company}
                 className={`${getInputClasses("company")} h-16`}
                 aria-label="Company"
+                placeholder=" "
                 onChange={handleInputChange}
               />
               <label
                 className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
                   formData.company
-                    ? "top-[-20px] text-sm text-lavender"
-                    : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-20px] peer-focus:text-sm peer-focus:text-lavender text-light-gray"
+                    ? "top-[-26px] text-sm text-lavender"
+                    : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm peer-focus:text-lavender ${
+                        isDarkMode ? "text-white/90" : "text-light-text/80"
+                      }`
                 }`}
               >
                 Company (Optional)
               </label>
             </div>
 
-            {/* Timeline Dropdown */}
+            {/* Position Title */}
+            <div className="relative">
+              <input
+                name="position"
+                type="text"
+                value={formData.position}
+                className={`${getInputClasses("position")} h-16`}
+                aria-label="Position Title"
+                placeholder=" "
+                onChange={handleInputChange}
+              />
+              <label
+                className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                  formData.position
+                    ? "top-[-26px] text-sm text-lavender"
+                    : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm peer-focus:text-lavender ${
+                        isDarkMode ? "text-white/90" : "text-light-text/80"
+                      }`
+                }`}
+              >
+                Position Title (Optional)
+              </label>
+            </div>
+
+            {/* Hiring Timeline */}
             <div className="relative">
               <select
                 name="timeline"
                 value={formData.timeline}
-                className={`${getInputClasses("timeline")} h-16 cursor-pointer`}
-                aria-label="Timeline"
+                className={`${getInputClasses(
+                  "timeline"
+                )} h-16 cursor-pointer appearance-none pr-12 bg-transparent`}
+                aria-label="Hiring Timeline"
                 onChange={handleInputChange}
               >
                 {timelineOptions.map((option) => (
@@ -653,18 +695,33 @@ export default function Contact() {
                   </option>
                 ))}
               </select>
-              <label className="absolute left-4 top-[-20px] text-sm font-medium text-lavender pointer-events-none">
-                Timeline (Optional)
+              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-light-gray/70">
+                <svg
+                  className="w-5 h-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
+                Hiring Timeline (Optional)
               </label>
             </div>
 
-            {/* Budget Dropdown */}
+            {/* Compensation Range */}
             <div className="relative">
               <select
                 name="budget"
                 value={formData.budget}
-                className={`${getInputClasses("budget")} h-16 cursor-pointer`}
-                aria-label="Budget"
+                className={`${getInputClasses(
+                  "budget"
+                )} h-16 cursor-pointer appearance-none pr-12 bg-transparent`}
+                aria-label="Compensation Range"
                 onChange={handleInputChange}
               >
                 {budgetOptions.map((option) => (
@@ -673,56 +730,100 @@ export default function Contact() {
                   </option>
                 ))}
               </select>
-              <label className="absolute left-4 top-[-20px] text-sm font-medium text-lavender pointer-events-none">
-                Budget Range (Optional)
+              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-light-gray/70">
+                <svg
+                  className="w-5 h-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
+                Compensation Range (Optional)
               </label>
             </div>
 
-            {/* Calendar Integration Placeholder */}
-            <div
-              className={`p-4 rounded-xl border-2 border-dashed transition-colors ${
-                isDarkMode
-                  ? "border-white/20 bg-white/5"
-                  : "border-light-primary/30 bg-light-primary/5"
-              }`}
-            >
-              <div className="text-center">
+            {/* Work Arrangement */}
+            <div className="relative">
+              <select
+                name="workArrangement"
+                value={formData.workArrangement}
+                className={`${getInputClasses(
+                  "workArrangement"
+                )} h-16 cursor-pointer appearance-none pr-12 bg-transparent`}
+                aria-label="Work Arrangement"
+                onChange={handleInputChange}
+              >
+                {[
+                  { value: "", label: "Select work arrangement..." },
+                  { value: "remote", label: "Remote" },
+                  { value: "hybrid", label: "Hybrid" },
+                  { value: "onsite", label: "Onsite" },
+                ].map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-light-gray/70">
                 <svg
-                  className={`w-8 h-8 mx-auto mb-2 ${
-                    isDarkMode ? "text-light-gray/60" : "text-light-text/60"
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  className="w-5 h-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    fillRule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                    clipRule="evenodd"
                   />
                 </svg>
-                <p
-                  className={`text-sm font-medium ${
-                    isDarkMode ? "text-light-gray/80" : "text-light-text/80"
-                  }`}
-                >
-                  Want to schedule a call?
-                </p>
-                <p
-                  className={`text-xs ${
-                    isDarkMode ? "text-light-gray/60" : "text-light-text/60"
-                  }`}
-                >
-                  Calendar integration coming soon
-                </p>
               </div>
+              <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
+                Work Arrangement (Optional)
+              </label>
+            </div>
+
+            {/* Location */}
+            <div className="relative">
+              <input
+                name="location"
+                type="text"
+                value={formData.location}
+                className={`${getInputClasses("location")} h-16`}
+                aria-label="Location"
+                onChange={handleInputChange}
+                placeholder=" "
+              />
+              <label
+                className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                  formData.location
+                    ? "top-[-26px] text-sm text-lavender"
+                    : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm peer-focus:text-lavender ${
+                        isDarkMode ? "text-white/90" : "text-light-text/80"
+                      }`
+                }`}
+              >
+                Location (Optional)
+              </label>
+              <p
+                className={`mt-2 text-xs ${
+                  isDarkMode ? "text-light-gray/60" : "text-light-text/60"
+                }`}
+              >
+                City & State or your preferred timezone (e.g., "Austin, TX" or
+                "ET").
+              </p>
             </div>
           </div>
         )}
         {/* Step 3: Message & Files */}
         {currentStep === 3 && (
-          <div className="space-y-6">
+          <div className="space-y-7 md:space-y-8">
             {/* Message Field with Character Counter */}
             <div className="relative">
               <textarea
@@ -734,18 +835,21 @@ export default function Contact() {
                 required
                 aria-label="Message"
                 maxLength={MAX_MESSAGE_LENGTH}
+                placeholder=" "
                 onChange={handleInputChange}
                 onBlur={handleBlur}
               />
               <label
                 className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
                   formData.message
-                    ? "top-[-20px] text-sm text-lavender"
-                    : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-20px] peer-focus:text-sm"
+                    ? "top-[-26px] text-sm text-lavender"
+                    : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm"
                 } ${
                   errors.message
                     ? "text-red-400"
-                    : "peer-focus:text-lavender text-light-gray"
+                    : isDarkMode
+                    ? "peer-focus:text-lavender text-white/90"
+                    : "peer-focus:text-lavender text-light-text/80"
                 }`}
               >
                 Message *
@@ -772,8 +876,9 @@ export default function Contact() {
             </div>
 
             {/* File Upload */}
-            <div
-              className={`p-6 rounded-xl border-2 border-dashed transition-colors ${
+            <label
+              htmlFor="file-upload"
+              className={`block p-6 rounded-xl border-2 border-dashed transition-colors cursor-pointer ${
                 isDarkMode
                   ? "border-white/20 bg-white/5 hover:border-white/30"
                   : "border-light-primary/30 bg-light-primary/5 hover:border-light-primary/40"
@@ -803,16 +908,15 @@ export default function Contact() {
                   onChange={handleFileUpload}
                   accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif"
                 />
-                <label
-                  htmlFor="file-upload"
-                  className={`cursor-pointer text-sm font-medium ${
+                <div
+                  className={`text-sm font-medium ${
                     isDarkMode
                       ? "text-light-gray/80 hover:text-light-gray"
                       : "text-light-text/80 hover:text-light-text"
                   } transition-colors`}
                 >
                   Click to upload files or drag and drop
-                </label>
+                </div>
                 <p
                   className={`text-xs mt-1 ${
                     isDarkMode ? "text-light-gray/60" : "text-light-text/60"
@@ -821,7 +925,7 @@ export default function Contact() {
                   PDF, DOC, TXT, Images (Max 10MB each)
                 </p>
               </div>
-            </div>
+            </label>
 
             {/* Uploaded Files */}
             {formData.attachments.length > 0 && (
@@ -993,6 +1097,17 @@ export default function Contact() {
           </div>
         )}
       </form>
+      <style jsx>{`
+        :global(form[data-theme="dark"] input::placeholder),
+        :global(form[data-theme="dark"] textarea::placeholder) {
+          color: rgba(255, 255, 255, 0.95);
+        }
+        :global(form[data-theme="light"] input::placeholder),
+        :global(form[data-theme="light"] textarea::placeholder) {
+          color: rgba(255, 255, 255, 0.95);
+          text-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+        }
+      `}</style>
     </section>
   );
 }
