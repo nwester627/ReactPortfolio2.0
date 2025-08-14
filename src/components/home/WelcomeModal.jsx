@@ -151,7 +151,7 @@ export default function WelcomeModal() {
       {/* Modal Card - shows after delay */}
       {visible && (
         <div
-          className={`welcome-modal fixed pointer-events-auto rounded-2xl shadow-2xl border px-6 sm:px-8 py-7 sm:py-9 transition-all backdrop-blur-md ${
+          className={`welcome-modal fixed pointer-events-auto rounded-2xl shadow-2xl border px-6 sm:px-8 py-7 sm:py-9 transition-all backdrop-blur-md left-1/2 -translate-x-1/2 top-[3%] sm:top-[10%] w-[min(600px,92vw)] max-w-[92vw] ${
             prefersReduced ? "duration-0" : "duration-300"
           } ${
             hiding
@@ -166,12 +166,6 @@ export default function WelcomeModal() {
           }`}
           style={{
             transitionTimingFunction: "cubic-bezier(.33,1,.68,1)",
-            // Position in viewport center regardless of body scroll lock
-            left: "50%",
-            top: "10%",
-            transform: "translate(-50%, 0)",
-            width: "min(600px, 92vw)",
-            maxWidth: "92vw",
           }}
           role="dialog"
           aria-modal="true"
