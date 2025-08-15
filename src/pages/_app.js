@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import Head from "next/head";
 import { Nunito } from "next/font/google";
 import { ThemeProvider, useTheme } from "@/context/ThemeContext";
-import ThemeToggle from "@/components/common/ThemeToggle";
+// import ThemeToggle from "@/components/common/ThemeToggle";
 import LoaderOverlay from "@/components/common/LoaderOverlay";
 import PageTransition from "@/components/common/PageTransition";
 import { useRouter } from "next/router";
@@ -79,7 +79,7 @@ function AppContent({ Component, pageProps }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <ThemeToggle />
+      {/* <ThemeToggle /> */}
       {mounted && (
         <PageTransition>
           <Component {...pageProps} />

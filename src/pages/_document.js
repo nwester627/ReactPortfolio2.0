@@ -5,10 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta charSet="utf-8" />
-        <meta
-          name="description"
-          content="Nicolas Wester's Portfolio - Full Stack Developer"
-        />
+        <meta name="description" content="Nicolas Wester's Portfolio" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <body className="font-sans">

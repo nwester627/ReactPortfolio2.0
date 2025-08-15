@@ -1,12 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
-/**
- * PageTransition: tiny route-change polish.
- * - On route start, we nudge content down a hair (translate-y-1) for continuity.
- * - On route complete, we play a subtle page-in transform/blur (no opacity dim).
- * - Respects reduced motion via global CSS overrides.
- */
 export default function PageTransition({ children }) {
   const router = useRouter();
   const [renderKey, setRenderKey] = useState(() => router.asPath);

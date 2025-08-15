@@ -33,11 +33,10 @@ import { useMemo, useState, useRef, useEffect } from "react";
 export default function Skills() {
   const { isDarkMode } = useTheme();
   const [activeCategory, setActiveCategory] = useState("frontend");
-  const [cycle, setCycle] = useState(0); // re-seed animations
+  const [cycle, setCycle] = useState(0);
   const containerRef = useRef(null);
   const prefersReducedMotion = useRef(false);
 
-  // Detect reduced motion preference once (no SSR flash since only affects animation extras)
   useEffect(() => {
     if (typeof window !== "undefined") {
       prefersReducedMotion.current = window.matchMedia(
@@ -55,26 +54,23 @@ export default function Skills() {
       return;
     }
 
-    // Reset any previous inline transition state
     el.style.transition = "";
     el.style.overflow = "";
     const start = el.getBoundingClientRect().height;
     el.style.height = start + "px";
     el.style.overflow = "hidden";
     el.style.willChange = "height";
-    // Force reflow to lock start height (explicit void to avoid unused expression lint rules)
     void el.offsetHeight;
 
     setActiveCategory(cat);
     setCycle((c) => c + 1);
 
-    // Double rAF to ensure new content is in DOM & measured fully
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         const el2 = containerRef.current;
         if (!el2) return;
-        const target = el2.scrollHeight; // full height of new content
-        if (target === 0) return; // safety
+        const target = el2.scrollHeight;
+        if (target === 0) return;
         el2.style.transition = "height 900ms cubic-bezier(.33,1,.68,1)";
         el2.style.height = target + "px";
       });
@@ -86,12 +82,11 @@ export default function Skills() {
     if (!el) return;
     const onEnd = (e) => {
       if (e.propertyName === "height") {
-        // Hold the final fixed height briefly to avoid snap-back flash
         const finalHeight = el.getBoundingClientRect().height;
         el.style.transition = "none";
         el.style.height = finalHeight + "px";
         setTimeout(() => {
-          el.style.height = ""; // allow natural growth if window resizes
+          el.style.height = "";
           el.style.overflow = "";
           el.style.willChange = "";
         }, 40);
@@ -110,7 +105,6 @@ export default function Skills() {
     languages: "Languages",
   };
 
-  // Central icon registry to guarantee defined React components
   const iconsMap = {
     SiJavascript,
     SiTypescript,
@@ -440,17 +434,6 @@ export default function Skills() {
       }, {}),
     [skills]
   );
-
-  // Dev guard: verify icon keys map correctly
-  // Dev-only icon registry validation (commented out for production cleanliness)
-  // if (process.env.NODE_ENV !== "production") {
-  //   skills.forEach((s) => {
-  //     if (!iconsMap[s.iconKey]) {
-  //       // eslint-disable-next-line no-console
-  //       console.warn(`[Skills] Missing icon component for key: ${s.iconKey} skill: ${s.name}`);
-  //     }
-  //   });
-  // }
 
   const categoryOrder = [
     "frontend",

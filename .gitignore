@@ -39,3 +39,6 @@ next-env.d.ts
 
 # Contentlayer
 .contentlayer
+
+# Ignore resume PDF (keep private, not in repo)
+public/utilities/resume.pdf

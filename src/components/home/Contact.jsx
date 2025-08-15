@@ -2,61 +2,18 @@ import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import emailjs from "@emailjs/browser";
 import GlassButton from "../common/GlassButton";
 import { useTheme } from "@/context/ThemeContext";
+import { initialState } from "@/lib/constants";
 
-export default function Contact({ layout = "default" }) {
+export default function Contact({ layout = "default", mode = "default" }) {
+  const form = useRef();
+  const { isDarkMode } = useTheme();
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [messageLength, setMessageLength] = useState(0);
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-    company: "",
-    timeline: "",
-    budget: "",
-    position: "",
-    workArrangement: "",
-    location: "",
-    attachments: [],
-  });
+  const [formData, setFormData] = useState(initialState);
   const [isDraftSaved, setIsDraftSaved] = useState(false);
-  const form = useRef();
-  const { isDarkMode } = useTheme();
-  //
-
-  const MAX_MESSAGE_LENGTH = 2000;
-  const TOTAL_STEPS = 3;
-
-  const subjectOptions = [
-    { value: "", label: "Select employment type..." },
-    { value: "full-time", label: "Full-time" },
-    { value: "contract", label: "Contract" },
-    { value: "contract-to-hire", label: "Contract-to-hire" },
-    { value: "internship", label: "Internship" },
-    { value: "other", label: "Other" },
-  ];
-
-  const timelineOptions = [
-    { value: "", label: "Select hiring timeline..." },
-    { value: "asap", label: "ASAP (Rush job)" },
-    { value: "1-2weeks", label: "1-2 weeks" },
-    { value: "1month", label: "1 month" },
-    { value: "2-3months", label: "2-3 months" },
-    { value: "6months+", label: "6+ months" },
-    { value: "flexible", label: "Flexible" },
-  ];
-
-  const budgetOptions = [
-    { value: "", label: "Select compensation range..." },
-    { value: "50k-80k", label: "$50k - $80k" },
-    { value: "80k-120k", label: "$80k - $120k" },
-    { value: "120k-160k", label: "$120k - $160k" },
-    { value: "160k+", label: "$160k+" },
-    { value: "discuss", label: "Let's discuss" },
-  ];
 
   const steps = [
     { id: 1, title: "Basic Info", description: "Your name & work email" },
@@ -68,193 +25,101 @@ export default function Contact({ layout = "default" }) {
     { id: 3, title: "Message & Files", description: "Notes & job description" },
   ];
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedDraft = localStorage.getItem("contact-form-draft");
-      if (savedDraft) {
-        try {
-          const parsedDraft = JSON.parse(savedDraft);
-          setFormData(parsedDraft);
-          setMessageLength(parsedDraft.message?.length || 0);
-          setIsDraftSaved(true);
-        } catch (e) {
-          console.error("Error loading draft:", e);
-        }
+  // Helper function to validate fields
+  const validateField = (field, value) => {
+    if (mode === "services") {
+      if (["name", "email", "projectGoals"].includes(field)) {
+        return value && value.trim().length > 0;
+      }
+    } else {
+      if (["name", "email", "subject", "message"].includes(field)) {
+        return value && value.trim().length > 0;
       }
     }
-  }, []);
+    return true;
+  };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      try {
-        const hasAnyValue = Object.entries(formData).some(([key, value]) => {
-          if (key === "attachments")
-            return Array.isArray(value) && value.length > 0;
-          return typeof value === "string" ? value.trim().length > 0 : !!value;
-        });
-        if (hasAnyValue) {
-          localStorage.setItem("contact-form-draft", JSON.stringify(formData));
-          setIsDraftSaved(true);
+  // Replace the entire isCurrentStepValid IIFE with this useMemo hook
+  const isCurrentStepValid = useMemo(() => {
+    switch (currentStep) {
+      case 1:
+        return (
+          validateField("name", formData.name) &&
+          validateField("email", formData.email) &&
+          (mode === "services" || validateField("subject", formData.subject))
+        );
+      case 2:
+        // For services mode, validate projectGoals before allowing the user to proceed.
+        // For default mode, Step 2 fields are optional, so we return true.
+        if (mode === "services") {
+          return validateField("projectGoals", formData.projectGoals);
         }
-      } catch (e) {
-        console.error("Error saving draft:", e);
-      }
-    }, 600);
-    return () => clearTimeout(timer);
-  }, [formData]);
-
-  // Reset draft saved indicator
-  useEffect(() => {
-    if (isDraftSaved) {
-      const timer = setTimeout(() => setIsDraftSaved(false), 2000);
-      return () => clearTimeout(timer);
+        return true;
+      case 3:
+        return (
+          mode === "services" || validateField("message", formData.message)
+        );
+      default:
+        return false; // Should not happen
     }
-  }, [isDraftSaved]);
+  }, [currentStep, formData, mode]);
 
-  // Validation helpers (pure)
-  const getFieldError = useCallback(
-    (name, value) => {
-      switch (name) {
-        case "email": {
-          if (!value.trim()) return "Work email is required";
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          return emailRegex.test(value)
-            ? null
-            : "Please enter a valid work email";
+  const TOTAL_STEPS = 3;
+  const MAX_MESSAGE_LENGTH = 1000;
+
+  const nextStep = () => {
+    if (currentStep < TOTAL_STEPS && isCurrentStepValid) {
+      setCurrentStep((prev) => prev + 1);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    // Check if the pressed key is 'Enter' and Shift is not held
+    if (e.key === "Enter" && !e.shiftKey) {
+      // Prevent the default form submission if not on the last step
+      if (currentStep < TOTAL_STEPS) {
+        e.preventDefault();
+        // If the current step is valid, trigger the nextStep function
+        if (isCurrentStepValid) {
+          nextStep();
         }
-        case "name":
-          if (!value.trim()) return "Name is required";
-          if (value.trim().length < 2)
-            return "Name must be at least 2 characters";
-          return null;
-        case "subject":
-          if (!value) return "Please select an employment type";
-          return null;
-        case "message":
-          if (!value.trim()) return "Message is required";
-          if (value.trim().length < 10)
-            return "Message must be at least 10 characters";
-          if (value.length > MAX_MESSAGE_LENGTH)
-            return `Message must be under ${MAX_MESSAGE_LENGTH} characters`;
-          return null;
-        default:
-          return null;
       }
-    },
-    [MAX_MESSAGE_LENGTH]
-  );
+      // On the final step, this allows 'Enter' to trigger the submit button
+    }
+  };
 
-  const validateField = useCallback(
-    (name, value) => {
-      const errorMsg = getFieldError(name, value);
-      setErrors((prev) => {
-        const next = { ...prev };
-        if (errorMsg) next[name] = errorMsg;
-        else delete next[name];
-        return next;
-      });
-      return !errorMsg;
-    },
-    [getFieldError]
-  );
-
-  const handleInputChange = useCallback(
-    (e) => {
-      const { name, value } = e.target;
-
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    if (type === "checkbox") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: checked
+          ? [...(prev[name] || []), value]
+          : (prev[name] || []).filter((v) => v !== value),
+      }));
+    } else {
       setFormData((prev) => ({
         ...prev,
         [name]: value,
       }));
-
-      if (name === "message") {
-        setMessageLength(value.length);
-      }
-
-      if (errors[name]) {
-        validateField(name, value);
-      }
-    },
-    [errors, validateField]
-  );
-
-  const handleBlur = useCallback(
-    (e) => {
-      const { name, value } = e.target;
-      validateField(name, value);
-    },
-    [validateField]
-  );
-
-  const handleFileUpload = useCallback((e) => {
-    const files = Array.from(e.target.files);
-    const maxSize = 10 * 1024 * 1024;
-    const allowedTypes = [
-      "application/pdf",
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "text/plain",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    ];
-
-    const validFiles = files.filter((file) => {
-      if (file.size > maxSize) {
-        alert(`File ${file.name} is too large. Maximum size is 10MB.`);
-        return false;
-      }
-      if (!allowedTypes.includes(file.type)) {
-        alert(`File ${file.name} is not supported.`);
-        return false;
-      }
-      return true;
-    });
-
-    setFormData((prev) => ({
-      ...prev,
-      attachments: [...prev.attachments, ...validFiles],
-    }));
-  }, []);
-
-  const removeFile = useCallback((index) => {
-    setFormData((prev) => ({
-      ...prev,
-      attachments: prev.attachments.filter((_, i) => i !== index),
-    }));
-  }, []);
-
-  const isCurrentStepValid = useMemo(() => {
-    switch (currentStep) {
-      case 1:
-        return [
-          getFieldError("name", formData.name),
-          getFieldError("email", formData.email),
-          getFieldError("subject", formData.subject),
-        ].every((err) => !err);
-      case 2:
-        return true;
-      case 3:
-        return !getFieldError("message", formData.message);
-      default:
-        return false;
     }
-  }, [currentStep, formData, getFieldError]);
+    if (name === "message") {
+      setMessageLength(value.length);
+    }
+  };
 
-  const nextStep = useCallback(() => {
-    if (currentStep === 1) {
-      const a = validateField("name", formData.name);
-      const b = validateField("email", formData.email);
-      const c = validateField("subject", formData.subject);
-      if (!(a && b && c)) return;
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    if (!validateField(name, value)) {
+      setErrors((prev) => ({ ...prev, [name]: "This field is required." }));
+    } else {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
     }
-    if (currentStep === 3) {
-      if (!validateField("message", formData.message)) return;
-    }
-    if (currentStep < TOTAL_STEPS && isCurrentStepValid) {
-      setCurrentStep((prev) => prev + 1);
-    }
-  }, [currentStep, formData, isCurrentStepValid, validateField]);
+  };
 
   const prevStep = useCallback(() => {
     if (currentStep > 1) {
@@ -264,51 +129,32 @@ export default function Contact({ layout = "default" }) {
 
   const clearDraft = useCallback(() => {
     localStorage.removeItem("contact-form-draft");
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-      company: "",
-      timeline: "",
-      budget: "",
-      position: "",
-      workArrangement: "",
-      location: "",
-      attachments: [],
-    });
+    setFormData(initialState);
     setMessageLength(0);
     setCurrentStep(1);
+    setIsDraftSaved(false);
   }, []);
-
-  const getInputClasses = (fieldName) => {
-    const hasError = errors[fieldName];
-    const baseClasses = `peer w-full text-base sm:text-lg rounded-xl py-3 px-4 border backdrop-blur-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent placeholder:text-white/95`;
-
-    if (hasError) {
-      return `${baseClasses} ${
-        isDarkMode
-          ? "text-light-gray bg-white/[0.05] border-red-400/60 hover:border-red-400/80 focus:ring-red-400/60"
-          : "text-light-text bg-white/80 supports-[backdrop-filter]:bg-white/60 border-red-400/60 hover:border-red-400/80 focus:ring-red-400/50"
-      }`;
-    }
-
-    return `${baseClasses} ${
-      isDarkMode
-        ? "text-light-gray bg-white/[0.05] border-white/10 hover:border-white/20 focus:ring-lavender/60"
-        : "text-light-text bg-white/80 supports-[backdrop-filter]:bg-white/60 border-light-primary/25 hover:border-light-primary/50 focus:ring-light-primary/50"
-    }`;
-  };
 
   function sendEmail(e) {
     e.preventDefault();
 
-    const isNameValid = validateField("name", formData.name);
-    const isEmailValid = validateField("email", formData.email);
-    const isSubjectValid = validateField("subject", formData.subject);
-    const isMessageValid = validateField("message", formData.message);
+    const formFieldsToValidate =
+      mode === "services"
+        ? ["name", "email", "projectGoals"]
+        : ["name", "email", "subject", "message"];
+    let formIsValid = true;
+    const newErrors = {};
 
-    if (!isNameValid || !isEmailValid || !isSubjectValid || !isMessageValid) {
+    formFieldsToValidate.forEach((field) => {
+      if (!validateField(field, formData[field])) {
+        newErrors[field] = "This field is required.";
+        formIsValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+
+    if (!formIsValid) {
       return;
     }
 
@@ -316,10 +162,10 @@ export default function Contact({ layout = "default" }) {
     setMessage("");
 
     const emailData = {
-      name: formData.name,
-      email: formData.email,
-      employment_type: formData.subject,
-      message: formData.message,
+      from_name: formData.name,
+      from_email: formData.email,
+      subject: formData.subject || "Not specified",
+      message: formData.message || "Not specified",
       company: formData.company || "Not specified",
       hiring_timeline: formData.timeline || "Not specified",
       compensation_range: formData.budget || "Not specified",
@@ -328,6 +174,17 @@ export default function Contact({ layout = "default" }) {
       location: formData.location || "Not specified",
       attachments_count: formData.attachments.length,
     };
+
+    if (mode === "services") {
+      emailData.business_name = formData.businessName || "Not specified";
+      emailData.industry = formData.industry || "Not specified";
+      emailData.website = formData.website || "Not specified";
+      emailData.project_goals = formData.projectGoals || "Not specified";
+      emailData.features = formData.features.join(", ") || "Not specified";
+      emailData.budget = formData.budget || "Not specified";
+      emailData.timeline = formData.timeline || "Not specified";
+      emailData.notes = formData.notes || "Not specified";
+    }
 
     emailjs
       .send(
@@ -343,7 +200,7 @@ export default function Contact({ layout = "default" }) {
         setTimeout(() => setMessage(""), 5000);
       })
       .catch((err) => {
-        console.error("Error sending email:", err);
+        console.error("EmailJS Error:", err);
         setMessage("error");
         setTimeout(() => setMessage(""), 5000);
       })
@@ -352,7 +209,40 @@ export default function Contact({ layout = "default" }) {
       });
   }
 
-  //
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedDraft = localStorage.getItem("contact-form-draft");
+      if (savedDraft) {
+        try {
+          const parsedDraft = JSON.parse(savedDraft);
+          setFormData({ ...initialState, ...parsedDraft });
+          setMessageLength(parsedDraft.message?.length || 0);
+          setIsDraftSaved(true);
+        } catch (e) {
+          console.error("Error loading draft:", e);
+        }
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        const hasAnyValue = Object.values(formData).some((value) => {
+          if (Array.isArray(value)) return value.length > 0;
+          return typeof value === "string" ? value.trim().length > 0 : !!value;
+        });
+
+        if (hasAnyValue) {
+          localStorage.setItem("contact-form-draft", JSON.stringify(formData));
+          setIsDraftSaved(true);
+        }
+      } catch (e) {
+        console.error("Error saving draft:", e);
+      }
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [formData]);
 
   const ProgressIndicator = () => (
     <div className="mb-8">
@@ -419,6 +309,82 @@ export default function Contact({ layout = "default" }) {
     </div>
   );
 
+  const getInputClasses = (field) => {
+    let base =
+      "peer w-full rounded-xl border px-4 pt-6 pb-2 text-base sm:text-lg font-medium outline-none transition-all duration-300 focus:ring-2 focus:ring-lavender/60 focus:border-lavender/60 bg-transparent placeholder:!text-center placeholder:!align-middle placeholder:!opacity-90";
+    if (errors[field]) base += " border-red-400 focus:ring-red-400";
+    else if (isDarkMode) {
+      base += " border-white/15 text-white placeholder:text-white bg-black/80";
+    } else {
+      base +=
+        " border-light-primary/20 text-light-text/90 placeholder:text-light-text/60 bg-white/95";
+    }
+    base += " sm:px-5 sm:pt-7 sm:pb-3";
+    return base;
+  };
+
+  const industryOptions = [
+    { value: "", label: "Select industry..." },
+    { value: "tech", label: "Technology" },
+    { value: "finance", label: "Finance" },
+    { value: "health", label: "Healthcare" },
+    { value: "education", label: "Education" },
+    { value: "other", label: "Other" },
+  ];
+  const subjectOptions = [
+    { value: "", label: "Select employment type..." },
+    { value: "fulltime", label: "Full-time" },
+    { value: "contract", label: "Contract" },
+    { value: "freelance", label: "Freelance" },
+    { value: "other", label: "Other" },
+  ];
+  const featuresOptions = [
+    { value: "blog", label: "Blog" },
+    { value: "ecommerce", label: "E-commerce" },
+    { value: "portfolio", label: "Portfolio" },
+    { value: "booking", label: "Booking" },
+    { value: "other", label: "Other" },
+  ];
+  const budgetOptions = [
+    { value: "", label: "Select budget..." },
+    { value: "1k-5k", label: "$1k - $5k" },
+    { value: "5k-10k", label: "$5k - $10k" },
+    { value: "10k+", label: "$10k+" },
+    { value: "discuss", label: "Let's discuss" },
+  ];
+  const timelineOptions = [
+    { value: "", label: "Select timeline..." },
+    { value: "1month", label: "1 month" },
+    { value: "3months", label: "3 months" },
+    { value: "6months", label: "6 months" },
+    { value: "flexible", label: "Flexible" },
+  ];
+  const compensationOptions = [
+    { value: "", label: "Select compensation range..." },
+    { value: "50k-80k", label: "$50k - $80k" },
+    { value: "80k-120k", label: "$80k - $120k" },
+    { value: "120k-160k", label: "$120k - $160k" },
+    { value: "160k+", label: "$160k+" },
+    { value: "discuss", label: "Let's discuss" },
+  ];
+  const workArrangementOptions = [
+    { value: "", label: "Select work arrangement..." },
+    { value: "remote", label: "Remote" },
+    { value: "hybrid", label: "Hybrid" },
+    { value: "onsite", label: "Onsite" },
+  ];
+
+  const handleFileUpload = (e) => {
+    const files = Array.from(e.target.files).slice(0, 5);
+    setFormData((prev) => ({ ...prev, attachments: files }));
+  };
+  const removeFile = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      attachments: prev.attachments.filter((_, i) => i !== index),
+    }));
+  };
+
   return (
     <section
       aria-labelledby="contact-heading"
@@ -451,9 +417,7 @@ export default function Contact({ layout = "default" }) {
           Contact
           <div className="mx-auto mt-3 h-[3px] w-16 rounded-full bg-gradient-to-r from-rose via-lavender to-lavender/60" />
         </h2>
-        {/* Progress Indicator */}
         <ProgressIndicator />
-        {/* Auto-save indicator */}
         {isDraftSaved && (
           <div className="mb-4 text-center">
             <span
@@ -474,408 +438,725 @@ export default function Contact({ layout = "default" }) {
             </span>
           </div>
         )}
-        {/* Step 1: Basic Info */}
         {currentStep === 1 && (
           <div className="space-y-7 md:space-y-8">
-            {/* Name Field */}
-            <div className="relative">
-              <input
-                name="name"
-                type="text"
-                value={formData.name}
-                className={`${getInputClasses("name")} h-16`}
-                required
-                aria-label="Name"
-                placeholder=" "
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-              />
-              <label
-                className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
-                  formData.name
-                    ? "top-[-26px] text-sm text-lavender"
-                    : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm"
-                } ${
-                  errors.name
-                    ? "text-red-400"
-                    : isDarkMode
-                    ? "peer-focus:text-lavender text-white/90"
-                    : "peer-focus:text-lavender text-light-text/80"
-                }`}
-              >
-                Name *
-              </label>
-              {errors.name && (
-                <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
-                  <svg
-                    className="w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  {errors.name}
-                </p>
-              )}
-            </div>
-
-            {/* Work Email Field */}
-            <div className="relative">
-              <input
-                name="email"
-                type="email"
-                value={formData.email}
-                className={`${getInputClasses("email")} h-16`}
-                required
-                aria-label="Work Email"
-                placeholder=" "
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-              />
-              <label
-                className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
-                  formData.email
-                    ? "top-[-26px] text-sm text-lavender"
-                    : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm"
-                } ${
-                  errors.email
-                    ? "text-red-400"
-                    : isDarkMode
-                    ? "peer-focus:text-lavender text-white/90"
-                    : "peer-focus:text-lavender text-light-text/80"
-                }`}
-              >
-                Work Email *
-              </label>
-              {errors.email && (
-                <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
-                  <svg
-                    className="w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  {errors.email}
-                </p>
-              )}
-            </div>
-
-            {/* Employment Type */}
-            <div className="relative">
-              <select
-                name="subject"
-                value={formData.subject}
-                className={`${getInputClasses(
-                  "subject"
-                )} h-16 cursor-pointer appearance-none pr-12 bg-transparent`}
-                required
-                aria-label="Employment Type"
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-              >
-                {subjectOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-light-gray/70">
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                    clipRule="evenodd"
+            {mode === "services" && (
+              <>
+                <div className="relative">
+                  <input
+                    name="name"
+                    type="text"
+                    value={formData.name}
+                    className={`${getInputClasses("name")} h-16`}
+                    required
+                    aria-label="Your Name"
+                    placeholder=" "
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    onKeyDown={handleKeyDown}
                   />
-                </svg>
-              </div>
-              <label
-                className={`absolute left-4 top-[-26px] text-sm font-medium transition-all duration-300 pointer-events-none ${
-                  errors.subject ? "text-red-400" : "text-lavender"
-                }`}
-              >
-                Employment Type *
-              </label>
-              {errors.subject && (
-                <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
-                  <svg
-                    className="w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                  <label
+                    className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                      formData.name
+                        ? `${
+                            isDarkMode
+                              ? "top-[-26px] text-sm text-lavender"
+                              : "top-[-26px] text-sm text-light-primary font-bold"
+                          }`
+                        : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm ${
+                            isDarkMode
+                              ? "peer-focus:text-lavender"
+                              : "peer-focus:text-light-primary peer-focus:font-bold"
+                          }`
+                    }`}
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  {errors.subject}
-                </p>
-              )}
-            </div>
+                    Your Name *
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    className={`${getInputClasses("email")} h-16`}
+                    required
+                    aria-label="Email"
+                    placeholder=" "
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    onKeyDown={handleKeyDown}
+                  />
+                  <label
+                    className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                      formData.email
+                        ? `${
+                            isDarkMode
+                              ? "top-[-26px] text-sm text-lavender"
+                              : "top-[-26px] text-sm text-light-primary font-bold"
+                          }`
+                        : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm ${
+                            isDarkMode
+                              ? "peer-focus:text-lavender"
+                              : "peer-focus:text-light-primary peer-focus:font-bold"
+                          }`
+                    }`}
+                  >
+                    Email *
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    name="businessName"
+                    type="text"
+                    value={formData.businessName}
+                    className={`${getInputClasses("businessName")} h-16`}
+                    aria-label="Business Name"
+                    placeholder=" "
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
+                  />
+                  <label
+                    className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                      formData.businessName
+                        ? `${
+                            isDarkMode
+                              ? "top-[-26px] text-sm text-lavender"
+                              : "top-[-26px] text-sm text-light-primary font-bold"
+                          }`
+                        : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm ${
+                            isDarkMode
+                              ? "peer-focus:text-lavender"
+                              : "peer-focus:text-light-primary peer-focus:font-bold"
+                          }`
+                    }`}
+                  >
+                    Business Name
+                  </label>
+                </div>
+                <div className="relative">
+                  <div className="relative flex items-center h-16">
+                    <select
+                      name="industry"
+                      value={formData.industry}
+                      className={`${getInputClasses(
+                        "industry"
+                      )} h-full cursor-pointer appearance-none pr-12 bg-transparent flex-1 !flex items-center !py-0`}
+                      aria-label="Industry"
+                      onChange={handleInputChange}
+                      style={{ paddingRight: "2.5rem" }}
+                    >
+                      {industryOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 flex items-center h-5">
+                      <svg
+                        className="w-5 h-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
+                    Industry
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    name="website"
+                    type="url"
+                    value={formData.website}
+                    className={`${getInputClasses("website")} h-16`}
+                    aria-label="Current Website"
+                    placeholder=" "
+                    onChange={handleInputChange}
+                  />
+                  <label
+                    className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                      formData.website
+                        ? `${
+                            isDarkMode
+                              ? "top-[-26px] text-sm text-lavender"
+                              : "top-[-26px] text-sm text-light-primary font-bold"
+                          }`
+                        : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm ${
+                            isDarkMode
+                              ? "peer-focus:text-lavender"
+                              : "peer-focus:text-light-primary peer-focus:font-bold"
+                          }`
+                    }`}
+                  >
+                    Current Website (if any)
+                  </label>
+                </div>
+              </>
+            )}
+            {mode !== "services" && (
+              <>
+                <div className="relative">
+                  <input
+                    name="name"
+                    type="text"
+                    value={formData.name}
+                    className={`${getInputClasses("name")} h-16`}
+                    required
+                    aria-label="Name"
+                    placeholder=" "
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                  />
+                  <label
+                    className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                      formData.name
+                        ? "top-[-26px] text-sm text-lavender"
+                        : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm"
+                    } ${
+                      errors.name
+                        ? "text-red-400"
+                        : isDarkMode
+                        ? "peer-focus:text-lavender text-white/90"
+                        : "peer-focus:text-lavender text-light-text/80"
+                    }`}
+                  >
+                    Name *
+                  </label>
+                  {errors.name && (
+                    <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
+                      <svg
+                        className="w-4 h-4"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      {errors.name}
+                    </p>
+                  )}
+                </div>
+                <div className="relative">
+                  <input
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    className={`${getInputClasses("email")} h-16`}
+                    required
+                    aria-label="Work Email"
+                    placeholder=" "
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                  />
+                  <label
+                    className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                      formData.email
+                        ? "top-[-26px] text-sm text-lavender"
+                        : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm"
+                    } ${
+                      errors.email
+                        ? "text-red-400"
+                        : isDarkMode
+                        ? "peer-focus:text-lavender text-white/90"
+                        : "peer-focus:text-lavender text-light-text/80"
+                    }`}
+                  >
+                    Work Email *
+                  </label>
+                  {errors.email && (
+                    <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
+                      <svg
+                        className="w-4 h-4"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+                <div className="relative">
+                  <div className="relative flex items-center h-16">
+                    <select
+                      name="subject"
+                      value={formData.subject}
+                      className={`${getInputClasses(
+                        "subject"
+                      )} h-full cursor-pointer appearance-none pr-12 bg-transparent flex-1 !flex items-center !py-0`}
+                      required
+                      aria-label="Employment Type"
+                      onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      style={{
+                        paddingRight: "2.5rem",
+                        display: "flex",
+                        alignItems: "center",
+                        height: "100%",
+                      }}
+                    >
+                      {subjectOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 flex items-center h-5">
+                      <svg
+                        className="w-5 h-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <label
+                    className={`absolute left-4 top-[-26px] text-sm font-medium transition-all duration-300 pointer-events-none ${
+                      errors.subject ? "text-red-400" : "text-lavender"
+                    }`}
+                  >
+                    Employment Type *
+                  </label>
+                  {errors.subject && (
+                    <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
+                      <svg
+                        className="w-4 h-4"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      {errors.subject}
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         )}
-        {/* Step 2: Role Details */}
         {currentStep === 2 && (
           <div className="space-y-7 md:space-y-8">
-            {/* Company Field */}
-            <div className="relative">
-              <input
-                name="company"
-                type="text"
-                value={formData.company}
-                className={`${getInputClasses("company")} h-16`}
-                aria-label="Company"
-                placeholder=" "
-                onChange={handleInputChange}
-              />
-              <label
-                className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
-                  formData.company
-                    ? "top-[-26px] text-sm text-lavender"
-                    : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm peer-focus:text-lavender ${
-                        isDarkMode ? "text-white/90" : "text-light-text/80"
-                      }`
-                }`}
-              >
-                Company (Optional)
-              </label>
-            </div>
-
-            {/* Position Title */}
-            <div className="relative">
-              <input
-                name="position"
-                type="text"
-                value={formData.position}
-                className={`${getInputClasses("position")} h-16`}
-                aria-label="Position Title"
-                placeholder=" "
-                onChange={handleInputChange}
-              />
-              <label
-                className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
-                  formData.position
-                    ? "top-[-26px] text-sm text-lavender"
-                    : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm peer-focus:text-lavender ${
-                        isDarkMode ? "text-white/90" : "text-light-text/80"
-                      }`
-                }`}
-              >
-                Position Title (Optional)
-              </label>
-            </div>
-
-            {/* Hiring Timeline */}
-            <div className="relative">
-              <select
-                name="timeline"
-                value={formData.timeline}
-                className={`${getInputClasses(
-                  "timeline"
-                )} h-16 cursor-pointer appearance-none pr-12 bg-transparent`}
-                aria-label="Hiring Timeline"
-                onChange={handleInputChange}
-              >
-                {timelineOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-light-gray/70">
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                    clipRule="evenodd"
+            {mode === "services" && (
+              <>
+                <div className="relative">
+                  <textarea
+                    name="projectGoals"
+                    value={formData.projectGoals}
+                    className={`${getInputClasses(
+                      "projectGoals"
+                    )} h-32 resize-none caret-lavender`}
+                    aria-label="Project Goals"
+                    placeholder=" "
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
                   />
-                </svg>
-              </div>
-              <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
-                Hiring Timeline (Optional)
-              </label>
-            </div>
-
-            {/* Compensation Range */}
-            <div className="relative">
-              <select
-                name="budget"
-                value={formData.budget}
-                className={`${getInputClasses(
-                  "budget"
-                )} h-16 cursor-pointer appearance-none pr-12 bg-transparent`}
-                aria-label="Compensation Range"
-                onChange={handleInputChange}
-              >
-                {budgetOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-light-gray/70">
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                    clipRule="evenodd"
+                  <label
+                    className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                      formData.projectGoals
+                        ? `${
+                            isDarkMode
+                              ? "top-[-26px] text-sm text-lavender"
+                              : "top-[-26px] text-sm text-light-primary font-bold"
+                          }`
+                        : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm ${
+                            isDarkMode
+                              ? "peer-focus:text-lavender"
+                              : "peer-focus:text-light-primary peer-focus:font-bold"
+                          }`
+                    }`}
+                  >
+                    Project Goals
+                  </label>
+                </div>
+                <div className="relative">
+                  <label className="block mb-2 text-sm font-semibold text-lavender tracking-wide">
+                    Desired Features
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    {featuresOptions.map((option) => {
+                      const selected = formData.features.includes(option.value);
+                      return (
+                        <button
+                          key={option.value}
+                          type="button"
+                          aria-pressed={selected}
+                          tabIndex={0}
+                          onClick={() => {
+                            setFormData((prev) => ({
+                              ...prev,
+                              features: selected
+                                ? prev.features.filter(
+                                    (v) => v !== option.value
+                                  )
+                                : [...prev.features, option.value],
+                            }));
+                          }}
+                          className={`inline-flex items-center justify-center px-5 py-2 rounded-full border transition-all duration-200 shadow-sm backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60
+                            ${
+                              selected
+                                ? isDarkMode
+                                  ? "bg-lavender/20 border-lavender/60 text-lavender font-semibold"
+                                  : "bg-lavender/10 border-lavender/50 text-lavender font-semibold"
+                                : isDarkMode
+                                ? "bg-white/5 border-white/15 text-white/80 hover:bg-lavender/10 hover:border-lavender/40"
+                                : "bg-white/60 border-light-primary/20 text-light-text/80 hover:bg-lavender/10 hover:border-lavender/40"
+                            }
+                          `}
+                          style={{ minWidth: 120 }}
+                        >
+                          <span className="select-none text-sm font-medium">
+                            {option.label}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="relative">
+                  <div className="relative flex items-center h-16">
+                    <select
+                      name="budget"
+                      value={formData.budget}
+                      className={`${getInputClasses(
+                        "budget"
+                      )} h-full cursor-pointer appearance-none pr-12 bg-transparent flex-1`}
+                      aria-label="Budget"
+                      onChange={handleInputChange}
+                      style={{ paddingRight: "2.5rem" }}
+                    >
+                      {budgetOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 flex items-center h-5">
+                      <svg
+                        className="w-5 h-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
+                    Budget
+                  </label>
+                </div>
+                <div className="relative">
+                  <div className="relative flex items-center h-16">
+                    <select
+                      name="timeline"
+                      value={formData.timeline}
+                      className={`${getInputClasses(
+                        "timeline"
+                      )} h-full cursor-pointer appearance-none pr-12 bg-transparent flex-1`}
+                      aria-label="Timeline"
+                      onChange={handleInputChange}
+                      style={{ paddingRight: "2.5rem" }}
+                    >
+                      {timelineOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 flex items-center h-5">
+                      <svg
+                        className="w-5 h-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
+                    Timeline
+                  </label>
+                </div>
+              </>
+            )}
+            {mode !== "services" && (
+              <>
+                <div className="relative">
+                  <input
+                    name="company"
+                    type="text"
+                    value={formData.company}
+                    className={`${getInputClasses("company")} h-16`}
+                    aria-label="Company"
+                    placeholder=" "
+                    onChange={handleInputChange}
                   />
-                </svg>
-              </div>
-              <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
-                Compensation Range (Optional)
-              </label>
-            </div>
-
-            {/* Work Arrangement */}
-            <div className="relative">
-              <select
-                name="workArrangement"
-                value={formData.workArrangement}
-                className={`${getInputClasses(
-                  "workArrangement"
-                )} h-16 cursor-pointer appearance-none pr-12 bg-transparent`}
-                aria-label="Work Arrangement"
-                onChange={handleInputChange}
-              >
-                {[
-                  { value: "", label: "Select work arrangement..." },
-                  { value: "remote", label: "Remote" },
-                  { value: "hybrid", label: "Hybrid" },
-                  { value: "onsite", label: "Onsite" },
-                ].map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-light-gray/70">
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                    clipRule="evenodd"
+                  <label
+                    className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                      formData.company
+                        ? "top-[-26px] text-sm text-lavender"
+                        : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm peer-focus:text-lavender ${
+                            isDarkMode ? "text-white/90" : "text-light-text/80"
+                          }`
+                    }`}
+                  >
+                    Company (Optional)
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    name="position"
+                    type="text"
+                    value={formData.position}
+                    className={`${getInputClasses("position")} h-16`}
+                    aria-label="Position Title"
+                    placeholder=" "
+                    onChange={handleInputChange}
                   />
-                </svg>
-              </div>
-              <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
-                Work Arrangement (Optional)
-              </label>
-            </div>
-
-            {/* Location */}
-            <div className="relative">
-              <input
-                name="location"
-                type="text"
-                value={formData.location}
-                className={`${getInputClasses("location")} h-16`}
-                aria-label="Location"
-                onChange={handleInputChange}
-                placeholder=" "
-              />
-              <label
-                className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
-                  formData.location
-                    ? "top-[-26px] text-sm text-lavender"
-                    : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm peer-focus:text-lavender ${
-                        isDarkMode ? "text-white/90" : "text-light-text/80"
-                      }`
-                }`}
-              >
-                Location (Optional)
-              </label>
-              <p
-                className={`mt-2 text-xs ${
-                  isDarkMode ? "text-light-gray/60" : "text-light-text/60"
-                }`}
-              >
-                City & State or your preferred timezone (e.g., "Austin, TX" or
-                "ET").
-              </p>
-            </div>
+                  <label
+                    className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                      formData.position
+                        ? "top-[-26px] text-sm text-lavender"
+                        : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm peer-focus:text-lavender ${
+                            isDarkMode ? "text-white/90" : "text-light-text/80"
+                          }`
+                    }`}
+                  >
+                    Position Title (Optional)
+                  </label>
+                </div>
+                <div className="relative">
+                  <select
+                    name="timeline"
+                    value={formData.timeline}
+                    className={`${getInputClasses(
+                      "timeline"
+                    )} h-16 cursor-pointer appearance-none pr-12 bg-transparent`}
+                    aria-label="Hiring Timeline"
+                    onChange={handleInputChange}
+                  >
+                    {timelineOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-light-gray/70">
+                    <svg
+                      className="w-5 h-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
+                    Hiring Timeline (Optional)
+                  </label>
+                </div>
+                <div className="relative">
+                  <select
+                    name="budget"
+                    value={formData.budget}
+                    className={`${getInputClasses(
+                      "budget"
+                    )} h-16 cursor-pointer appearance-none pr-12 bg-transparent`}
+                    aria-label="Compensation Range"
+                    onChange={handleInputChange}
+                  >
+                    {compensationOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-light-gray/70">
+                    <svg
+                      className="w-5 h-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
+                    Compensation Range (Optional)
+                  </label>
+                </div>
+                <div className="relative">
+                  <select
+                    name="workArrangement"
+                    value={formData.workArrangement}
+                    className={`${getInputClasses(
+                      "workArrangement"
+                    )} h-16 cursor-pointer appearance-none pr-12 bg-transparent`}
+                    aria-label="Work Arrangement"
+                    onChange={handleInputChange}
+                  >
+                    {workArrangementOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-light-gray/70">
+                    <svg
+                      className="w-5 h-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <label className="absolute left-4 top-[-26px] text-sm font-medium text-lavender pointer-events-none">
+                    Work Arrangement (Optional)
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    name="location"
+                    type="text"
+                    value={formData.location}
+                    className={`${getInputClasses("location")} h-16`}
+                    aria-label="Location"
+                    onChange={handleInputChange}
+                    placeholder=" "
+                  />
+                  <label
+                    className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                      formData.location
+                        ? "top-[-26px] text-sm text-lavender"
+                        : `peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm peer-focus:text-lavender ${
+                            isDarkMode ? "text-white/90" : "text-light-text/80"
+                          }`
+                    }`}
+                  >
+                    Location (Optional)
+                  </label>
+                  <p
+                    className={`mt-2 text-xs ${
+                      isDarkMode ? "text-light-gray/60" : "text-light-text/60"
+                    }`}
+                  >
+                    City & State or your preferred timezone (e.g., "Austin, TX"
+                    or "ET").
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         )}
-        {/* Step 3: Message & Files */}
         {currentStep === 3 && (
           <div className="space-y-7 md:space-y-8">
-            {/* Message Field with Character Counter */}
-            <div className="relative">
-              <textarea
-                name="message"
-                value={formData.message}
-                className={`${getInputClasses(
-                  "message"
-                )} h-64 resize-none caret-lavender`}
-                required
-                aria-label="Message"
-                maxLength={MAX_MESSAGE_LENGTH}
-                placeholder=" "
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-              />
-              <label
-                className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
-                  formData.message
-                    ? "top-[-26px] text-sm text-lavender"
-                    : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm"
-                } ${
-                  errors.message
-                    ? "text-red-400"
-                    : isDarkMode
-                    ? "peer-focus:text-lavender text-white/90"
-                    : "peer-focus:text-lavender text-light-text/80"
-                }`}
-              >
-                Message *
-              </label>
-              <div className="absolute bottom-3 right-3 text-xs text-gray-400">
-                {messageLength}/{MAX_MESSAGE_LENGTH}
+            {mode === "services" && (
+              <div className="relative">
+                <textarea
+                  name="notes"
+                  value={formData.notes}
+                  className={`${getInputClasses(
+                    "notes"
+                  )} h-32 resize-none caret-lavender`}
+                  aria-label="Additional Notes"
+                  placeholder="Anything else you'd like to share?"
+                  onChange={handleInputChange}
+                />
+                <label className="absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none">
+                  Additional Notes
+                </label>
               </div>
-              {errors.message && (
-                <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
-                  <svg
-                    className="w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  {errors.message}
-                </p>
-              )}
-            </div>
-
-            {/* File Upload */}
+            )}
+            {mode !== "services" && (
+              <div className="relative">
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  className={`${getInputClasses(
+                    "message"
+                  )} h-64 resize-none caret-lavender`}
+                  required
+                  aria-label="Message"
+                  maxLength={MAX_MESSAGE_LENGTH}
+                  placeholder=" "
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                />
+                <label
+                  className={`absolute left-4 top-4 text-sm sm:text-base font-medium transition-all duration-300 pointer-events-none ${
+                    formData.message
+                      ? "top-[-26px] text-sm text-lavender"
+                      : "peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray peer-focus:top-[-26px] peer-focus:text-sm"
+                  } ${
+                    errors.message
+                      ? "text-red-400"
+                      : isDarkMode
+                      ? "peer-focus:text-lavender text-white/90"
+                      : "peer-focus:text-lavender text-light-text/80"
+                  }`}
+                >
+                  Message *
+                </label>
+                <div className="absolute bottom-3 right-3 text-xs text-gray-400">
+                  {messageLength}/{MAX_MESSAGE_LENGTH}
+                </div>
+                {errors.message && (
+                  <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    {errors.message}
+                  </p>
+                )}
+              </div>
+            )}
             <label
               htmlFor="file-upload"
               className={`block p-6 rounded-xl border-2 border-dashed transition-colors cursor-pointer ${
@@ -926,8 +1207,6 @@ export default function Contact({ layout = "default" }) {
                 </p>
               </div>
             </label>
-
-            {/* Uploaded Files */}
             {formData.attachments.length > 0 && (
               <div className="space-y-2">
                 <h4
@@ -1006,7 +1285,6 @@ export default function Contact({ layout = "default" }) {
             )}
           </div>
         )}
-        {/* Navigation Buttons */}
         <div className="flex justify-between items-center pt-8">
           <div>
             {currentStep > 1 && (
@@ -1020,7 +1298,6 @@ export default function Contact({ layout = "default" }) {
               </GlassButton>
             )}
           </div>
-
           <div className="flex gap-3">
             {currentStep < TOTAL_STEPS ? (
               <GlassButton
@@ -1044,8 +1321,7 @@ export default function Contact({ layout = "default" }) {
               </GlassButton>
             )}
           </div>
-        </div>{" "}
-        {/* Enhanced Success/Error Messages */}
+        </div>
         {message === "success" && (
           <div className="mt-6 p-4 rounded-xl bg-green-500/10 border border-green-500/20 backdrop-blur-sm">
             <div className="flex items-center gap-3">
@@ -1098,14 +1374,52 @@ export default function Contact({ layout = "default" }) {
         )}
       </form>
       <style jsx>{`
+        :global(form input::placeholder),
+        :global(form textarea::placeholder),
+        :global(form select::placeholder) {
+          text-align: center !important;
+          vertical-align: middle !important;
+          opacity: 0.9 !important;
+          font-weight: 500;
+          letter-spacing: 0.01em;
+        }
+        :global(form input),
+        :global(form textarea),
+        :global(form select) {
+          text-align: left;
+        }
+        :global(form[data-theme="dark"] input),
+        :global(form[data-theme="dark"] textarea),
+        :global(form[data-theme="dark"] select) {
+          color: #fff !important;
+          background: rgba(24, 26, 38, 0.92) !important;
+          border-radius: 0.75rem !important;
+        }
         :global(form[data-theme="dark"] input::placeholder),
-        :global(form[data-theme="dark"] textarea::placeholder) {
-          color: rgba(255, 255, 255, 0.95);
+        :global(form[data-theme="dark"] textarea::placeholder),
+        :global(form[data-theme="dark"] select::placeholder) {
+          color: #fff !important;
+          opacity: 0.85 !important;
+        }
+        :global(form[data-theme="light"] input),
+        :global(form[data-theme="light"] textarea),
+        :global(form[data-theme="light"] select) {
+          color: #222 !important;
+          background: rgba(255, 255, 255, 0.92) !important;
+          border-radius: 0.75rem !important;
         }
         :global(form[data-theme="light"] input::placeholder),
-        :global(form[data-theme="light"] textarea::placeholder) {
-          color: rgba(255, 255, 255, 0.95);
-          text-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+        :global(form[data-theme="light"] textarea::placeholder),
+        :global(form[data-theme="light"] select::placeholder) {
+          color: #222 !important;
+          opacity: 0.8 !important;
+        }
+        :global(form input),
+        :global(form textarea),
+        :global(form select) {
+          font-family: inherit !important;
+          font-size: 1rem !important;
+          min-height: 3.5rem !important;
         }
       `}</style>
     </section>

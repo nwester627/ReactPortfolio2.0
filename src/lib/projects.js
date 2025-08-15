@@ -1,6 +1,4 @@
-// Central project data model (case study view).
-// Fields: id, title, tagline, description, problem, approach, outcome, technologies,
-// features, challenges, githubUrl, liveUrl, status, constraints, patterns.
+// ...existing code...
 
 export const projectsData = [
   {

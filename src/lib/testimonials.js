@@ -1,5 +1,4 @@
-// Centralized testimonial data
-// Each testimonial: id, name, title, image (public path), summary (short pull quote), full (detailed text), context (short descriptor), tags
+// ...existing code...
 
 export const testimonials = [
   {

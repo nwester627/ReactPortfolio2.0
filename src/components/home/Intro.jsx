@@ -1,168 +1,193 @@
-import { Typewriter } from "react-simple-typewriter";
 import { FaLinkedin, FaGithubSquare, FaCloudDownloadAlt } from "react-icons/fa";
 import GlassButton from "../common/GlassButton";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
-import WebDevDark from "./svgs/WebDevDark";
-import WebDevLight from "./svgs/WebDevLight";
 
-function HeroIllustration({
-  isDarkMode,
-  onActivate,
-  showSecret,
-  variant = "card",
-}) {
-  const containerBase = "relative group outline-none";
-  const sizeClasses = "w-full aspect-square max-w-[28rem] md:max-w-[32rem]";
-  const rounded = variant === "circle" ? "rounded-full" : "rounded-[2rem]";
-  const frame = isDarkMode
-    ? "border border-white/10 bg-gradient-to-b from-space via-space to-blackish-blue backdrop-blur-xl"
-    : "border border-light-primary/20 bg-gradient-to-b from-white via-light-surface to-light-container backdrop-blur-xl";
-  const overlayShade = isDarkMode ? "bg-white/5" : "bg-black/5";
-  const edgeGradient = isDarkMode
-    ? "from-lavender/40 via-blue-500/30 to-purple-600/40"
-    : "from-light-primary/50 via-lavender/40 to-light-text/20";
-
-  return (
-    <div className={`${containerBase} ${sizeClasses} ${rounded} mx-auto`}>
-      <div
-        className={`absolute inset-0 ${rounded} pointer-events-none blur-3xl opacity-20 -z-10 bg-gradient-to-tr ${edgeGradient}`}
-        aria-hidden="true"
-      />
-      <div
-        className={`${rounded} p-[1px] bg-gradient-to-tr ${edgeGradient} shadow-xl md:shadow-2xl`}
-      >
-        <button
-          type="button"
-          onClick={onActivate}
-          onKeyDown={(e) =>
-            (e.key === "Enter" || e.key === " ") && onActivate()
-          }
-          aria-label="Decorative web design layout illustration – activate for a fun secret after several clicks"
-          className={`relative block w-full h-full ${rounded} overflow-hidden transition-colors duration-300 ${frame} before:absolute before:inset-0 before:rounded-[inherit] before:pointer-events-none before:ring-1 before:ring-white/20 before:dark:ring-white/10 before:mix-blend-overlay after:absolute after:inset-0 after:rounded-[inherit] after:pointer-events-none after:bg-gradient-to-tr after:from-white/0 after:via-white/10 after:to-white/0 after:opacity-0 group-hover:after:opacity-100 after:transition-opacity after:duration-500 motion-reduce:group-hover:after:opacity-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent`}
-        >
-          <span
-            className={`relative w-full h-full block transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:group-hover:scale-100 ${
-              showSecret ? "scale-105" : "scale-100"
-            }`}
-          >
-            {/* subtle overlay behind illustration for depth */}
-            <span
-              className={`absolute inset-0 z-0 ${overlayShade} ${rounded}`}
-            />
-            <div className="w-full h-full flex items-center justify-center p-4 md:p-6 relative z-10 select-none">
-              {isDarkMode ? (
-                <WebDevDark className="w-full h-full" />
-              ) : (
-                <WebDevLight className="w-full h-full" />
-              )}
-            </div>
-          </span>
-        </button>
-      </div>
-    </div>
-  );
-}
+const resumePdfUrl = "/utilities/resume.pdf";
 
 export default function Intro() {
-  const [clickCount, setClickCount] = useState(0);
-  const [showSecretMessage, setShowSecretMessage] = useState(false);
   const { isDarkMode } = useTheme();
-
-  const handlePortraitClick = useCallback(() => {
-    const newCount = clickCount + 1;
-    if (newCount === 7) {
-      setShowSecretMessage(true);
-      setTimeout(() => setShowSecretMessage(false), 3000);
-    }
-    setClickCount(newCount === 7 ? 0 : newCount);
-  }, [clickCount]);
+  const [showResumePreview, setShowResumePreview] = useState(false);
+  // Only Google Drive iframe is used for preview now
+  const googleDriveEmbedUrl =
+    "https://drive.google.com/file/d/1b3jnUc-d9EwklABf-nZEC3sDf8QXty_v/preview";
 
   return (
-    <div>
-      <div className="text-center px-4 sm:px-6 pt-10 sm:pt-12 pb-6 sm:pb-8 sm:p-10 drop-shadow-2xl">
-        <h1
-          className={`hero-fade text-[clamp(2.75rem,6vw,4.25rem)] py-2 font-bold tracking-tight leading-tight bg-gradient-to-r text-shadow-soft ${
-            isDarkMode
-              ? "from-lavender via-light-gray to-white/80"
-              : "from-light-primary via-lavender to-light-text accent-shadow"
-          } bg-clip-text text-transparent`}
-        >
-          Nicolas Wester
-        </h1>
-        <h2
-          className={`hero-fade-delay text-2xl py-2 font-medium 2xl:text-3xl min-h-[2.5rem] 2xl:min-h-[3.25rem] text-shadow-subtle ${
-            isDarkMode
-              ? "text-lavender lavender-emphasis"
-              : "text-light-primary accent-shadow"
-          }`}
-        >
-          <Typewriter
-            words={[
-              "Full Stack Developer",
-              "React Enthusiast",
-              "WGU Alumni",
-              ...(Math.random() < 0.1
-                ? ["Secret Message: I love cats! 🐱"]
-                : []), // 10% chance of showing secret message
-            ]}
-            loop={false}
-            cursor={true}
-            deleteSpeed={100}
-            typeSpeed={100}
-            delaySpeed={500}
-            cursorBlinking={false}
-          />
-        </h2>
-      </div>
-      <div className="my-8 sm:my-12 flex justify-center">
-        <div className="w-11/12 sm:w-10/12 md:w-9/12 mx-auto">
-          <HeroIllustration
-            isDarkMode={isDarkMode}
-            onActivate={handlePortraitClick}
-            showSecret={showSecretMessage}
-          />
+    <div className="flex flex-col min-h-[20vh] items-center justify-start w-full max-w-full px-2 sm:px-0">
+      <div className="w-full flex justify-center">
+        <div className="flex flex-col sm:flex-row gap-2 items-center mb-6 w-full max-w-[480px] justify-center">
+          <GlassButton
+            href="https://www.linkedin.com/in/nicolaswester/"
+            icon={<FaLinkedin className="inline-flex text-2xl" />}
+            variant="outline"
+            size="lg"
+            aria-label="LinkedIn"
+            className="min-w-[150px] w-full sm:w-auto"
+          >
+            LinkedIn
+          </GlassButton>
+          <GlassButton
+            href="https://github.com/nwester627"
+            icon={<FaGithubSquare className="inline-flex text-2xl" />}
+            variant="outline"
+            size="lg"
+            aria-label="GitHub"
+            className="min-w-[150px] w-full sm:w-auto"
+          >
+            GitHub
+          </GlassButton>
+          <div className="relative inline-block w-full sm:w-auto">
+            <GlassButton
+              icon={<FaCloudDownloadAlt className="inline-flex text-2xl" />}
+              variant="primary"
+              size="lg"
+              className="min-w-[150px] w-full sm:w-auto"
+              onClick={() => setShowResumePreview((v) => !v)}
+            >
+              Resume
+            </GlassButton>
+
+            <div
+              className={`absolute z-50 mt-4 w-[95vw] max-w-2xl min-w-[280px] sm:min-w-[344px] rounded-3xl shadow-2xl border flex flex-col h-[75vh] min-h-[420px] max-h-[90vh] overflow-hidden transition-all duration-300 ease-in-out
+                ${
+                  isDarkMode
+                    ? "border-lavender/60 bg-[#23213a]"
+                    : "border-light-primary/30 bg-white"
+                }
+                ${
+                  showResumePreview
+                    ? "scale-100 opacity-100 pointer-events-auto"
+                    : "scale-95 opacity-0 pointer-events-none"
+                }
+              `}
+              style={{
+                boxSizing: "border-box",
+                left: "-265%",
+                boxShadow: isDarkMode
+                  ? "0 6px 32px 0 rgba(124,58,237,0.10), 0 2px 12px 0 rgba(0,0,0,0.18) inset"
+                  : "0 6px 32px 0 rgba(124,58,237,0.13), 0 2px 12px 0 rgba(0,0,0,0.13) inset",
+              }}
+            >
+              <div
+                className={`flex items-center justify-between px-4 sm:px-6 py-3 ${
+                  isDarkMode ? "bg-[#23213a]" : "bg-white"
+                } rounded-t-3xl`}
+              >
+                <span className="font-bold text-lg sm:text-xl text-lavender tracking-tight drop-shadow-sm">
+                  Resume Preview
+                </span>
+                <button
+                  className={`ml-2 flex items-center justify-center w-9 h-9 rounded-full border transition-colors focus:outline-none focus:ring-2 focus:ring-lavender/60
+                    ${
+                      isDarkMode
+                        ? "bg-[#23213a] border-lavender/30 text-lavender hover:bg-lavender/20 hover:text-white"
+                        : "bg-white border-light-primary/30 text-lavender hover:bg-lavender/10 hover:text-lavender"
+                    }
+                  `}
+                  style={{ fontSize: 22, fontWeight: 700, lineHeight: 1 }}
+                  onClick={() => setShowResumePreview(false)}
+                  aria-label="Close preview"
+                >
+                  <span className="pb-0.5">×</span>
+                </button>
+              </div>
+
+              <div
+                className={`flex-1 flex items-center justify-center w-full ${
+                  isDarkMode ? "bg-[#23213a]" : "bg-white"
+                } p-2 sm:p-4`}
+              >
+                <div className="w-full h-full flex items-center justify-center rounded-2xl overflow-hidden min-h-[240px] min-w-[200px] shadow-inner">
+                  <div className="w-full h-full flex flex-col items-center justify-center">
+                    <iframe
+                      src={googleDriveEmbedUrl}
+                      width="100%"
+                      height="100%"
+                      className="rounded-xl shadow-lg"
+                      style={{
+                        minHeight:
+                          typeof window !== "undefined" &&
+                          window.innerWidth < 600
+                            ? 320
+                            : 500,
+                        border: 0,
+                        borderRadius: "12px",
+                        background: "transparent",
+                        boxShadow: isDarkMode
+                          ? "0 4px 32px 0 rgba(124,58,237,0.10), 0 1.5px 8px 0 rgba(0,0,0,0.18)"
+                          : "0 4px 32px 0 rgba(124,58,237,0.13), 0 2px 12px 0 rgba(0,0,0,0.13)",
+                        width: "100%",
+                        maxWidth: 800,
+                        margin: "0 auto",
+                        display: "block",
+                      }}
+                      allow="autoplay"
+                      title="Resume PDF Preview (Google Drive)"
+                    />
+                    <div style={{ height: 32 }} />
+                    <span className="mt-2 text-sm text-lavender text-center font-semibold">
+                      If the preview does not load,{" "}
+                      <a
+                        href={resumePdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-rose transition-colors"
+                      >
+                        download the PDF
+                      </a>
+                      .
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={`flex justify-end gap-2 px-4 sm:px-6 py-3 ${
+                  isDarkMode ? "bg-[#23213a]" : "bg-white"
+                } rounded-b-3xl`}
+              >
+                <a
+                  href={resumePdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-bold shadow-lg transition border 
+                    ${
+                      isDarkMode
+                        ? "bg-lavender text-white hover:bg-lavender/90 border-white/80 dark:border-[#23213a]/80"
+                        : "bg-lavender/90 text-white hover:bg-lavender border-light-primary/40"
+                    }`}
+                >
+                  <FaCloudDownloadAlt /> Download PDF
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      {/* Attribution removed per new request to use downloaded SVGs */}
-      <div className="flex flex-wrap justify-center rounded-md pt-8 gap-3 sm:gap-4">
-        <GlassButton
-          href="https://www.linkedin.com/in/nicolaswester/"
-          icon={<FaLinkedin className="inline-flex text-xl" />}
-          variant="primary"
-          size="lg"
-          className="min-w-[150px] w-full sm:w-auto"
-        >
-          LinkedIn
-        </GlassButton>
-        <GlassButton
-          href="https://github.com/nwester627"
-          icon={<FaGithubSquare className="inline-flex text-xl" />}
-          variant="primary"
-          size="lg"
-          className="min-w-[150px] w-full sm:w-auto"
-        >
-          Github
-        </GlassButton>
-        <GlassButton
-          href="https://drive.google.com/file/d/1b3jnUc-d9EwklABf-nZEC3sDf8QXty_v/view?usp=sharing"
-          icon={<FaCloudDownloadAlt className="inline-flex text-xl" />}
-          variant="primary"
-          size="lg"
-          className="min-w-[150px] w-full sm:w-auto"
-        >
-          Resume
-        </GlassButton>
-      </div>
+      <style jsx global>{`
+        @keyframes sway-left-btn {
+          0% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+          100% {
+            transform: translateY(0px);
+          }
+        }
+        .animate-bounce-erratic {
+          animation: sway-left-btn 2s ease-in-out infinite alternate;
+        }
+      `}</style>
       <h4
-        className={`text-xl pt-8 pb-4 font-medium text-center 2xl:text-3xl text-shadow-subtle ${
+        className={`text-lg sm:text-xl pt-6 pb-3 font-medium text-center 2xl:text-3xl text-shadow-subtle ${
           isDarkMode ? "text-light-gray" : "text-light-text"
         }`}
       >
         A Little Bit About Me
       </h4>
       <p
-        className={`w-11/12 sm:w-10/12 md:w-9/12 mx-auto text-[15px] sm:text-md px-4 text-center text-pretty 2xl:text-xl ${
+        className={`w-full max-w-[95vw] sm:max-w-2xl mx-auto text-[15px] sm:text-md px-2 sm:px-4 text-center text-pretty 2xl:text-xl break-words mb-2 ${
           isDarkMode ? "text-light-gray" : "text-light-secondary"
         }`}
       >
@@ -172,20 +197,6 @@ export default function Intro() {
         than I found it. Off screen: games, anime, and three cats who think they
         run QA.
       </p>
-      {showSecretMessage && (
-        <div
-          className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none"
-          aria-live="polite"
-        >
-          <div className="text-4xl animate-ping text-lavender">
-            🌟 You found a secret! 🌟
-          </div>
-        </div>
-      )}
-      {/* Hidden live region for screen readers to announce secret without visual duplication */}
-      <div className="sr-only" aria-live="polite" role="status">
-        {showSecretMessage ? "You found a secret." : ""}
-      </div>
     </div>
   );
 }

@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
 
-/**
- * Simple full-screen loader overlay shown briefly on initial mount to allow assets & fonts to settle
- * and prevent harsh content pop-in. Automatically fades after minimum delay or when ready prop toggles.
- */
 export default function LoaderOverlay({
   minDuration = 1000,
   fadeDuration = 600,

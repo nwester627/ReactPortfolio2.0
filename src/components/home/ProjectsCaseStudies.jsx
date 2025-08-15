@@ -4,10 +4,6 @@ import { SiOpenai } from "react-icons/si";
 import { projectsData } from "@/lib/projects";
 import { useTheme } from "@/context/ThemeContext";
 import StackClusterAvatar from "./StackClusterAvatar";
-
-/**
- * Hook to detect user's motion preferences for accessibility
- */
 function usePrefersReducedMotion() {
   const [prefers, setPrefers] = useState(false);
   useEffect(() => {
@@ -104,7 +100,6 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
                 <span className="relative z-10 whitespace-nowrap">
                   {`Enabled with ${project.aiEnhanced?.tools?.[0] || "AI"}`}
                 </span>
-                {/* Moving glow sweep */}
                 <span
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-0 rounded-full overflow-hidden"
@@ -345,11 +340,6 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
     </article>
   );
 }
-
-/**
- * Interactive project showcase with expandable case study details.
- * Features keyboard navigation, deep linking, and smooth animations.
- */
 export default function ProjectsCaseStudies() {
   const [openIds, setOpenIds] = useState([]);
   const headerRefs = useRef({});
