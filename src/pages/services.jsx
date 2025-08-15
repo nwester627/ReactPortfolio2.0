@@ -1,8 +1,6 @@
 import Head from "next/head";
-import Link from "next/link"; // Not used but kept for context
 import { useTheme } from "@/context/ThemeContext";
 import SiteHeader from "@/components/common/SiteHeader";
-import ContactForm from "@/components/home/Contact";
 import FrostedSection from "@/components/common/FrostedSection";
 
 export default function Services() {
