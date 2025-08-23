@@ -8,7 +8,7 @@ export default function SiteHeader() {
   const router = useRouter();
   const onServices = router.pathname === "/services";
   return (
-    <header className="fixed top-0 left-0 w-full z-[1100] backdrop-blur-[6px] bg-white/10 dark:bg-black/10 shadow-none">
+    <header className="fixed top-0 left-0 w-full z-[1100] backdrop-blur-sm bg-white/10 dark:bg-black/10 shadow-none">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-2">
         <div className="flex items-center gap-2 sm:gap-3 w-full justify-between">
           <Link

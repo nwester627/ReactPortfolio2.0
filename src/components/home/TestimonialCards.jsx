@@ -191,7 +191,7 @@ export default function TestimonialCards() {
             isDarkMode ? "text-light-gray/80" : "text-light-text/80"
           }`}
         >
-          Client testimonials rotating automatically. Use space to pause, arrow
+          Read what former coworkers say about me. Use space to pause, arrow
           keys to navigate.
         </p>
       </div>

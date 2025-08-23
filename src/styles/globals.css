@@ -79,7 +79,7 @@ body {
 
 /* Body font now provided via Tailwind's font-sans + Nunito variable class applied in _app/_document */
 
-/* Animated badge sweep (AI badge glow) */
+/* Animated badge sweep */
 @keyframes badgeSweep {
   0% {
     transform: translateX(-30%);
@@ -112,12 +112,12 @@ a {
 /* Page transition in (no opacity dimming) */
 @keyframes pageIn {
   from {
+    opacity: 0.98;
     transform: translateY(6px) scale(0.995);
-    filter: blur(1px);
   }
   to {
+    opacity: 1;
     transform: translateY(0) scale(1);
-    filter: blur(0);
   }
 }
 .animate-pageIn {

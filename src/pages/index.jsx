@@ -1,7 +1,7 @@
 import Head from "next/head";
 import SiteHeader from "@/components/common/SiteHeader";
 import LogoNW from "@/components/home/LogoNW";
-import ProjectsCaseStudies from "@/components/home/ProjectsCaseStudies";
+import Projects from "@/components/home/Projects";
 import Intro from "@/components/home/Intro";
 import Skills from "@/components/home/Skills";
 import Testimonials from "@/components/home/Testimonials";
@@ -31,7 +31,7 @@ export default function Home() {
           <Skills />
         </FrostedSection>
         <FrostedSection>
-          <ProjectsCaseStudies />
+          <Projects />
         </FrostedSection>
         <FrostedSection>
           <Testimonials />

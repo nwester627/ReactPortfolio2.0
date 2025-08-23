@@ -42,3 +42,8 @@ next-env.d.ts
 
 # Ignore resume PDF (keep private, not in repo)
 public/utilities/resume.pdf
+
+node_modules/
+
+# Private keys
+private/

@@ -25,7 +25,7 @@ export default function Services() {
         {/* Intro container to match Home's FrostedSection rhythm */}
         <div className="flex items-center justify-center min-h-[60vh] w-full">
           <FrostedSection>
-            <div className="flex flex-col items-center justify-center min-h-[340px] min-w-[340px] w-full max-w-2xl py-16 px-6 sm:px-12 text-center mx-auto">
+            <div className="flex flex-col items-center justify-center min-h-[340px] min-w-[344px] w-full max-w-2xl py-16 px-6 sm:px-12 text-center mx-auto">
               <h1
                 className={`text-[clamp(3rem,7vw,5rem)] font-bold tracking-tight bg-gradient-to-r ${
                   isDarkMode
@@ -49,9 +49,6 @@ export default function Services() {
         </div>
 
         {/* Contact container aligned identically to Home */}
-        {/* <FrostedSection variant="contact">
-          <ContactForm mode="services" />
-        </FrostedSection> */}
       </main>
     </div>
   );

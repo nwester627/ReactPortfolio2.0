@@ -14,6 +14,17 @@ export function ThemeProvider({ children }) {
     setIsDarkMode(prefersDark);
   }, []);
 
+  // Keep the HTML `dark` class in sync for Tailwind's `dark:` utilities
+  useEffect(() => {
+    try {
+      if (typeof document !== "undefined") {
+        document.documentElement.classList.toggle("dark", isDarkMode);
+      }
+    } catch (e) {
+      // noop in SSR or restricted environments
+    }
+  }, [isDarkMode]);
+
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
     localStorage.setItem("theme", !isDarkMode ? "dark" : "light");

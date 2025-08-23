@@ -2,7 +2,6 @@ import "@/styles/globals.css";
 import Head from "next/head";
 import { Nunito } from "next/font/google";
 import { ThemeProvider, useTheme } from "@/context/ThemeContext";
-// import ThemeToggle from "@/components/common/ThemeToggle";
 import LoaderOverlay from "@/components/common/LoaderOverlay";
 import PageTransition from "@/components/common/PageTransition";
 import { useRouter } from "next/router";

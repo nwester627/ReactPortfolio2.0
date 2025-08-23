@@ -24,7 +24,9 @@ import {
   SiLeaflet,
   SiPostgresql,
   SiVercel,
+  SiFastapi,
 } from "react-icons/si";
+import { BsCloudDownload } from "react-icons/bs";
 import { GrMysql } from "react-icons/gr";
 import { TbApi } from "react-icons/tb";
 import { useTheme } from "@/context/ThemeContext";
@@ -116,6 +118,8 @@ export default function Skills() {
     SiSupabase,
     SiLeaflet,
     SiVercel,
+    SiFastapi,
+    BsCloudDownload,
     FaLaravel,
     FaHtml5,
     FaCss3,
@@ -160,8 +164,8 @@ export default function Skills() {
         iconKey: "FaPhp",
         color: "text-icon-php",
         category: "languages",
-        usage: "weekly",
-        tier: "regular",
+        usage: "daily",
+        tier: "core",
         since: 2022,
         usedFor: "feature work",
       },
@@ -170,8 +174,8 @@ export default function Skills() {
         iconKey: "FaPython",
         color: "text-icon-python",
         category: "languages",
-        usage: "monthly",
-        tier: "light",
+        usage: "weekly",
+        tier: "regular",
         since: 2023,
         usedFor: "scripts & automation",
       },
@@ -216,16 +220,6 @@ export default function Skills() {
         usedFor: "Relational data",
       },
       {
-        name: "Leaflet.js",
-        iconKey: "SiLeaflet",
-        color: "text-green-600",
-        category: "frontend",
-        usage: "weekly",
-        tier: "regular",
-        since: 2024,
-        usedFor: "Maps & markers",
-      },
-      {
         name: "Vercel",
         iconKey: "SiVercel",
         color: "text-black dark:text-white",
@@ -240,8 +234,8 @@ export default function Skills() {
         iconKey: "FaLaravel",
         color: "text-icon-laravel",
         category: "frameworks",
-        usage: "weekly",
-        tier: "regular",
+        usage: "daily",
+        tier: "core",
         since: 2022,
         usedFor: "APIs & auth",
       },
@@ -296,6 +290,26 @@ export default function Skills() {
         usedFor: "server-side JS",
       },
       {
+        name: "FastAPI",
+        iconKey: "SiFastapi",
+        color: "text-green-700 dark:text-green-400",
+        category: "backend",
+        usage: "weekly",
+        tier: "regular",
+        since: 2023,
+        usedFor: "Python API framework",
+      },
+      {
+        name: "Fetch API",
+        iconKey: "BsCloudDownload",
+        color: "text-blue-700 dark:text-blue-300",
+        category: "backend",
+        usage: "monthly",
+        tier: "light",
+        since: 2022,
+        usedFor: "HTTP requests in JS",
+      },
+      {
         name: "REST APIs",
         iconKey: "TbApi",
         color: "text-gray-600 dark:text-gray-300",
@@ -310,8 +324,8 @@ export default function Skills() {
         iconKey: "GrMysql",
         color: "text-icon-mysql",
         category: "data",
-        usage: "weekly",
-        tier: "regular",
+        usage: "daily",
+        tier: "core",
         since: 2022,
         usedFor: "queries & schema",
       },
@@ -361,7 +375,7 @@ export default function Skills() {
         color: "text-blue-600",
         category: "tools",
         usage: "daily",
-        tier: "regular",
+        tier: "core",
         since: 2022,
         usedFor: "project tracking",
       },
@@ -370,8 +384,8 @@ export default function Skills() {
         iconKey: "FaAws",
         color: "text-icon-aws",
         category: "tools",
-        usage: "monthly",
-        tier: "light",
+        usage: "weekly",
+        tier: "core",
         since: 2023,
         usedFor: "cloud services",
       },
@@ -380,8 +394,8 @@ export default function Skills() {
         iconKey: "FaDocker",
         color: "text-icon-docker",
         category: "tools",
-        usage: "monthly",
-        tier: "light",
+        usage: "daily",
+        tier: "core",
         since: 2023,
         usedFor: "containerization",
       },
@@ -460,10 +474,10 @@ export default function Skills() {
             isDarkMode ? "text-light-gray" : "text-light-text/85"
           }`}
         >
-          Tools I reach for daily: React + TypeScript for the front end, PHP /
-          Laravel and Python when it fits, MySQL for the reliable bits, and
-          Tailwind so I can move fast without trashing accessibility or
-          performance.
+          Core stack: React and TypeScript for robust front-end development;
+          PHP, Laravel, and Python for scalable back-end services; MySQL for
+          reliable relational data; Tailwind CSS for rapid, accessible UI
+          implementation.
         </p>
       </div>
 
@@ -517,6 +531,8 @@ export default function Skills() {
             const animateClass = reduce
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-2 animate-[materialize_0.85s_cubic-bezier(.33,1,.68,1)_forwards]";
+            // Add extra margin for backend/API skills for better spacing
+            const extraMargin = skill.category === "backend" ? "mb-6" : "";
             return (
               <div
                 key={skill.name + cycle}
@@ -524,7 +540,7 @@ export default function Skills() {
                   isDarkMode
                     ? "border-white/5 bg-white/[0.04] hover:bg-white/[0.07]"
                     : "border-light-primary/15 bg-light-primary/5 hover:bg-light-primary/10"
-                } shadow-sm hover:shadow-md transition-all duration-500 ${animateClass}`}
+                } shadow-sm hover:shadow-md transition-all duration-500 ${animateClass} ${extraMargin}`}
                 style={
                   reduce ? undefined : { animationDelay: `${baseDelay}ms` }
                 }
@@ -582,10 +598,12 @@ export default function Skills() {
         }`}
       >
         <p>
-          Shipped profile customization, subscription & trial flows, newsletter
-          revamps and more at MediaNews Group. Earlier, owned a real‑estate lead
-          gen product used by thousands at Inside Real Estate. I move between UI
-          polish, accessibility passes, and the API/data layer glue.
+          Delivered user profile customization, subscription management, and
+          onboarding flows, as well as newsletter system overhauls at MediaNews
+          Group. Previously architected and maintained a high-traffic real
+          estate lead generation platform at Inside Real Estate. Routinely
+          handle UI refinement, accessibility compliance, and API/data layer
+          integration.
         </p>
       </div>
     </section>

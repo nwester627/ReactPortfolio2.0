@@ -75,18 +75,13 @@ export default function LoaderOverlay({
         } `}
       />
       <div
-        className={`relative flex flex-col items-center gap-5 px-8 py-10 rounded-2xl shadow-xl backdrop-blur-xl border border-white/10 pointer-events-auto animate-materialize
-          transition-all ${
-            hiding
-              ? "opacity-0 scale-95 blur-sm"
-              : "opacity-100 scale-100 blur-0"
-          }
-          ${
-            isDarkMode
-              ? "bg-white/5 text-light-gray"
-              : "bg-white/70 text-light-text"
-          }
-        `}
+        className={`relative flex flex-col items-center gap-5 px-8 py-10 rounded-2xl shadow-xl border border-white/10 pointer-events-auto animate-materialize transition-all ${
+          hiding ? "opacity-0 scale-95" : "opacity-100 scale-100"
+        } ${
+          isDarkMode
+            ? "bg-white/5 text-light-gray"
+            : "bg-white/70 text-light-text"
+        }`}
         style={{
           transitionDuration: prefersReduced ? "0ms" : fadeDuration + "ms",
         }}
