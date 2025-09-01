@@ -5,7 +5,7 @@ import {
   TEMPLATE_ID_EMPLOYER,
   TEMPLATE_ID_WEBSITE,
   PUBLIC_KEY,
-} from "../../../private/emailjs-keys";
+} from "@/lib/emailConfig";
 import GlassButton from "../common/GlassButton";
 import { useTheme } from "@/context/ThemeContext";
 
