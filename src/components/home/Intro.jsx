@@ -2,8 +2,6 @@
 import GlassButton from "../common/GlassButton";
 import { useTheme } from "../../context/ThemeContext";
 
-const resumePdfUrl = "/utilities/resume.pdf";
-
 export default function Intro() {
   const { isDarkMode } = useTheme();
 
