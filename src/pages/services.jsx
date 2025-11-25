@@ -3,6 +3,7 @@ import { useTheme } from "@/context/ThemeContext";
 import SiteHeader from "@/components/common/SiteHeader";
 import FrostedSection from "@/components/common/FrostedSection";
 import GlassButton from "@/components/common/GlassButton";
+import SiteFooter from "@/components/common/SiteFooter";
 import Image from "next/image";
 import website1 from "@/assets/website1.png";
 import website2 from "@/assets/website2.png";
@@ -52,7 +53,7 @@ export default function Services() {
           </FrostedSection>
           <section
             aria-label="Example work"
-            className="w-full max-w-7xl mx-auto px-5 sm:px-8"
+            className="w-full mx-auto px-4 sm:px-6"
           >
             <h2
               className={`text-3xl sm:text-4xl font-bold tracking-tight mb-8 bg-gradient-to-r ${
@@ -181,6 +182,7 @@ export default function Services() {
 
         {/* Contact container aligned identically to Home */}
       </main>
+      <SiteFooter />
     </div>
   );
 }

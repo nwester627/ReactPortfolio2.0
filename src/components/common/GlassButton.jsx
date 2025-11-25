@@ -11,6 +11,7 @@ export default function GlassButton({
   type = "button",
   variant = "primary",
   size = "md",
+  download,
 }) {
   const { isDarkMode } = useTheme();
   const sizeMap = {
@@ -37,7 +38,7 @@ export default function GlassButton({
     "relative group overflow-hidden inline-flex items-center justify-center gap-2 rounded-lg font-bold tracking-tight",
     sizeClasses,
     palette[variant] || palette.primary,
-    "backdrop-blur-sm border shadow-md hover:shadow-lg transition-all duration-300 ease-out active:scale-[0.96]",
+    "backdrop-blur-sm border shadow-md hover:shadow-lg hover:shadow-lavender/20 dark:hover:shadow-lavender/10 transition-all duration-300 ease-out active:scale-[0.96] hover:-translate-y-0.5",
     isDarkMode ? "focus:ring-white/20" : "focus:ring-light-primary/25",
     "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent",
     `before:absolute before:inset-[-1px] before:rounded-[inherit] before:bg-gradient-to-r ${ringGradient} before:opacity-0 before:transition-opacity before:duration-500 group-hover:before:opacity-100`,
@@ -99,6 +100,7 @@ export default function GlassButton({
           target="_blank"
           rel="noopener noreferrer"
           aria-disabled={loading || disabled}
+          download={download}
           onClick={loading || disabled ? (e) => e.preventDefault() : onClick}
         >
           {content}
@@ -110,6 +112,7 @@ export default function GlassButton({
         href={href}
         className={combinedClasses}
         aria-disabled={loading || disabled}
+        download={download}
         onClick={loading || disabled ? (e) => e.preventDefault() : onClick}
       >
         {content}

@@ -75,7 +75,6 @@ module.exports = {
       },
       animation: {
         typewriter: "typewriter 1s steps(10) infinite",
-        gradient: "gradient 5s ease infinite",
         fadeIn: "fadeIn 0.6s ease forwards",
         fadeInUp: "fadeInUp 0.55s cubic-bezier(.25,1,.4,1) forwards",
         fadeOut: "fadeOut 0.45s ease forwards",
@@ -87,10 +86,6 @@ module.exports = {
         typewriter: {
           "0%": { width: "0%" },
           "100%": { width: "100%" },
-        },
-        gradient: {
-          "0%, 100%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
         },
         fadeIn: {
           "0%": { opacity: 0, transform: "translateY(12px)" },
@@ -141,5 +136,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animated")],
+  plugins: [],
 };

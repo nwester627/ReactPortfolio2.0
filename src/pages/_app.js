@@ -69,7 +69,7 @@ function AppContent({ Component, pageProps }) {
 
   return (
     <div
-      className={`min-h-screen transition-all duration-1200 ease-extra-smooth font-sans ${
+      className={`min-h-screen transition-colors duration-1200 ease-extra-smooth font-sans ${
         isDarkMode
           ? "bg-gradient-to-b from-blackish-blue via-space to-blackish-blue text-light-gray"
           : "bg-gradient-to-b from-light-bg via-light-accent to-light-container text-light-text"

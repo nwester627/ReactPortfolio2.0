@@ -31,6 +31,7 @@ import { GrMysql } from "react-icons/gr";
 import { TbApi } from "react-icons/tb";
 import { useTheme } from "@/context/ThemeContext";
 import { useMemo, useState, useRef, useEffect } from "react";
+import { Motion, spring } from "react-motion";
 
 export default function Skills() {
   const { isDarkMode } = useTheme();
@@ -460,50 +461,79 @@ export default function Skills() {
 
   return (
     <section aria-labelledby="skills-heading" className="relative">
-      <div className="text-center mb-8 sm:mb-10">
-        <h2
-          id="skills-heading"
-          className={`text-[clamp(2.25rem,5vw,3.5rem)] font-bold tracking-tight leading-tight mb-4 text-shadow-soft ${
-            isDarkMode ? "text-light-gray" : "text-light-text accent-shadow"
-          }`}
-        >
-          Technical Skills
-        </h2>
-        <p
-          className={`mx-auto max-w-3xl text-sm sm:text-base 2xl:text-xl px-3 sm:px-4 leading-relaxed ${
-            isDarkMode ? "text-light-gray" : "text-light-text/85"
-          }`}
-        >
-          Core stack: React and TypeScript for robust front-end development;
-          PHP, Laravel, and Python for scalable back-end services; MySQL for
-          reliable relational data; Tailwind CSS for rapid, accessible UI
-          implementation.
-        </p>
-      </div>
+      <Motion
+        defaultStyle={{ t: 0 }}
+        style={{ t: spring(1, { stiffness: 120, damping: 16 }) }}
+      >
+        {(style) => {
+          const t = style.t;
+          const opacity = 0.8 + 0.2 * t;
+          const translateY = (1 - t) * 10;
+          return (
+            <div
+              className="text-left mb-8 sm:mb-10"
+              style={{
+                opacity,
+                transform: `translateY(${translateY}px)`,
+              }}
+            >
+              <h2
+                id="skills-heading"
+                className={`text-[clamp(2.25rem,5vw,3.5rem)] font-bold tracking-tight leading-tight mb-1 text-shadow-soft ${
+                  isDarkMode
+                    ? "text-light-gray"
+                    : "text-light-text accent-shadow"
+                }`}
+              >
+                Technical Skills
+              </h2>
+              <div className="mt-0 h-[3px] w-32 rounded-full bg-gradient-to-r from-rose via-lavender to-lavender/60" />
+            </div>
+          );
+        }}
+      </Motion>
 
       <div className="max-w-6xl mx-auto px-4">
         {/* Category Pills */}
-        <div className="flex flex-wrap gap-3 justify-center mb-10">
-          {categoryOrder.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => handleCategoryChange(cat)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium leading-none tracking-tight transition-colors duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lavender/60 dark:focus-visible:ring-lavender/70 focus-visible:ring-offset-transparent select-none ${
-                activeCategory === cat
-                  ? isDarkMode
-                    ? "bg-lavender/30 text-lavender lavender-emphasis font-semibold ring-1 ring-lavender/50 shadow-[0_0_0_1px_rgba(124,58,237,0.15)]"
-                    : "bg-light-primary/20 text-light-primary font-semibold ring-1 ring-light-primary/30 shadow-[0_0_0_1px_rgba(124,58,237,0.15)]"
-                  : isDarkMode
-                  ? "text-light-gray/85 ring-1 ring-white/8 hover:ring-white/15 hover:bg-white/6 hover:text-light-gray/95 focus-visible:ring-lavender/60"
-                  : "text-light-text/85 ring-1 ring-light-primary/15 hover:ring-light-primary/30 hover:bg-light-primary/12 hover:text-light-text/95 focus-visible:ring-light-primary/50"
-              }`}
-              aria-pressed={activeCategory === cat}
-              aria-controls="skills-grid"
-            >
-              {categoryLabels[cat]}
-            </button>
-          ))}
-        </div>
+        <Motion
+          defaultStyle={{ t: 0 }}
+          style={{ t: spring(1, { stiffness: 120, damping: 16 }) }}
+        >
+          {(style) => {
+            const t = style.t;
+            const opacity = 0.8 + 0.2 * t;
+            const translateY = (1 - t) * 10;
+            return (
+              <div
+                className="flex flex-wrap gap-3 justify-center mb-8 sm:mb-10"
+                style={{
+                  opacity,
+                  transform: `translateY(${translateY}px)`,
+                }}
+              >
+                {categoryOrder.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => handleCategoryChange(cat)}
+                    className={`px-5 py-2.5 rounded-full text-sm font-medium leading-none tracking-tight transition-colors duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-lavender/60 dark:focus-visible:ring-lavender/70 focus-visible:ring-offset-transparent select-none ${
+                      activeCategory === cat
+                        ? isDarkMode
+                          ? "bg-lavender/30 text-lavender lavender-emphasis font-semibold ring-1 ring-lavender/50 shadow-[0_0_0_1px_rgba(124,58,237,0.15)]"
+                          : "bg-light-primary/20 text-light-primary font-semibold ring-1 ring-light-primary/30 shadow-[0_0_0_1px_rgba(124,58,237,0.15)]"
+                        : isDarkMode
+                        ? "text-light-gray/85 ring-1 ring-white/8 hover:ring-white/15 hover:bg-white/6 hover:text-light-gray/95 focus-visible:ring-lavender/60"
+                        : "text-light-text/85 ring-1 ring-light-primary/15 hover:ring-light-primary/30 hover:bg-light-primary/12 hover:text-light-text/95 focus-visible:ring-light-primary/50"
+                    }`}
+                    aria-pressed={activeCategory === cat}
+                    aria-controls="skills-grid"
+                  >
+                    {categoryLabels[cat]}
+                  </button>
+                ))}
+              </div>
+            );
+          }}
+        </Motion>
 
         {/* Skills Container (responsive height) */}
         <div
@@ -511,7 +541,7 @@ export default function Skills() {
           key={activeCategory + "-container"}
           aria-live="polite"
           id="skills-grid"
-          className="flex flex-wrap justify-center gap-4 sm:gap-6 pt-1 px-1 transition-[height]"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pt-1 px-2 sm:px-4 transition-[height]"
         >
           {grouped[activeCategory]?.map((skill, idx) => {
             const Icon = iconsMap[skill.iconKey];
@@ -536,7 +566,7 @@ export default function Skills() {
             return (
               <div
                 key={skill.name + cycle}
-                className={`group relative w-[260px] flex flex-col items-center justify-start rounded-xl border backdrop-blur-sm overflow-hidden p-4 will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 dark:focus-visible:ring-lavender/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
+                className={`group relative w-full flex flex-col items-center justify-start rounded-xl border backdrop-blur-sm overflow-hidden p-4 will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 dark:focus-visible:ring-lavender/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
                   isDarkMode
                     ? "border-white/5 bg-white/[0.04] hover:bg-white/[0.07]"
                     : "border-light-primary/15 bg-light-primary/5 hover:bg-light-primary/10"
@@ -591,21 +621,50 @@ export default function Skills() {
         </div>
       </div>
 
-      {/* Experience blurb */}
-      <div
-        className={`mt-10 text-center text-sm sm:text-base leading-7 2xl:text-lg px-6 max-w-5xl mx-auto ${
-          isDarkMode ? "text-light-gray" : "text-light-text/85"
-        }`}
-      >
-        <p>
-          Delivered user profile customization, subscription management, and
-          onboarding flows, as well as newsletter system overhauls at MediaNews
-          Group. Previously architected and maintained a high-traffic real
-          estate lead generation platform at Inside Real Estate. Routinely
-          handle UI refinement, accessibility compliance, and API/data layer
-          integration.
+      <div className="text-center mt-6 sm:mt-8 mb-6">
+        <p
+          className={`mx-auto max-w-5xl text-sm sm:text-base leading-7 2xl:text-lg px-4 sm:px-6 ${
+            isDarkMode ? "text-light-gray/70" : "text-light-text/70"
+          }`}
+        >
+          Core stack: React and TypeScript for robust front-end development;
+          PHP, Laravel, and Python for scalable back-end services; <br /> MySQL
+          for reliable relational data; Tailwind CSS for rapid, accessible UI
+          implementation.
         </p>
       </div>
+
+      {/* Experience blurb */}
+      <Motion
+        defaultStyle={{ t: 0 }}
+        style={{ t: spring(1, { stiffness: 120, damping: 16 }) }}
+      >
+        {(style) => {
+          const t = style.t;
+          const opacity = 0.8 + 0.2 * t;
+          const translateY = (1 - t) * 10;
+          return (
+            <div
+              className={`text-center text-sm sm:text-base leading-7 2xl:text-lg px-4 sm:px-6 max-w-5xl mx-auto mb-6 ${
+                isDarkMode ? "text-light-gray/70" : "text-light-text/70"
+              }`}
+              style={{
+                opacity,
+                transform: `translateY(${translateY}px)`,
+              }}
+            >
+              <p>
+                Delivered user profile customization, subscription management,
+                and onboarding flows, as well as newsletter system overhauls at
+                MediaNews Group. Previously architected and maintained a
+                high-traffic real estate lead generation platform at Inside Real
+                Estate. Routinely handle UI refinement, accessibility
+                compliance, and API/data layer integration.
+              </p>
+            </div>
+          );
+        }}
+      </Motion>
     </section>
   );
 }

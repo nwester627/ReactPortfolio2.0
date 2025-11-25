@@ -4,6 +4,7 @@ import { SiOpenai } from "react-icons/si";
 import { projectsData } from "@/lib/projects";
 import { useTheme } from "@/context/ThemeContext";
 import StackClusterAvatar from "./StackClusterAvatar";
+import { Motion, spring } from "react-motion";
 function usePrefersReducedMotion() {
   const [prefers, setPrefers] = useState(false);
   useEffect(() => {
@@ -28,6 +29,33 @@ function usePrefersReducedMotion() {
 
 function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
   const { isDarkMode } = useTheme();
+
+  // Common className constants to reduce duplication
+  const cardClass = `rounded-2xl border backdrop-blur-sm transition-all duration-300 focus-within:ring-2 focus-within:ring-lavender/60 ${
+    project.featured
+      ? `ring-2 ring-lavender/50 shadow-lg shadow-lavender/25 ${
+          isDarkMode
+            ? "border-lavender/30 bg-white/5 hover:bg-white/[0.08] hover:shadow-xl hover:shadow-lavender/30"
+            : "border-lavender/25 bg-light-primary/5 hover:bg-light-primary/10 hover:shadow-xl hover:shadow-lavender/20"
+        }`
+      : isDarkMode
+      ? "border-white/10 bg-white/5 hover:bg-white/[0.08] hover:border-white/20 hover:shadow-lg hover:shadow-white/10"
+      : "border-light-primary/15 bg-light-primary/5 hover:bg-light-primary/10 hover:border-light-primary/25 hover:shadow-lg hover:shadow-light-primary/10"
+  }`;
+  const sectionHeaderClass =
+    "text-xs font-semibold tracking-wider uppercase mb-1 opacity-70 text-shadow-subtle";
+  const paraClass = `text-sm leading-relaxed ${
+    isDarkMode ? "text-light-gray/90" : "text-light-text/90"
+  }`;
+  const secondaryTextClass = isDarkMode
+    ? "text-light-gray/85"
+    : "text-light-text/85";
+  const linkClass = `inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 text-shadow-subtle ${
+    isDarkMode
+      ? "bg-white/10 border-white/10 hover:bg-lavender/30 text-light-gray"
+      : "bg-light-primary/10 border-light-primary/20 hover:bg-lavender/30 text-light-text"
+  }`;
+
   const contentRef = useRef(null);
   const headerRef = useRef(null);
   const [height, setHeight] = useState(0);
@@ -49,19 +77,12 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
   }, [project.id, registerHeaderRef]);
 
   return (
-    <article
-      id={project.slug}
-      className={`rounded-2xl border backdrop-blur-sm transition-colors ${
-        isDarkMode
-          ? "border-white/10 bg-white/5 hover:bg-white/[0.08]"
-          : "border-light-primary/15 bg-light-primary/5 hover:bg-light-primary/10"
-      } focus-within:ring-2 focus-within:ring-lavender/60`}
-    >
+    <article id={project.slug} className={cardClass}>
       <button
         onClick={onToggle}
         aria-expanded={open}
         ref={headerRef}
-        className="case-header w-full text-left px-4 sm:px-5 py-4 sm:py-5 flex items-start gap-4 sm:gap-5 focus:outline-none"
+        className="case-header w-full text-left px-4 sm:px-5 lg:px-6 py-4 sm:py-5 lg:py-6 flex items-start gap-3 sm:gap-4 lg:gap-5 focus:outline-none"
       >
         <StackClusterAvatar technologies={project.technologies} size={56} />
         <div className="flex-1 min-w-0 space-y-1.5 sm:space-y-2">
@@ -74,19 +95,27 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
               {project.title}
             </h3>
             {(() => {
+              const isFeatured = project.featured;
               const isHired = project.slug === "hired-io";
               const baseSize = isHired
                 ? "text-[10px] font-semibold px-2 py-0.5 rounded-full tracking-wide"
                 : "text-xs font-semibold px-2.5 py-1 rounded-full tracking-wide";
+              const statusText = isFeatured
+                ? "Current Project in progress"
+                : project.status;
               return (
                 <span
                   className={`${baseSize} ${
-                    isDarkMode
+                    isFeatured
+                      ? isDarkMode
+                        ? "bg-lavender/20 text-lavender border border-lavender/40 shadow-lg shadow-lavender/20"
+                        : "bg-lavender/15 text-lavender border border-lavender/30 shadow-lg shadow-lavender/15"
+                      : isDarkMode
                       ? "bg-white/12 text-light-gray/90"
                       : "bg-light-primary/20 text-light-text/90"
                   }`}
                 >
-                  {project.status}
+                  {statusText}
                 </span>
               );
             })()}
@@ -160,13 +189,13 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
           </div>
         </div>
         <FaChevronDown
-          className={`mt-1 shrink-0 transition-transform duration-500 ${
+          className={`mt-1 shrink-0 transition-transform duration-300 ease-out ${
             open ? "rotate-180" : ""
           }`}
         />
       </button>
       <div
-        className={`px-5 ${
+        className={`px-4 sm:px-5 lg:px-6 ${
           prefersReducedMotion
             ? ""
             : "overflow-hidden transition-[height] duration-600 ease-extra-smooth"
@@ -183,63 +212,30 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
       >
         <div
           ref={contentRef}
-          className="pt-0 pb-5 sm:pb-6 space-y-5 sm:space-y-6"
+          className="pt-0 pb-4 sm:pb-5 lg:pb-6 space-y-4 sm:space-y-5 lg:space-y-6"
         >
-          <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 pt-2">
-            <div className="md:col-span-1 space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 pt-2">
+            <div className="lg:col-span-1 space-y-3 sm:space-y-4">
               <section>
-                <h4 className="text-xs font-semibold tracking-wider uppercase mb-1 opacity-70 text-shadow-subtle">
-                  Problem
-                </h4>
-                <p
-                  className={`text-sm leading-relaxed ${
-                    isDarkMode ? "text-light-gray/90" : "text-light-text/90"
-                  }`}
-                >
-                  {project.problem}
-                </p>
+                <h4 className={sectionHeaderClass}>Problem</h4>
+                <p className={paraClass}>{project.problem}</p>
               </section>
               <section>
-                <h4 className="text-xs font-semibold tracking-wider uppercase mb-1 opacity-70 text-shadow-subtle">
-                  Approach
-                </h4>
-                <p
-                  className={`text-sm leading-relaxed ${
-                    isDarkMode ? "text-light-gray/90" : "text-light-text/90"
-                  }`}
-                >
-                  {project.approach}
-                </p>
+                <h4 className={sectionHeaderClass}>Approach</h4>
+                <p className={paraClass}>{project.approach}</p>
               </section>
               <section>
-                <h4 className="text-xs font-semibold tracking-wider uppercase mb-1 opacity-70 text-shadow-subtle">
-                  Result
-                </h4>
-                <p
-                  className={`text-sm leading-relaxed ${
-                    isDarkMode ? "text-light-gray/90" : "text-light-text/90"
-                  }`}
-                >
-                  {project.outcome}
-                </p>
+                <h4 className={sectionHeaderClass}>Result</h4>
+                <p className={paraClass}>{project.outcome}</p>
               </section>
             </div>
-            <div className="md:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-5 lg:space-y-6">
               {project.features?.length > 0 && (
                 <section className="space-y-2">
-                  <h4 className="text-xs font-semibold tracking-wider uppercase mb-1 opacity-70 text-shadow-subtle">
-                    Key Features
-                  </h4>
-                  <ul className="grid sm:grid-cols-2 gap-2 text-sm">
+                  <h4 className={sectionHeaderClass}>Key Features</h4>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                     {project.features.map((f, i) => (
-                      <li
-                        key={i}
-                        className={`${
-                          isDarkMode
-                            ? "text-light-gray/85"
-                            : "text-light-text/85"
-                        }`}
-                      >
+                      <li key={i} className={secondaryTextClass}>
                         {f}
                       </li>
                     ))}
@@ -248,14 +244,12 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
               )}
               {project.patterns?.length > 0 && (
                 <section>
-                  <h4 className="text-xs font-semibold tracking-wider uppercase mb-1 opacity-70 text-shadow-subtle">
-                    Patterns & Techniques
-                  </h4>
+                  <h4 className={sectionHeaderClass}>Patterns & Techniques</h4>
                   <div className="flex flex-wrap gap-2">
                     {project.patterns.map((p, i) => (
                       <span
                         key={i}
-                        className={`px-2.5 py-1 rounded-full text-[0.6rem] font-semibold tracking-wide ring-1 ${
+                        className={`px-2 py-1 sm:px-2.5 sm:py-1 rounded-full text-[0.6rem] font-semibold tracking-wide ring-1 ${
                           isDarkMode
                             ? "bg-white/8 text-light-gray/85 ring-white/15"
                             : "bg-light-primary/12 text-light-text/85 ring-light-primary/25"
@@ -269,28 +263,18 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
               )}
               {project.challenges && (
                 <section>
-                  <h4 className="text-xs font-semibold tracking-wider uppercase mb-1 opacity-70 text-shadow-subtle">
-                    Challenge Note
-                  </h4>
-                  <p
-                    className={`text-sm ${
-                      isDarkMode ? "text-light-gray/85" : "text-light-text/85"
-                    }`}
-                  >
+                  <h4 className={sectionHeaderClass}>Challenge Note</h4>
+                  <p className={`text-sm ${secondaryTextClass}`}>
                     {project.challenges}
                   </p>
                 </section>
               )}
               {project.aiEnhanced?.enabled && (
                 <section>
-                  <h4 className="text-xs font-semibold tracking-wider uppercase mb-1 opacity-70 text-shadow-subtle">
+                  <h4 className={sectionHeaderClass}>
                     AI-Enhanced Development
                   </h4>
-                  <p
-                    className={`text-sm mb-2 ${
-                      isDarkMode ? "text-light-gray/85" : "text-light-text/85"
-                    }`}
-                  >
+                  <p className={`text-sm mb-2 ${secondaryTextClass}`}>
                     {project.aiEnhanced.description}
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -309,17 +293,13 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
                   </div>
                 </section>
               )}
-              <section className="flex flex-wrap gap-3 pt-2">
+              <section className="flex flex-wrap gap-2 sm:gap-3 pt-2">
                 {project.githubUrl && (
                   <a
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 text-shadow-subtle ${
-                      isDarkMode
-                        ? "bg-white/10 border-white/10 hover:bg-lavender/30 text-light-gray"
-                        : "bg-light-primary/10 border-light-primary/20 hover:bg-lavender/30 text-light-text"
-                    }`}
+                    className={linkClass}
                   >
                     {" "}
                     <FaGithub className="w-4 h-4" /> Code{" "}
@@ -330,11 +310,7 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 text-shadow-subtle ${
-                      isDarkMode
-                        ? "bg-white/10 border-white/10 hover:bg-lavender/30 text-light-gray"
-                        : "bg-light-primary/10 border-light-primary/20 hover:bg-lavender/30 text-light-text"
-                    }`}
+                    className={linkClass}
                   >
                     {" "}
                     <FaExternalLinkAlt className="w-4 h-4" /> Live{" "}
@@ -349,9 +325,13 @@ function CaseItem({ project, open, onToggle, registerHeaderRef, impact }) {
   );
 }
 export default function Projects() {
-  const [openIds, setOpenIds] = useState([]);
+  const [openIds, setOpenIds] = useState(() => {
+    const featured = projectsData.find((p) => p.featured);
+    return featured ? [featured.id] : [];
+  });
   const headerRefs = useRef({});
   const prefersReducedMotion = usePrefersReducedMotion();
+  const { isDarkMode } = useTheme();
 
   const registerHeaderRef = useCallback((id, ref) => {
     if (ref && ref.current) headerRefs.current[id] = ref;
@@ -479,29 +459,89 @@ export default function Projects() {
   const collapseAll = () => setOpenIds([]);
 
   return (
-    <section aria-label="Projects" className="space-y-4">
-      <div className="flex flex-wrap items-center gap-4 justify-between">
-        <h2 className="text-lg font-semibold tracking-tight flex items-center gap-2 text-shadow-subtle">
-          Projects
-        </h2>
-        <button
-          onClick={collapseAll}
-          disabled={!openIds.length}
-          className="px-2.5 py-1 rounded-md border backdrop-blur-sm text-[0.65rem] font-medium disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 border-white/10 dark:border-white/10 bg-white/10 dark:bg-white/5 hover:enabled:bg-lavender/30 transition-colors text-shadow-subtle"
-        >
-          Collapse
-        </button>
+    <section aria-label="Projects" className="space-y-4 relative">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-lavender/5 via-transparent to-rose/5" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(147,51,234,0.03),transparent_50%)]" />
       </div>
-      <div className="space-y-6">
-        {projectsData.map((p) => (
-          <CaseItem
+      <Motion
+        defaultStyle={{ t: 0 }}
+        style={{ t: spring(1, { stiffness: 120, damping: 16 }) }}
+      >
+        {(style) => {
+          const t = style.t;
+          const opacity = 0.8 + 0.2 * t;
+          const translateY = (1 - t) * 10;
+          return (
+            <div
+              className="flex flex-col items-center gap-4"
+              style={{
+                opacity,
+                transform: `translateY(${translateY}px)`,
+              }}
+            >
+              <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
+                <div className="flex flex-col items-start">
+                  <h2
+                    className={`text-[clamp(2rem,6vw,3.5rem)] sm:text-[clamp(2.25rem,5vw,3.5rem)] font-bold tracking-tight leading-tight text-shadow-soft ${
+                      isDarkMode
+                        ? "text-light-gray"
+                        : "text-light-text accent-shadow"
+                    }`}
+                  >
+                    Projects
+                  </h2>
+                  <div className="h-[3px] w-24 sm:w-32 rounded-full bg-gradient-to-r from-rose via-lavender to-lavender/60" />
+                </div>
+                <button
+                  onClick={collapseAll}
+                  disabled={!openIds.length}
+                  className="px-3 py-1.5 rounded-lg border backdrop-blur-sm text-xs font-medium disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/60 border-white/10 dark:border-white/10 bg-white/10 dark:bg-white/5 hover:enabled:bg-lavender/30 transition-all duration-200 text-shadow-subtle flex items-center gap-1.5 self-start sm:self-auto"
+                >
+                  <FaChevronDown
+                    className={`w-3 h-3 transition-transform duration-200 ${
+                      openIds.length ? "rotate-180" : ""
+                    }`}
+                  />
+                  Collapse All
+                </button>
+              </div>
+            </div>
+          );
+        }}
+      </Motion>
+      <div className="space-y-4 sm:space-y-5 lg:space-y-6">
+        {projectsData.map((p, index) => (
+          <Motion
             key={p.id}
-            project={p}
-            open={openIds.includes(p.id)}
-            onToggle={() => toggleId(p.id)}
-            registerHeaderRef={registerHeaderRef}
-            impact={p.impact}
-          />
+            defaultStyle={{ opacity: 0, translateY: 20 }}
+            style={{
+              opacity: spring(1, { stiffness: 100, damping: 15 }),
+              translateY: spring(0, {
+                stiffness: 100,
+                damping: 15,
+                delay: index * 50,
+              }),
+            }}
+          >
+            {(style) => (
+              <div
+                style={{
+                  opacity: style.opacity,
+                  transform: `translateY(${style.translateY}px)`,
+                }}
+              >
+                <CaseItem
+                  project={p}
+                  open={openIds.includes(p.id)}
+                  onToggle={() => toggleId(p.id)}
+                  registerHeaderRef={registerHeaderRef}
+                  impact={p.impact}
+                />
+              </div>
+            )}
+          </Motion>
         ))}
       </div>
     </section>
